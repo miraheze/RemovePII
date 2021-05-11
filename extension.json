@@ -39,6 +39,9 @@
 	"config": {
 		"RemovePIIHashPrefixOptions": {
 			"value": []
+		},
+		"RemovePIIHashPrefix": {
+			"value": ""
 		}
 	},
 	"manifest_version": 2

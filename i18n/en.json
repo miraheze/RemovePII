@@ -4,5 +4,6 @@
 			"Universal Omega"
 		]
 	},
-	"removepii-desc": "Creates a special pages for trustandsafety to use for GDPR actions."
+	"removepii-desc": "Creates a special pages for trustandsafety to use for GDPR actions.",
+	"generaterandomhash": "Generate Random Hash"
 }

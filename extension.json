@@ -22,12 +22,6 @@
 	"AutoloadClasses": {
 		"SpecialGenerateRandomHash": "includes/SpecialGenerateRandomHash.php"
 	},
-	"ConfigRegistry": {
-		"RemovePII": "GlobalVarConfig::newInstance"
-	},
-	"AvailableRights": [
-		"generate-random-hash"
-	],
 	"SpecialPages": {
 		"GenerateRandomHash": "SpecialGenerateRandomHash"
 	},

@@ -1,7 +1,7 @@
 <?php
 class SpecialGenerateRandomHash extends SpecialPage {
 	public function __construct() {
-		parent::__construct( 'GenerateRandomHash', 'generate-random-hash' );
+		parent::__construct( 'GenerateRandomHash' );
 	}
 
 	public function execute( $subPage ) {

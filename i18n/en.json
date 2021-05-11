@@ -4,7 +4,8 @@
 			"Universal Omega"
 		]
 	},
-	"removepii-desc": "Creates special pages for privileged users to use for GDPR actions.",
+	"removepii-desc": "Creates the special page, Special:GenerateRandomHash.",
 	"generaterandomhash": "Generate Random Hash",
-	"hash-length-help": "Enter the amount of characters for hash generation."
+	"hash-length-help": "Enter the amount of characters for hash generation.",
+	"hash-prefix-help": "Select from the dropdown, the appropriate option to use for the prefix for hash generation"
 }

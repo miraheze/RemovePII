@@ -4,7 +4,7 @@ class SpecialGenerateRandomHash extends SpecialPage {
 		parent::__construct( 'GenerateRandomHash', 'generate-random-hash' );
 	}
 
-	public function execute() {
+	public function execute( $subPage ) {
 		$output = $this->getOutput();
 		$this->setHeaders();
 

@@ -1,0 +1,35 @@
+{
+	"name": "RemovePII",
+	"version": "1.0.0",
+	"author": [
+		"Universal Omega"
+	],
+	"url": "https://github.com/miraheze/RemovePII",
+	"descriptionmsg": "removepii-desc",
+	"license-name": "GPL-3.0-or-later",
+	"type": "specialpage",
+	"requires": {
+		"MediaWiki": ">= 1.35.0"
+	},
+	"MessagesDirs": {
+		"RemovePII": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"RemovePIIAliases": "includes/RemovePIIAliases.php"
+	},
+	"AutoloadClasses": {
+		"SpecialGenerateRandomHash": "includes/SpecialGenerateRandomHash.php"
+	},
+	"ConfigRegistry": {
+		"RemovePII": "GlobalVarConfig::newInstance"
+	},
+	"AvailableRights": [
+		"generate-random-hash"
+	],
+	"SpecialPages": {
+		"GenerateRandomHash": "SpecialGenerateRandomHash"
+	},
+	"manifest_version": 2
+}

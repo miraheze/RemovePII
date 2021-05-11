@@ -38,10 +38,12 @@
 	},
 	"config": {
 		"RemovePIIHashPrefixOptions": {
-			"value": []
+			"value": [],
+			"description": "Array of available hash prefix options that are selectable in Special:GenerateRandomHash."
 		},
 		"RemovePIIHashPrefix": {
-			"value": ""
+			"value": "",
+			"description": "The default hash prefix to use when generating a hash through Special:GenerateRandomHash. Will be used when $wgRemovePIIHashPrefixOptions is empty."
 		}
 	},
 	"manifest_version": 2

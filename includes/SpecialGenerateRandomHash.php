@@ -1,5 +1,11 @@
 <?php
 
+namespace Miraheze\RemovePII;
+
+use ConfigFactory;
+use FormSpecialPage;
+use Html;
+
 class SpecialGenerateRandomHash extends FormSpecialPage {
     
 	private $config;

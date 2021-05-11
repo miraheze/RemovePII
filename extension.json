@@ -19,8 +19,8 @@
 	"ExtensionMessagesFiles": {
 		"RemovePIIAliases": "includes/RemovePIIAliases.php"
 	},
-	"AutoloadClasses": {
-		"SpecialGenerateRandomHash": "includes/SpecialGenerateRandomHash.php"
+	"AutoloadNamespaces": {
+		"Miraheze\\RemovePII\\": "includes/"
 	},
 	"ConfigRegistry": {
 		"RemovePII": "GlobalVarConfig::newInstance"
@@ -30,7 +30,7 @@
 	],
 	"SpecialPages": {
 		"GenerateRandomHash": {
-			"class": "SpecialGenerateRandomHash",
+			"class": "Miraheze\\RemovePII\\SpecialGenerateRandomHash",
 			"services": [
 				"ConfigFactory"
 			]

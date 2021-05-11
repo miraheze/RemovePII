@@ -6,6 +6,7 @@
 	},
 	"removepii-desc": "Creates the special page, Special:GenerateRandomHash.",
 	"generaterandomhash": "Generate Random Hash",
+	"action-generate-random-hash": "generate a random hash",
 	"hash-length-help": "Enter the amount of characters for hash generation.",
 	"hash-prefix-help": "Select from the dropdown, the appropriate option to use for the prefix for hash generation"
 }

@@ -16,6 +16,8 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 		$formDescriptor['HashLength'] = [
 			'type' => 'int',
 			'default' => 32,
+			'max' => 32,
+			'min' => 8,
 			'required' => true,
 			'help-message' => 'hash-length-help',
 		];

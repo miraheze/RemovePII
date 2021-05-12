@@ -5,6 +5,7 @@
 		]
 	},
 	"removepii-desc": "{{desc|name=RemovePII|url=https://github.com/miraheze/RemovePII}}",
+	"removepii-extensionname": "{{name}}",
 	"generaterandomhash": "{{doc-special}}",
 	"action-generate-random-hash": "{{doc-action|generate-random-hash}}",
 	"right-generate-random-hash": "{{doc-right|generate-random-hash}}",

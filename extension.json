@@ -6,6 +6,7 @@
 	],
 	"url": "https://github.com/miraheze/RemovePII",
 	"descriptionmsg": "removepii-desc",
+	"namemsg": "removepii-extensionname",
 	"license-name": "GPL-3.0-or-later",
 	"type": "specialpage",
 	"requires": {

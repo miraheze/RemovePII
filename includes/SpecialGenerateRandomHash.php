@@ -11,12 +11,12 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 	private $config;
 
 	/**
-	 * @param ConfigFactory $config
+	 * @param ConfigFactory $configFactory
 	 */
-	public function __construct( ConfigFactory $config ) {
+	public function __construct( ConfigFactory $configFactory ) {
 		parent::__construct( 'GenerateRandomHash', 'generate-random-hash' );
 
-		$this->config = $config->makeConfig( 'RemovePII' );
+		$this->config = $configFactory->makeConfig( 'RemovePII' );
 	}
 
 	/**

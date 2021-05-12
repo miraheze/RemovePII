@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Universal Omega"
+		]
+	},
+	"removepii-desc": "{{desc|name=RemovePII|url=https://github.com/miraheze/RemovePII}}",
+	"generaterandomhash": "{{doc-special}}",
+	"action-generate-random-hash": "{{doc-action|generate-random-hash}}",
+	"right-generate-random-hash": "{{doc-right|generate-random-hash}}",
+	"hash-length-help": "Help message for the hash length field on Special:GenerateRandomHash.",
+	"hash-prefix-help": "Help message for the prefix select field on Special:GenerateRandomHash."
+}

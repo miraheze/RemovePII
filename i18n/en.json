@@ -5,6 +5,7 @@
 		]
 	},
 	"removepii-desc": "Creates the special page, Special:GenerateRandomHash.",
+	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "Generate Random Hash",
 	"action-generate-random-hash": "generate a random hash",
 	"right-generate-random-hash": "Generate random username hashes",

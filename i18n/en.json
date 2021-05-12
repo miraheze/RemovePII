@@ -9,5 +9,5 @@
 	"action-generate-random-hash": "generate a random hash",
 	"right-generate-random-hash": "Generate random username hashes",
 	"hash-length-help": "Enter the number of characters the generated hash should contain. Min. 8, Max. 32",
-	"hash-prefix-help": "Select from the dropdown, the appropriate option to use for the prefix for hash generation"
+	"hash-prefix-help": "Select from the dropdown, the appropriate option to use for the prefix for hash generation."
 }

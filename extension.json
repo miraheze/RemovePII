@@ -1,0 +1,51 @@
+{
+	"name": "RemovePII",
+	"version": "1.0.0",
+	"author": [
+		"Universal Omega"
+	],
+	"url": "https://github.com/miraheze/RemovePII",
+	"descriptionmsg": "removepii-desc",
+	"namemsg": "removepii-extensionname",
+	"license-name": "GPL-3.0-or-later",
+	"type": "specialpage",
+	"requires": {
+		"MediaWiki": ">= 1.35.0"
+	},
+	"MessagesDirs": {
+		"RemovePII": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"RemovePIIAliases": "includes/RemovePIIAliases.php"
+	},
+	"AutoloadNamespaces": {
+		"Miraheze\\RemovePII\\": "includes/"
+	},
+	"ConfigRegistry": {
+		"RemovePII": "GlobalVarConfig::newInstance"
+	},
+	"AvailableRights": [
+		"generate-random-hash"
+	],
+	"SpecialPages": {
+		"GenerateRandomHash": {
+			"class": "Miraheze\\RemovePII\\SpecialGenerateRandomHash",
+			"services": [
+				"ConfigFactory"
+			]
+		}
+	},
+	"config": {
+		"RemovePIIHashPrefixOptions": {
+			"value": [],
+			"description": "Array of available hash prefix options that are selectable in Special:GenerateRandomHash."
+		},
+		"RemovePIIHashPrefix": {
+			"value": "",
+			"description": "The default hash prefix to use when generating a hash through Special:GenerateRandomHash. Will be used when $wgRemovePIIHashPrefixOptions is empty."
+		}
+	},
+	"manifest_version": 2
+}

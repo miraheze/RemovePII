@@ -5,8 +5,10 @@ namespace Miraheze\RemovePII;
 use Exception;
 use Html;
 use Job;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserGroupManager;
 use OutputPage;
+use RequestContext;
 use Title;
 use User;
 use WikiPage;
@@ -23,9 +25,10 @@ class RemovePIIJob extends Job {
 	private $userGroupManager;
 
 	public function __construct(
-		UserGroupManager $userGroupManager,
-		OutputPage $outputPage,
-		array $params
+		?Title $title,
+		array $params,
+		?UserGroupManager $userGroupManager = null,
+		?OutputPage $outputPage = null
 	) {
 		parent::__construct( 'RemovePIIJob', $params );
 
@@ -33,8 +36,8 @@ class RemovePIIJob extends Job {
 		$this->oldName = $params['oldName'];
 		$this->newName = $params['newName'];
 
-		$this->outputPage = $outputPage;
-		$this->userGroupManager = $userGroupManager;
+		$this->outputPage = $outputPage ?? RequestContext::getMain()->getOutput();
+		$this->userGroupManager = $userGroupManager ?? MediaWikiServices::getInstance()->getUserGroupManager();
 	}
 
 	public function run() {

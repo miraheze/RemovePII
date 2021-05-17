@@ -35,6 +35,8 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return array
 	 */
 	protected function getFormFields() {
+		$out = $this->getOutput();
+
 		$out->addHTML(
 			Html::warningBox(
 				$this->msg( 'removepii-warning-dangerous' )

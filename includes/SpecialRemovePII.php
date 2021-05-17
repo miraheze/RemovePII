@@ -61,25 +61,25 @@ class SpecialRemovePII extends FormSpecialPage {
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
 
-		$oldName = User::newFromName( $formData['OldName'] );
-		$newName = User::newFromName( $formData['NewName'] );
-		
-		$userOldName = $oldName->getName();
-		$userNewName = $newName->getName();
-		
-		if ( !$newName ) {
-			$out->addHTML( Html::errorBox( "User {$userNewName} is not a valid name" ) );
-			return false;
-		}
-
-		$userId = $newName->getId();
-
-		if ( !$userId ) {
-			$out->addHTML( Html::errorBox( "User {$userNewName} id equal to 0" ) );
-			return false;
-		}
-
 		foreach ( $this->config->get( 'LocalDatabases' ) as $database ) {
+			$oldName = User::newFromName( $formData['OldName'] );
+			$newName = User::newFromName( $formData['NewName'] );
+		
+			$userOldName = $oldName->getName();
+			$userNewName = $newName->getName();
+		
+			if ( !$newName ) {
+				$out->addHTML( Html::errorBox( "User {$userNewName} is not a valid name" ) );
+				continue;
+			}
+
+			$userId = $newName->getId();
+
+			if ( !$userId ) {
+				$out->addHTML( Html::errorBox( "User {$userNewName} id equal to 0" ) );
+				continue;
+			}
+
 			$dbw = wfGetDB( DB_MASTER, [], $database );
 
 			$userActorId = $newName->getActorId( $dbw );

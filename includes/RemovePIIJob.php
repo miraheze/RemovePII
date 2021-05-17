@@ -9,7 +9,7 @@ use MediaWiki\User\UserGroupManager;
 use OutputPage;
 use Title;
 use User;
-use WikiPage
+use WikiPage;
 
 class RemovePIIJob extends Job {
 	private $database;

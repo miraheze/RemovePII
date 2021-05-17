@@ -96,7 +96,13 @@ class SpecialRemovePII extends FormSpecialPage {
 			return false;
 		}
 
-		if ( !$newCentral ) {
+		if ( !$newCentral->exists() ) {
+			$out->addHTML(
+				Html::errorBox(
+					$this->msg( 'centralauth-admin-status-nonexistent', $formData['newName'] )
+				)
+			);
+
 			return false;
 		}
 

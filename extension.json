@@ -23,6 +23,9 @@
 	"AutoloadNamespaces": {
 		"Miraheze\\RemovePII\\": "includes/"
 	},
+	"JobClasses": {
+		"RemovePIIJob": "Miraheze\\RemovePII\\RemovePIIJob"
+	},
 	"ConfigRegistry": {
 		"RemovePII": "GlobalVarConfig::newInstance"
 	},

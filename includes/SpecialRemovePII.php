@@ -5,10 +5,17 @@ namespace Miraheze\RemovePII;
 use CentralAuthUser;
 use Config;
 use ConfigFactory;
+use ExtensionRegistry;
 use FormSpecialPage;
+use GlobalRenameUser;
+use GlobalRenameUserDatabaseUpdates;
+use GlobalRenameUserLogger;
+use GlobalRenameUserStatus;
+use GlobalRenameUserValidator;
 use Html;
 use JobQueueGroup;
 use MediaWiki\User\UserGroupManager;
+use Status;
 
 class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */
@@ -45,19 +52,44 @@ class SpecialRemovePII extends FormSpecialPage {
 
 		$formDescriptor = [];
 
-		$formDescriptor['oldName'] = [
+		$formDescriptor['oldname'] = [
 			'type' => 'text',
 			'required' => true,
 			'label-message' => 'removepii-oldname-label'
 		];
 
-		$formDescriptor['newName'] = [
+		$formDescriptor['newname'] = [
 			'type' => 'text',
 			'required' => true,
 			'label-message' => 'removepii-newname-label'
 		];
 
 		return $formDescriptor;
+	}
+
+	public function validate( array $data ) {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'Renameuser' ) ) {
+			return Status::newFatal( 'centralauth-rename-notinstalled' );
+		}
+
+		$oldUser = User::newFromName( $data['oldname'] );
+		if ( !$oldUser ) {
+			return Status::newFatal( 'centralauth-rename-doesnotexist' );
+		}
+
+		if ( $oldUser->getName() === $this->getUser()->getName() ) {
+			return Status::newFatal( 'centralauth-rename-cannotself' );
+		}
+
+		$newUser = User::newFromName( $data['newname'] );
+		if ( !$newUser ) {
+			return Status::newFatal( 'centralauth-rename-badusername' );
+		}
+
+		$validator = new GlobalRenameUserValidator();
+		$status = $validator->validate( $oldUser, $newUser );
+
+		return $status;
 	}
 
 	/**
@@ -67,19 +99,43 @@ class SpecialRemovePII extends FormSpecialPage {
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
 
+		$valid = $this->validate( $formData );
+		if ( !$valid->isOK() ) {
+			return $valid;
+		}
+
+		$oldUser = User::newFromName( $formData['oldname'] );
+		$newUser = User::newFromName( $formData['newname'], 'creatable' );
+
+		$session = $this->getContext()->exportSession();
+		$globalRenameUser = new GlobalRenameUser(
+			$this->getUser(),
+			$oldUser,
+			CentralAuthUser::getInstance( $oldUser ),
+			$newUser,
+			CentralAuthUser::getInstance( $newUser ),
+			new GlobalRenameUserStatus( $newUser->getName() ),
+			'JobQueueGroup::singleton',
+			new GlobalRenameUserDatabaseUpdates(),
+			new GlobalRenameUserLogger( $this->getUser() ),
+			$session
+		);
+
+		$globalRenameUser->rename( $formData );
+
 		$jobParams = [
-			'oldName' => $formData['oldName'],
-			'newName' => $formData['newName'],
+			'oldName' => $formData['oldname'],
+			'newName' => $formData['newname'],
 		];
 
-		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldName'] );
+		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
 
-		$newCentral = CentralAuthUser::getInstanceByName( $formData['newName'] );
+		$newCentral = CentralAuthUser::getInstanceByName( $formData['newname'] );
 
 		if ( $oldCentral->renameInProgress() ) {
 			$out->addHTML(
 				Html::errorBox(
-					$this->msg( 'centralauth-renameuser-global-inprogress', $formData['oldName'] )
+					$this->msg( 'centralauth-renameuser-global-inprogress', $formData['oldname'] )
 				)
 			);
 
@@ -89,7 +145,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		if ( $newCentral->renameInProgress() ) {
 			$out->addHTML(
 				Html::errorBox(
-					$this->msg( 'centralauth-renameuser-global-inprogress', $formData['newName'] )
+					$this->msg( 'centralauth-renameuser-global-inprogress', $formData['newname'] )
 				)
 			);
 
@@ -99,7 +155,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		if ( !$newCentral->exists() ) {
 			$out->addHTML(
 				Html::errorBox(
-					$this->msg( 'centralauth-admin-status-nonexistent', $formData['newName'] )
+					$this->msg( 'centralauth-admin-status-nonexistent', $formData['newname'] )
 				)
 			);
 
@@ -126,21 +182,11 @@ class SpecialRemovePII extends FormSpecialPage {
 			);
 		}
 
-		$dbw = wfGetDB( DB_MASTER, [], $this->config->get( 'CentralAuthDatabase' ) );
+		$user = User::newFromName( $formData['newname'] );
 
-		if ( $newCentral->getEmail() ) {
-			$dbw->update(
-				'globaluser',
-				[
-					'gu_email' => ''
-				],
-				[
-					'gu_email' => $newCentral->getEmail(),
-					'gu_name' => $newCentral->getName()
-				],
-				__METHOD__
-			);
-		}
+		// Remove user email
+		$user->invalidateEmail();
+		$user->saveSettings();
 
 		// Lock global account
 		$newCentral->adminLock();

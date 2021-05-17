@@ -6,6 +6,7 @@ use CentralAuthUser;
 use Config;
 use ConfigFactory;
 use FormSpecialPage;
+use Html;
 use JobQueueGroup;
 use MediaWiki\User\UserGroupManager;
 
@@ -34,6 +35,12 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return array
 	 */
 	protected function getFormFields() {
+		$out->addHTML(
+			Html::warningBox(
+				$this->msg( 'removepii-warning-dangerous' )
+			)
+		);
+
 		$formDescriptor = [];
 
 		$formDescriptor['oldName'] = [
@@ -56,26 +63,50 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return bool
 	 */
 	public function onSubmit( array $formData ) {
+		$out = $this->getOutput();
+
 		$jobParams = [
 			'oldName' => $formData['oldName'],
 			'newName' => $formData['newName'],
 		];
 
-		$centralUser = CentralAuthUser::getInstanceByName( $formData['newName'] );
+		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldName'] );
 
-		if ( !$centralUser ) {
+		$newCentral = CentralAuthUser::getInstanceByName( $formData['newName'] );
+
+		if ( $oldCentral->renameInProgress() ) {
+			$out->addHTML(
+				Html::errorBox(
+					$this->msg( 'centralauth-renameuser-global-inprogress', $formData['oldName'] )
+				)
+			);
+
+			return false;
+		}
+
+		if ( $newCentral->renameInProgress() ) {
+			$out->addHTML(
+				Html::errorBox(
+					$this->msg( 'centralauth-renameuser-global-inprogress', $formData['newName'] )
+				)
+			);
+
+			return false;
+		}
+
+		if ( !$newCentral ) {
 			return false;
 		}
 
 		// Invalidate cache before we begin transaction
-		$centralUser->invalidateCache();
+		$newCentral->invalidateCache();
 
 		// Delay cache invalidation until we finish transaction
-		$centralUser->startTransaction();
+		$newCentral->startTransaction();
 
 		// Run RemovePIIJob on all attached wikis
 		// todo: does this include deleted wikis?
-		foreach ( $centralUser->listAttached() as $database ) {
+		foreach ( $newCentral->listAttached() as $database ) {
 			$jobParams['database'] = $database;
 
 			JobQueueGroup::singleton()->push(
@@ -89,25 +120,25 @@ class SpecialRemovePII extends FormSpecialPage {
 
 		$dbw = wfGetDB( DB_MASTER, [], $this->config->get( 'CentralAuthDatabase' ) );
 
-		if ( $centralUser->getEmail() ) {
+		if ( $newCentral->getEmail() ) {
 			$dbw->update(
 				'globaluser',
 				[
 					'gu_email' => ''
 				],
 				[
-					'gu_email' => $centralUser->getEmail(),
-					'gu_name' => $centralUser->getName()
+					'gu_email' => $newCentral->getEmail(),
+					'gu_name' => $newCentral->getName()
 				],
 				__METHOD__
 			);
 		}
 
 		// Lock global account
-		$centralUser->adminLock();
+		$newCentral->adminLock();
 
 		// End transaction, enable cache invalidation again
-		$centralUser->endTransaction();
+		$newCentral->endTransaction();
 
 		return true;
 	}

@@ -2,12 +2,13 @@
 
 namespace Miraheze\RemovePII;
 
+use Config;
 use ConfigFactory;
 use FormSpecialPage;
 use Html;
 
 class SpecialGenerateRandomHash extends FormSpecialPage {
-	/** @var ConfigFactory */
+	/** @var Config */
 	private $config;
 
 	/**

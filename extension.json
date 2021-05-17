@@ -27,13 +27,21 @@
 		"RemovePII": "GlobalVarConfig::newInstance"
 	},
 	"AvailableRights": [
-		"generate-random-hash"
+		"generate-random-hash",
+		"handle-pii"
 	],
 	"SpecialPages": {
 		"GenerateRandomHash": {
 			"class": "Miraheze\\RemovePII\\SpecialGenerateRandomHash",
 			"services": [
 				"ConfigFactory"
+			]
+		},
+		"RemovePII": {
+			"class": "Miraheze\\RemovePII\\SpecialRemovePII",
+			"services": [
+				"ConfigFactory",
+				"UserGroupManager"
 			]
 		}
 	},

@@ -87,12 +87,12 @@ class SpecialRemovePII extends FormSpecialPage {
 	}
 
 	public function validate( array $data ) {
-		if ( !ExtensionRegistry::getInstance()->isLoaded( 'Renameuser' ) ) {
-			return Status::newFatal( 'centralauth-rename-notinstalled' );
-		}
-
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
 			return Status::newFatal( 'removepii-centralauth-notinstalled' );
+		}
+
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'Renameuser' ) ) {
+			return Status::newFatal( 'centralauth-rename-notinstalled' );
 		}
 
 		$oldUser = User::newFromName( $data['oldname'] );

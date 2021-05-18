@@ -43,8 +43,7 @@
 		"RemovePII": {
 			"class": "Miraheze\\RemovePII\\SpecialRemovePII",
 			"services": [
-				"ConfigFactory",
-				"UserGroupManager"
+				"ConfigFactory"
 			]
 		}
 	},

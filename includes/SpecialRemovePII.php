@@ -30,8 +30,8 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param UserGroupManager $userGroupManager
 	 */
 	public function __construct(
-			ConfigFactory $configFactory,
-			UserGroupManager $userGroupManager
+		ConfigFactory $configFactory,
+		UserGroupManager $userGroupManager
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
@@ -43,15 +43,14 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return array
 	 */
 	protected function getFormFields() {
-		$out = $this->getOutput();
-
-		$out->addHTML(
-			Html::warningBox(
-				$this->msg( 'removepii-warning-dangerous' )
-			)
-		);
-
 		$formDescriptor = [];
+
+		$formDescriptor['warning'] = [
+			'type' => 'info',
+			'help' => Html::warningBox( $this->msg( 'removepii-warning-dangerous' )->escaped() ),
+			'raw-help' => true,
+			'hide-if' => [ '!==', 'wpaction', 'removepii' ]
+		];
 
 		$formDescriptor['oldname'] = [
 			'type' => 'text',
@@ -81,6 +80,10 @@ class SpecialRemovePII extends FormSpecialPage {
 	public function validate( array $data ) {
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'Renameuser' ) ) {
 			return Status::newFatal( 'centralauth-rename-notinstalled' );
+		}
+
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
+			return Status::newFatal( 'removepii-centralauth-notinstalled' );
 		}
 
 		$oldUser = User::newFromName( $data['oldname'] );
@@ -156,7 +159,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(
 					Html::errorBox(
-						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['oldname'] )
+						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['oldname'] )->escaped()
 					)
 				);
 
@@ -166,7 +169,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			if ( $newCentral->renameInProgress() ) {
 				$out->addHTML(
 					Html::errorBox(
-						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['newname'] )
+						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['newname'] )->escaped()
 					)
 				);
 
@@ -176,7 +179,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			if ( !$newCentral->exists() ) {
 				$out->addHTML(
 					Html::errorBox(
-						$this->msg( 'centralauth-admin-status-nonexistent', $formData['newname'] )
+						$this->msg( 'centralauth-admin-status-nonexistent', $formData['newname'] )->escaped()
 					)
 				);
 

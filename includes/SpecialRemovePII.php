@@ -152,8 +152,8 @@ class SpecialRemovePII extends FormSpecialPage {
 			return true;
 		} elseif ( $formData['action'] === 'removepii' ) {
 			$jobParams = [
-				'oldName' => $formData['oldname'],
-				'newName' => $formData['newname'],
+				'oldname' => $formData['oldname'],
+				'newname' => $formData['newname'],
 			];
 
 			$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );

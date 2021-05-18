@@ -3,46 +3,38 @@
 namespace Miraheze\RemovePII;
 
 use Exception;
-use Html;
+use GenericParameterJob;
 use Job;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\User\UserGroupManager;
-use OutputPage;
-use RequestContext;
 use Title;
 use User;
 use WikiPage;
 
-class RemovePIIJob extends Job {
+class RemovePIIJob extends Job implements GenericParameterJob {
+	/** @var string */
 	private $database;
 
+	/** @var string */
 	private $oldName;
 
+	/** @var string */
 	private $newName;
 
-	private $outputPage;
-
-	private $userGroupManager;
-
-	public function __construct(
-		?Title $title,
-		array $params,
-		?UserGroupManager $userGroupManager = null,
-		?OutputPage $outputPage = null
-	) {
+	/**
+	 * @param array $params
+	 */
+	public function __construct( array $params ) {
 		parent::__construct( 'RemovePIIJob', $params );
 
 		$this->database = $params['database'];
-		$this->oldName = $params['oldName'];
-		$this->newName = $params['newName'];
-
-		$this->outputPage = $outputPage ?? RequestContext::getMain()->getOutput();
-		$this->userGroupManager = $userGroupManager ?? MediaWikiServices::getInstance()->getUserGroupManager();
+		$this->oldName = $params['oldname'];
+		$this->newName = $params['newname'];
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function run() {
-		$out = $this->outputPage;
-
 		$oldName = User::newFromName( $this->oldName );
 		$newName = User::newFromName( $this->newName );
 
@@ -50,14 +42,16 @@ class RemovePIIJob extends Job {
 		$userNewName = $newName->getName();
 
 		if ( !$newName ) {
-			$out->addHTML( Html::errorBox( "User {$userNewName} is not a valid name" ) );
+			$this->setLastError( "User {$userNewName} is not a valid name" );
+
 			return false;
 		}
 
 		$userId = $newName->getId();
 
 		if ( !$userId ) {
-			$out->addHTML( Html::errorBox( "User {$userNewName} id equal to 0" ) );
+			$this->setLastError( "User {$userNewName} ID equal to 0" );
+
 			return false;
 		}
 
@@ -333,8 +327,10 @@ class RemovePIIJob extends Job {
 							$fields['where'],
 							__METHOD__
 						);
-					} catch( Exception $ex ) {
-						$out->addHTML( Html::errorBox( "Table {$key} either does not exist or the update failed." ) );
+					} catch( Exception $e ) {
+						$this->setLastError( get_class( $e ) . ": " . $e->getMessage() );
+
+						continue;
 					}
 				}
 			}
@@ -380,12 +376,15 @@ class RemovePIIJob extends Job {
 		$user = User::newSystemUser( 'MediaWiki default', [ 'steal' => true ] );
 
 		if ( !$user ) {
-			$out->addHTML( Html::errorBox( 'Invalid username' ) );
+			$this->setLastError( 'Invalid username' );
+
 			return false;
 		}
 
+		$userGroupManager = MediaWikiServices::getInstance()->getUserGroupManager();
+
 		// Hide deletions from RecentChanges
-		$this->userGroupManager->addUserToGroup( $user, 'bot', null, true );
+		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
 
 		$error = '';
 		$title = Title::newFromText( $oldName->getTitleKey(), NS_USER );
@@ -394,7 +393,7 @@ class RemovePIIJob extends Job {
 
 		if ( !$status->isOK() ) {
 			$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
-			$out->addHTML( Html::errorBox( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" ) );
+			$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
 		}
 
 		return true;

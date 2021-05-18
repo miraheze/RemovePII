@@ -47,8 +47,8 @@ class SpecialRemovePII extends FormSpecialPage {
 
 		$formDescriptor['warning'] = [
 			'type' => 'info',
-			'default' => Html::warningBox( $this->msg( 'removepii-warning-dangerous' )->parse() ),
-			'raw' => true,
+			'help' => Html::warningBox( $this->msg( 'removepii-warning-dangerous' )->parse() ),
+			'raw-help' => true,
 			'hide-if' => [ '!==', 'wpaction', 'removepii' ]
 		];
 

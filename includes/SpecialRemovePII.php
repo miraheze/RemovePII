@@ -45,6 +45,18 @@ class SpecialRemovePII extends FormSpecialPage {
 	protected function getFormFields() {
 		$formDescriptor = [];
 
+		if (
+			$this->config->get( 'RemovePIICentralWiki' ) &&
+			$this->config->get( 'DBname' ) !== $this->config->get( 'RemovePIICentralWiki' )
+		) {
+			$formDescriptor['disabled'] = [
+				'type' => 'info',
+				'help-message' => 'removepii-wiki-disabled',
+			];
+
+			return $formDescriptor;
+		}
+		
 		$formDescriptor['warning'] = [
 			'type' => 'info',
 			'help' => Html::warningBox( $this->msg( 'removepii-warning-dangerous' )->parse() ),

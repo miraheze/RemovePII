@@ -1,6 +1,6 @@
 {
 	"name": "RemovePII",
-	"version": "1.0.0",
+	"version": "3.0.0",
 	"author": [
 		"Universal Omega"
 	],
@@ -10,7 +10,10 @@
 	"license-name": "GPL-3.0-or-later",
 	"type": "specialpage",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.35.0",
+		"extensions": {
+			"CentralAuth": "*"
+		}
 	},
 	"MessagesDirs": {
 		"RemovePII": [

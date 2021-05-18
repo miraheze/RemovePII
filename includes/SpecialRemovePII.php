@@ -75,7 +75,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			'type' => 'select',
 			'options' => [
 				'RemovePII' => 'removepii',
-				'Rename User' => 'renameuser'
+				'Rename user' => 'renameuser'
 			],
 			'required' => true,
 			'default' => 'renameuser',
@@ -86,7 +86,11 @@ class SpecialRemovePII extends FormSpecialPage {
 		return $formDescriptor;
 	}
 
-	public function validate( array $data ) {
+	/**
+	 * @param array $formData
+	 * @return Status
+	 */
+	public function validate( array $formData ) {
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
 			return Status::newFatal( 'removepii-centralauth-notinstalled' );
 		}
@@ -95,7 +99,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-notinstalled' );
 		}
 
-		$oldUser = User::newFromName( $data['oldname'] );
+		$oldUser = User::newFromName( $formData['oldname'] );
 		if ( !$oldUser ) {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}
@@ -104,7 +108,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-cannotself' );
 		}
 
-		$newUser = User::newFromName( $data['newname'] );
+		$newUser = User::newFromName( $formData['newname'] );
 		if ( !$newUser ) {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}

@@ -14,29 +14,20 @@ use GlobalRenameUserStatus;
 use GlobalRenameUserValidator;
 use Html;
 use JobQueueGroup;
-use MediaWiki\User\UserGroupManager;
 use Status;
 use User;
 
 class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */
 	private $config;
-	
-	/** @var UserGroupManager */
-	private $userGroupManager;
 
 	/**
 	 * @param ConfigFactory $configFactory
-	 * @param UserGroupManager $userGroupManager
 	 */
-	public function __construct(
-		ConfigFactory $configFactory,
-		UserGroupManager $userGroupManager
-	) {
+	public function __construct( ConfigFactory $configFactory ) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
-		$this->userGroupManager = $userGroupManager;
 	}
 
 	/**
@@ -211,12 +202,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				$jobParams['database'] = $database;
 
 				JobQueueGroup::singleton()->push(
-					new RemovePIIJob(
-						null,
-						$jobParams,
-						$this->userGroupManager,
-						$this->getOutput()
-					)
+					new RemovePIIJob( $jobParams )
 				);
 			}
 

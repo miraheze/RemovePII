@@ -40,22 +40,17 @@ class SpecialRemovePII extends FormSpecialPage {
 	}
 
 	/**
-	 * @return array
+	 * @return array|string
 	 */
 	protected function getFormFields() {
-		$formDescriptor = [];
-
 		if (
 			$this->config->get( 'RemovePIICentralWiki' ) &&
 			$this->config->get( 'DBname' ) !== $this->config->get( 'RemovePIICentralWiki' )
 		) {
-			$formDescriptor['disabled'] = [
-				'type' => 'info',
-				'help-message' => 'removepii-wiki-disabled',
-			];
-
-			return $formDescriptor;
+			return $this->msg( 'removepii-wiki-disabled' )->escaped();
 		}
+
+		$formDescriptor = [];
 		
 		$formDescriptor['warning'] = [
 			'type' => 'info',

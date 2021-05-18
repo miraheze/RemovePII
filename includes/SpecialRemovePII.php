@@ -75,9 +75,10 @@ class SpecialRemovePII extends FormSpecialPage {
 			'type' => 'select',
 			'options' => [
 				'RemovePII' => 'removepii',
-				'Rename User' => 'rename'
+				'Rename User' => 'renameuser'
 			],
 			'required' => true,
+			'default' => 'renameuser',
 			'label-message' => 'removepii-action-label',
 			'help-message' => 'removepii-action-help'
 		];
@@ -121,7 +122,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
 
-		if ( $formData['action'] === 'rename' ) {
+		if ( $formData['action'] === 'renameuser' ) {
 			$valid = $this->validate( $formData );
 			if ( !$valid->isOK() ) {
 				return $valid;

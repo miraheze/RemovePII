@@ -68,7 +68,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		$formDescriptor['action'] = [
 			'type' => 'select',
 			'options' => [
-				'RemovePII', => 'removepii',
+				'RemovePII' => 'removepii',
 				'Rename User' => 'rename'
 			],
 			'required' => true,

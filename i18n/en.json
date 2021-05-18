@@ -19,5 +19,6 @@
 	"removepii-action-label": "Select the action you wish to preform.",
 	"removepii-action-help": "Renames should '''always''' be done before RemovePII. RemovePII will also lock the user's global account.",
 	"removepii-warning-dangerous": "'''Warning:''' you are about to perform the RemovePII action. This process is irreversable. Please make sure you have the information correct before proceeding further.",
-	"removepii-wiki-disabled": "RemovePII has been disabled on this wiki. It is currently configured to only be enabled on a central wiki. You must initiate it from there."
+	"removepii-wiki-disabled": "RemovePII has been disabled on this wiki. It is currently configured to only be enabled on a central wiki. You must initiate it from there.",
+	"removepii-centralauth-notinstalled": "The CentralAuth extension is not installed."
 }

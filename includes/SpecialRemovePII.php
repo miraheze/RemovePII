@@ -71,7 +71,8 @@ class SpecialRemovePII extends FormSpecialPage {
 				'Rename User' => 'rename'
 			],
 			'required' => true,
-			'label-message' => 'removepii-action-label'
+			'label-message' => 'removepii-action-label',
+			'help-message' => 'removepii-action-help'
 		];
 
 		return $formDescriptor;

@@ -56,6 +56,10 @@
 		"RemovePIIHashPrefix": {
 			"value": "",
 			"description": "The default hash prefix to use when generating a hash through Special:GenerateRandomHash. Will be used when $wgRemovePIIHashPrefixOptions is empty."
+		},
+		"RemovePIICentralWiki": {
+			"value": false,
+			"description": "Set to the database name of a central wiki, which should enable Special:RemovePII on only it. Leave it as false to enable it on all wikis."
 		}
 	},
 	"manifest_version": 2

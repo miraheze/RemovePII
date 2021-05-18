@@ -4,7 +4,7 @@
 			"Universal Omega"
 		]
 	},
-	"removepii-desc": "Creates the special page, Special:GenerateRandomHash.",
+	"removepii-desc": "Creates the special pages, Special:GenerateRandomHash and Special:RemovePII to handle removing of personal identifiable information.",
 	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "Generate Random Hash",
 	"removepii": "RemovePII",
@@ -18,5 +18,6 @@
 	"removepii-newname-label": "New username:",
 	"removepii-action-label": "Select the action you wish to preform.",
 	"removepii-action-help": "Renames should '''always''' be done before RemovePII. RemovePII will also lock the user's global account.",
-	"removepii-warning-dangerous": "'''Warning:''' you are about to perform the RemovePII action. This process is irreversable. Please make sure you have the information correct before proceeding further."
+	"removepii-warning-dangerous": "'''Warning:''' you are about to perform the RemovePII action. This process is irreversable. Please make sure you have the information correct before proceeding further.",
+	"removepii-wiki-disabled": "RemovePII has been disabled on this wiki. It is currently configured to only be enabled on a central wiki. You must initiate it from there."
 }

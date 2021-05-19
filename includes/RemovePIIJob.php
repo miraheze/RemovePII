@@ -403,13 +403,13 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		// Remove user email
-		$newName->invalidateEmail();
+		if ( $newName->getEmail() ) {
+			$newName->invalidateEmail();
+			$newName->saveSettings();
+		}
 
 		// Lock global account
 		$newCentral->adminLock();
-
-
-		$newName->saveSettings();
 
 		// Invalidate cache now
 		$newCentral->invalidateCache();

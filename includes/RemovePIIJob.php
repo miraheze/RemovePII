@@ -7,7 +7,9 @@ use Exception;
 use ExtensionRegistry;
 use GenericParameterJob;
 use Job;
+use ManualLogEntry;
 use MediaWiki\MediaWikiServices;
+use RequestContext;
 use Title;
 use User;
 use UserProfilePage;
@@ -466,7 +468,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		// Lock global account
-		$newCentral->adminLock();
+		#$newCentral->adminLock();
 
 		// Invalidate cache now
 		$newCentral->invalidateCache();
@@ -476,6 +478,12 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$newName->invalidateEmail();
 			$newName->saveSettings();
 		}
+
+		$farmerLogEntry = new ManualLogEntry( 'removepii', 'action' );
+		$farmerLogEntry->setPerformer( RequestContext::getMain()->getUser() );
+		$farmerLogEntry->setComment( wfMessage( 'removepii-logentry-action' )->escaped() );
+		$farmerLogID = $farmerLogEntry->insert();
+		$farmerLogEntry->publish( $farmerLogID );
 
 		return true;
 	}

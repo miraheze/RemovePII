@@ -20,5 +20,8 @@
 	"removepii-action-help": "Renames should '''always''' be done before RemovePII. RemovePII will also lock the user's global account.",
 	"removepii-warning-irreversible": "'''Warning:''' you are about to perform the RemovePII action. This process is irreversible. Please make sure you have the information correct before proceeding further.",
 	"removepii-wiki-disabled": "RemovePII has been disabled on this wiki. It is currently configured to only be enabled on a central wiki. You must initiate it from there.",
-	"removepii-centralauth-notinstalled": "The CentralAuth extension is not installed."
+	"removepii-centralauth-notinstalled": "The CentralAuth extension is not installed.",
+	"removepii-log-name": "RemovePII log",
+	"removepii-log-header": "This is a basic log of all RemovePII actions.",
+	"logentry-removepii-action": "$1 removed personal identifiable information from a user."
 }

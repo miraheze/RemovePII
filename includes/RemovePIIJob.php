@@ -7,9 +7,7 @@ use Exception;
 use ExtensionRegistry;
 use GenericParameterJob;
 use Job;
-use ManualLogEntry;
 use MediaWiki\MediaWikiServices;
-use RequestContext;
 use Title;
 use User;
 use UserProfilePage;
@@ -478,12 +476,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$newName->invalidateEmail();
 			$newName->saveSettings();
 		}
-
-		$logEntry = new ManualLogEntry( 'removepii', 'action' );
-		$logEntry->setPerformer( RequestContext::getMain()->getUser() );
-		$logEntry->setTarget( Title::newFromText( 'RemovePII' , NS_SPECIAL ) );
-		$logID = $logEntry->insert();
-		$logEntry->publish( $logID );
 
 		return true;
 	}

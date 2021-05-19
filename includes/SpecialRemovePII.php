@@ -196,15 +196,9 @@ class SpecialRemovePII extends FormSpecialPage {
 			// Delay cache invalidation until we finish transaction
 			$newCentral->startTransaction();
 
-			// Run RemovePIIJob on all attached wikis
-			// todo: does this include deleted wikis?
-			foreach ( $newCentral->listAttached() as $database ) {
-				$jobParams['database'] = $database;
-
-				JobQueueGroup::singleton()->push(
-					new RemovePIIJob( $jobParams )
-				);
-			}
+			JobQueueGroup::singleton()->push(
+				new RemovePIIInjectionJob( $jobParams )
+			);
 
 			$user = User::newFromName( $formData['newname'] );
 

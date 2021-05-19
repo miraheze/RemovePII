@@ -479,10 +479,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$newName->saveSettings();
 		}
 
-		$farmerLogEntry = new ManualLogEntry( 'removepii', 'action' );
-		$farmerLogEntry->setPerformer( RequestContext::getMain()->getUser() );
-		$farmerLogID = $farmerLogEntry->insert();
-		$farmerLogEntry->publish( $farmerLogID );
+		$logEntry = new ManualLogEntry( 'removepii', 'action' );
+		$logEntry->setPerformer( RequestContext::getMain()->getUser() );
+		$logID = $logEntry->insert();
+		$logEntry->publish( $logID );
 
 		return true;
 	}

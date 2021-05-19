@@ -421,7 +421,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			);
 		}
 
-		$pageRows = $dbr->select(
+		$dbw->query( 'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))' );
+
+		$rows = $dbr->select(
 			'page', [
 				'page_namespace',
 				'page_title'
@@ -434,25 +437,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		$error = '';
-
-		$revisionRows = $dbr->query( 'SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR page_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')' );
-
-		foreach ( $revisionRows as $row ) {
-			$title = Title::newFromRow( $row );
-
-			$userPage = WikiPage::factory( $title );
-			$status = $userPage->doDeleteArticleReal( '', $user );
-
-			if ( !$status->isOK() ) {
-				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
-				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
-
-				continue;
-			}
-		}
-
-		foreach ( $pageRows as $row ) {
+		foreach ( $rows as $row ) {
 			$title = Title::newFromRow( $row );
 
 			$userPage = WikiPage::factory( $title );

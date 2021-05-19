@@ -39,10 +39,9 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$newCentral = CentralAuthUser::getInstanceByName( $params['newname'] );
 
 		// Invalidate cache before we begin transaction
-		//$newCentral->invalidateCache();
+		$newCentral->invalidateCache();
 
 		// Delay cache invalidation until we finish transaction
-		//$newCentral->startTransaction();
 
 		$oldName = User::newFromName( $this->oldName );
 		$newName = User::newFromName( $this->newName );
@@ -52,7 +51,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		if ( !$newName ) {
 			$this->setLastError( "User {$userNewName} is not a valid name" );
-			//$newCentral->endTransaction();
 
 			return false;
 		}
@@ -61,7 +59,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		if ( !$userId ) {
 			$this->setLastError( "User {$userNewName} ID equal to 0" );
-			//$newCentral->endTransaction();
 
 			return false;
 		}
@@ -339,7 +336,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 							__METHOD__
 						);
 					} catch( Exception $e ) {
-						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() .'test' );
+						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
 						continue;
 					}
@@ -388,7 +385,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		if ( !$user ) {
 			$this->setLastError( 'Invalid username' );
-			//$newCentral->endTransaction();
 
 			return false;
 		}
@@ -417,11 +413,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Lock global account
 		$newCentral->adminLock();
 
-		// End transaction, enable cache invalidation again
-		//$newCentral->endTransaction();
-
 		// Invalidate cache now
-		//$newCentral->invalidateCache();
+		$newCentral->invalidateCache();
 
 		return true;
 	}

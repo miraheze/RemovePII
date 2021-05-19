@@ -391,7 +391,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
 
 		$dbr = wfGetDB( DB_REPLICA, [], $this->database );
-		$userPageTitle = $newName->getUserPage();
+		$userPageTitle = $oldName->getUserPage();
 
 		$namespaces = [
 			NS_USER,
@@ -466,7 +466,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		// Lock global account
-		# $newCentral->adminLock();
+		$newCentral->adminLock();
 
 		// Invalidate cache now
 		$newCentral->invalidateCache();

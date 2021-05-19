@@ -394,7 +394,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Hide deletions from RecentChanges
 		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
 
-
 		$dbr = wfGetDB( DB_REPLICA, [], $this->database );
 		$userPageTitle = $oldName->getUserPage();
 

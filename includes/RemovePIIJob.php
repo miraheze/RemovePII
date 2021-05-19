@@ -441,7 +441,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$title = Title::newFromRow( $row );
 
 			$userPage = WikiPage::factory( $title );
-			$status = $userPage->doDeleteArticleReal( '', $user );
+			$status = $userPage->doDeleteArticleReal( '', $user, false, null, '', [], 'delete', true );
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );

@@ -395,33 +395,33 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
 
 		$dbr = wfGetDB( DB_REPLICA, [], $this->database );
-		$userPageTitle = $oldName->getUserPage();
+		$userPageTitle = $newName->getUserPage();
 
 		$namespaces = [
-			'NS_USER',
-			'NS_USER_TALK'
+			NS_USER,
+			NS_USER_TALK
 		];
 		
 		if ( class_exists( 'UserProfilePage' ) ) {
 			$namespaces += [
-				'NS_USER_WIKI',
-				'NS_USER_WIKI_TALK',
-				'NS_USER_PROFILE',
-				'NS_USER_PROFILE_TALK'
+				NS_USER_WIKI,
+				NS_USER_WIKI_TALK,
+				NS_USER_PROFILE,
+				NS_USER_PROFILE_TALK
 			];
 		}
 		
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'BlogPage' ) ) {
 			$namespaces += [
-				'NS_BLOG',
-				'NS_BLOG_TALK'
+				NS_BLOG,
+				NS_BLOG_TALK
 			];
 		}
 
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'SimpleBlogPage' ) ) {
 			$namespaces += [
-				'NS_USER_BLOG',
-				'NS_USER_BLOG_TALK'
+				NS_USER_BLOG,
+				NS_USER_BLOG_TALK
 			];
 		}
 

@@ -26,6 +26,18 @@
 	"JobClasses": {
 		"RemovePIIJob": "Miraheze\\RemovePII\\RemovePIIJob"
 	},
+	"LogActionsHandlers": {
+		"removepii/*": "LogFormatter"
+	},
+	"LogHeaders": {
+		"removepii": "removepii-log-header"
+	},
+	"LogNames": {
+		"removepii": "removepii-log-name"
+	},
+	"LogTypes": [
+		"removepii"
+	],
 	"ConfigRegistry": {
 		"RemovePII": "GlobalVarConfig::newInstance"
 	},

@@ -44,7 +44,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$newCentral->invalidateCache();
 
 		$oldName = User::newFromName( $this->oldName );
-		$newName = User::newFromName( $this->newName );
+		$newName = User::newFromName( 'Universal Omega 12345' );
 
 		$userOldName = $oldName->getName();
 		$userNewName = $newName->getName();
@@ -346,8 +346,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$logTitle = Title::newFromText( 'CentralAuth', NS_SPECIAL )->getSubpage( $userNewName );
 		$dbw->delete(
-			'logging',
-			[
+			'logging', [
 				'log_action' => 'rename',
 				'log_title' => $logTitle->getDBkey(),
 				'log_type' => 'gblrename'
@@ -355,8 +354,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		$dbw->delete(
-			'logging',
-			[
+			'logging', [
 				'log_action' => 'renameuser',
 				'log_title' => $oldName->getTitleKey(),
 				'log_type' => 'renameuser'
@@ -364,8 +362,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		$dbw->delete(
-			'recentchanges',
-			[
+			'recentchanges', [
 				'rc_log_action' => 'rename',
 				'rc_title' => $logTitle->getDBkey(),
 				'rc_log_type' => 'gblrename'
@@ -373,8 +370,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		$dbw->delete(
-			'recentchanges',
-			[
+			'recentchanges', [
 				'rc_log_action' => 'renameuser',
 				'rc_title' => $oldName->getTitleKey(),
 				'rc_log_type' => 'renameuser'
@@ -425,7 +421,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			);
 		}
 
-		$rows = $dbr->select(
+		$pageRows = $dbr->select(
 			'page', [
 				'page_namespace',
 				'page_title'
@@ -439,7 +435,24 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$error = '';
 
-		foreach ( $rows as $row ) {
+		$revisionRows = $dbr->query( 'SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
+				' OR page_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')' . );
+
+		foreach ( $revisionRows as $row ) {
+			$title = Title::newFromRow( $row );
+
+			$userPage = WikiPage::factory( $title );
+			$status = $userPage->doDeleteArticleReal( '', $user );
+
+			if ( !$status->isOK() ) {
+				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
+				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
+
+				continue;
+			}
+		}
+
+		foreach ( $pageRows as $row ) {
 			$title = Title::newFromRow( $row );
 
 			$userPage = WikiPage::factory( $title );
@@ -454,42 +467,16 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		$dbw->delete(
-			'recentchanges',
-			[
-				'rc_log_action' => 'delete',
+			'recentchanges', [
 				'(rc_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR rc_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')',
-				'rc_log_type' => 'delete'
+				' OR rc_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
 			]
 		);
 		
 		$dbw->delete(
-			'logging',
-			[
-				'log_action' => 'delete',
+			'logging', [
 				'(log_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR log_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')',
-				'log_type' => 'delete'
-			]
-		);
-
-		$dbw->delete(
-			'recentchanges',
-			[
-				'rc_log_action' => 'create',
-				'(rc_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR rc_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')',
-				'rc_log_type' => 'create'
-			]
-		);
-		
-		$dbw->delete(
-			'logging',
-			[
-				'log_action' => 'create',
-				'(log_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR log_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')',
-				'log_type' => 'create'
+				' OR log_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
 			]
 		);
 

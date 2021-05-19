@@ -443,6 +443,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$userPage = WikiPage::factory( $title );
 			$status = $userPage->doDeleteArticleReal( '', $user, false, null, $error, null, [], 'delete', true );
 
+			$dbw->delete(
+				'recentchanges', [
+					'rc_log_action' => 'delete',
+					'rc_title' => $dbr->addQuotes( $title->getDBkey() ),
+					'rc_log_type' => 'delete'
+				]
+			);
+
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
 				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );

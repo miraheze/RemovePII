@@ -24,7 +24,8 @@
 		"Miraheze\\RemovePII\\": "includes/"
 	},
 	"JobClasses": {
-		"RemovePIIJob": "Miraheze\\RemovePII\\RemovePIIJob"
+		"RemovePIIJob": "Miraheze\\RemovePII\\RemovePIIJob",
+		"RemovePIIInjectionJob": "Miraheze\\RemovePII\\RemovePIIInjectionJob"
 	},
 	"ConfigRegistry": {
 		"RemovePII": "GlobalVarConfig::newInstance"

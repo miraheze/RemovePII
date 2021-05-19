@@ -421,9 +421,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			);
 		}
 
-		$dbw->query( 'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
-				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))' );
-
 		$rows = $dbr->select(
 			'page', [
 				'page_namespace',
@@ -436,11 +433,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			__METHOD__
 		);
 
+		$dbw->query( 'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))' );
+
 		$error = '';
 		foreach ( $rows as $row ) {
 			$title = Title::newFromRow( $row );
 
-			$userPage = WikiPage::factory( $title );
+			$userPage = @WikiPage::factory( $title );
 			$status = $userPage->doDeleteArticleReal( '', $user );
 
 			if ( !$status->isOK() ) {

@@ -339,7 +339,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 							__METHOD__
 						);
 					} catch( Exception $e ) {
-						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
+						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() .'test' );
 
 						continue;
 					}

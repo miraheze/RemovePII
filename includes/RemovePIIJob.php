@@ -2,6 +2,7 @@
 
 namespace Miraheze\RemovePII;
 
+use CentralAuthUser;
 use Exception;
 use GenericParameterJob;
 use Job;
@@ -35,6 +36,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 	 * @return bool
 	 */
 	public function run() {
+		$newCentral = CentralAuthUser::getInstanceByName( $this->newName );
+
+		// Invalidate cache before we begin transaction
+		$newCentral->invalidateCache();
+
+		// Delay cache invalidation until we finish transaction
+		$newCentral->startTransaction();
+
 		$oldName = User::newFromName( $this->oldName );
 		$newName = User::newFromName( $this->newName );
 
@@ -43,6 +52,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		if ( !$newName ) {
 			$this->setLastError( "User {$userNewName} is not a valid name" );
+			$newCentral->endTransaction();
 
 			return false;
 		}
@@ -51,6 +61,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		if ( !$userId ) {
 			$this->setLastError( "User {$userNewName} ID equal to 0" );
+			$newCentral->endTransaction();
 
 			return false;
 		}
@@ -377,6 +388,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		if ( !$user ) {
 			$this->setLastError( 'Invalid username' );
+			$newCentral->endTransaction();
 
 			return false;
 		}
@@ -395,6 +407,21 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
 			$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
 		}
+
+		$user = User::newFromName( $this->newName );
+
+		// Remove user email
+		$user->invalidateEmail();
+		$user->saveSettings();
+
+		// Lock global account
+		$newCentral->adminLock();
+
+		// End transaction, enable cache invalidation again
+		$newCentral->endTransaction();
+
+		// Invalidate cache now
+		$newCentral->invalidateCache();
 
 		return true;
 	}

@@ -190,12 +190,6 @@ class SpecialRemovePII extends FormSpecialPage {
 				return false;
 			}
 
-			// Invalidate cache before we begin transaction
-			$newCentral->invalidateCache();
-
-			// Delay cache invalidation until we finish transaction
-			$newCentral->startTransaction();
-
 			// Run RemovePIIJob on all attached wikis
 			// todo: does this include deleted wikis?
 			foreach ( $newCentral->listAttached() as $database ) {
@@ -205,18 +199,6 @@ class SpecialRemovePII extends FormSpecialPage {
 					new RemovePIIJob( $jobParams )
 				);
 			}
-
-			$user = User::newFromName( $formData['newname'] );
-
-			// Remove user email
-			$user->invalidateEmail();
-			$user->saveSettings();
-
-			// Lock global account
-			$newCentral->adminLock();
-
-			// End transaction, enable cache invalidation again
-			$newCentral->endTransaction();
 
 			return true;
 		}

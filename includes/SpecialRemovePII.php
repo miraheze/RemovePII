@@ -14,6 +14,7 @@ use GlobalRenameUserStatus;
 use GlobalRenameUserValidator;
 use Html;
 use JobQueueGroup;
+use ManualLogEntry;
 use Status;
 use User;
 
@@ -199,6 +200,12 @@ class SpecialRemovePII extends FormSpecialPage {
 					new RemovePIIJob( $jobParams )
 				);
 			}
+
+			$logEntry = new ManualLogEntry( 'removepii', 'action' );
+			$logEntry->setPerformer( $this->getUser() );
+			$logEntry->setTarget( Title::newFromText( 'RemovePII' , NS_SPECIAL ) );
+			$logID = $logEntry->insert();
+			$logEntry->publish( $logID );
 
 			return true;
 		}

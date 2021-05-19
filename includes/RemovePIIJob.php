@@ -403,26 +403,26 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		];
 		
 		if ( class_exists( 'UserProfilePage' ) ) {
-			$namespaces += [
+			array_push( $namespaces,
 				NS_USER_WIKI,
 				NS_USER_WIKI_TALK,
 				NS_USER_PROFILE,
 				NS_USER_PROFILE_TALK
-			];
+			);
 		}
 		
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'BlogPage' ) ) {
-			$namespaces += [
+			array_push( $namespaces,
 				NS_BLOG,
 				NS_BLOG_TALK
-			];
+			);
 		}
 
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'SimpleBlogPage' ) ) {
-			$namespaces += [
+			array_push( $namespaces,
 				NS_USER_BLOG,
 				NS_USER_BLOG_TALK
-			];
+			);
 		}
 
 		$rows = $dbr->select(

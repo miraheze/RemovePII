@@ -4,11 +4,13 @@ namespace Miraheze\RemovePII;
 
 use CentralAuthUser;
 use Exception;
+use ExtensionRegistry;
 use GenericParameterJob;
 use Job;
 use MediaWiki\MediaWikiServices;
 use Title;
 use User;
+use UserProfilePage;
 use WikiPage;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
@@ -392,14 +394,64 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Hide deletions from RecentChanges
 		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
 
-		$error = '';
-		$title = Title::newFromText( $oldName->getTitleKey(), NS_USER );
-		$userPage = WikiPage::factory( $title );
-		$status = $userPage->doDeleteArticleReal( '', $user );
 
-		if ( !$status->isOK() ) {
-			$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
-			$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
+		$dbr = wfGetDB( DB_REPLICA, [], $this->database );
+		$userPageTitle = $oldName->getUserPage();
+
+		$namespaces = [
+			'NS_USER',
+			'NS_USER_TALK'
+		];
+		
+		if ( class_exists( 'UserProfilePage' ) ) {
+			$namespaces += [
+				'NS_USER_WIKI',
+				'NS_USER_WIKI_TALK',
+				'NS_USER_PROFILE',
+				'NS_USER_PROFILE_TALK'
+			];
+		}
+		
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'BlogPage' ) ) {
+			$namespaces += [
+				'NS_BLOG',
+				'NS_BLOG_TALK'
+			];
+		}
+
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'SimpleBlogPage' ) ) {
+			$namespaces += [
+				'NS_USER_BLOG',
+				'NS_USER_BLOG_TALK'
+			];
+		}
+
+		$rows = $dbr->select(
+			'page', [
+				'page_namespace',
+				'page_title'
+			], [
+				'page_namespace IN (' . implode( ',', $namespaces ) . ')',
+				'(page_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
+				' OR page_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
+			],
+			__METHOD__
+		);
+
+		$error = '';
+
+		foreach ( $rows as $row ) {
+			$title = Title::newFromRow( $row );
+
+			$userPage = WikiPage::factory( $title );
+			$status = $userPage->doDeleteArticleReal( '', $user );
+
+			if ( !$status->isOK() ) {
+				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
+				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
+
+				continue;
+			}
 		}
 
 		// Lock global account

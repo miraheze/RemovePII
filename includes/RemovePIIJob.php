@@ -473,6 +473,26 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			]
 		);
 
+		$dbw->delete(
+			'recentchanges',
+			[
+				'rc_log_action' => 'create',
+				'(rc_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
+				' OR rc_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')',
+				'rc_log_type' => 'create'
+			]
+		);
+		
+		$dbw->delete(
+			'logging',
+			[
+				'log_action' => 'create',
+				'(log_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
+				' OR log_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')',
+				'log_type' => 'create'
+			]
+		);
+
 		// Lock global account
 		# $newCentral->adminLock();
 

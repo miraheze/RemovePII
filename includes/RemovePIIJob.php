@@ -402,11 +402,13 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
 		}
 
+		// Remove user email
+		$newName->invalidateEmail();
+
 		// Lock global account
 		$newCentral->adminLock();
 
-		// Remove user email
-		$newName->invalidateEmail();
+
 		$newName->saveSettings();
 
 		// Invalidate cache now

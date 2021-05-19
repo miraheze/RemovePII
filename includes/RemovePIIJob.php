@@ -481,7 +481,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$farmerLogEntry = new ManualLogEntry( 'removepii', 'action' );
 		$farmerLogEntry->setPerformer( RequestContext::getMain()->getUser() );
-		$farmerLogEntry->setComment( wfMessage( 'removepii-logentry-action' )->escaped() );
 		$farmerLogID = $farmerLogEntry->insert();
 		$farmerLogEntry->publish( $farmerLogID );
 

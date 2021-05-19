@@ -436,7 +436,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$error = '';
 
 		$revisionRows = $dbr->query( 'SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR page_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')' . );
+				' OR page_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')' );
 
 		foreach ( $revisionRows as $row ) {
 			$title = Title::newFromRow( $row );

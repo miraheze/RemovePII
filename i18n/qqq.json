@@ -20,5 +20,8 @@
 	"removepii-action-help": "Help message for the action select field on Special:RemovePII.",
 	"removepii-warning-irreversible": "Warning message to be shown when doing RemovePII action.",
 	"removepii-wiki-disabled": "Message to be disabled on Special:RemovePII in replace of forum when disabled on that wiki.",
-	"removepii-centralauth-notinstalled": "Error message to be displayed when attempting to submit Special:RemovePII when the CentralAuth extension is not installed."
+	"removepii-centralauth-notinstalled": "Error message to be displayed when attempting to submit Special:RemovePII when the CentralAuth extension is not installed.",
+	"removepii-log-name": "Name of RemovePII log",
+	"removepii-log-header": "Header for RemovePII log",
+	"logentry-removepii-action": "Used as log message."
 }

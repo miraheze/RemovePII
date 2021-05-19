@@ -480,7 +480,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		$logEntry = new ManualLogEntry( 'removepii', 'action' );
-		$logEntry->setPerformer( RequestContext::getMain()->getUser() );
+		$logEntry->setPerformer( CentralAuthUser::getInstance( RequestContext::getMain()->getUser() ) );
 		$logEntry->setTarget( Title::newFromText( 'RemovePII' , NS_SPECIAL ) );
 		$logID = $logEntry->insert();
 		$logEntry->publish( $logID );

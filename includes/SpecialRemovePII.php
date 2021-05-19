@@ -16,6 +16,7 @@ use Html;
 use JobQueueGroup;
 use ManualLogEntry;
 use Status;
+use Title;
 use User;
 
 class SpecialRemovePII extends FormSpecialPage {

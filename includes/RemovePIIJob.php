@@ -36,12 +36,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 	 * @return bool
 	 */
 	public function run() {
-		$newCentral = CentralAuthUser::getInstanceByName( $params['newname'] );
+		$newCentral = CentralAuthUser::getInstanceByName( $this->newName );
 
 		// Invalidate cache before we begin transaction
 		$newCentral->invalidateCache();
-
-		// Delay cache invalidation until we finish transaction
 
 		$oldName = User::newFromName( $this->oldName );
 		$newName = User::newFromName( $this->newName );

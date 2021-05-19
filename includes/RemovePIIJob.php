@@ -44,7 +44,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$newCentral->invalidateCache();
 
 		$oldName = User::newFromName( $this->oldName );
-		$newName = User::newFromName( 'Universal Omega 12345' );
+		$newName = User::newFromName( $this->newName );
 
 		$userOldName = $oldName->getName();
 		$userNewName = $newName->getName();

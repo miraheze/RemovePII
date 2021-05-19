@@ -201,7 +201,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			foreach ( $newCentral->listAttached() as $database ) {
 				$jobParams['database'] = $database;
 
-				JobQueueGroup::singleton()->push(
+				JobQueueGroup::singleton( $database )->push(
 					new RemovePIIJob( $jobParams )
 				);
 			}

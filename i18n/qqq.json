@@ -7,8 +7,21 @@
 	"removepii-desc": "{{desc|name=RemovePII|url=https://github.com/miraheze/RemovePII}}",
 	"removepii-extensionname": "{{name}}",
 	"generaterandomhash": "{{doc-special}}",
+	"removepii": "{{doc-special}}",
 	"action-generate-random-hash": "{{doc-action|generate-random-hash}}",
+	"action-handle-pii": "{{doc-action|handle-pii}}",
 	"right-generate-random-hash": "{{doc-right|generate-random-hash}}",
+	"right-handle-pii": "{{doc-right|handle-pii}}",
 	"hash-length-help": "Help message for the hash length field on Special:GenerateRandomHash.",
-	"hash-prefix-help": "Help message for the prefix select field on Special:GenerateRandomHash."
+	"hash-prefix-help": "Help message for the prefix select field on Special:GenerateRandomHash.",
+	"removepii-oldname-label": "Label for the old username field on Special:RemovePII.",
+	"removepii-newname-label": "Label for the new username field on Special:RemovePII.",
+	"removepii-action-label": "Label for the action select field on Special:RemovePII.",
+	"removepii-action-help": "Help message for the action select field on Special:RemovePII.",
+	"removepii-warning-irreversible": "Warning message to be shown when doing RemovePII action.",
+	"removepii-wiki-disabled": "Message to be disabled on Special:RemovePII in replace of forum when disabled on that wiki.",
+	"removepii-centralauth-notinstalled": "Error message to be displayed when attempting to submit Special:RemovePII when the CentralAuth extension is not installed.",
+	"removepii-log-name": "Name of RemovePII log",
+	"removepii-log-header": "Header for RemovePII log",
+	"logentry-removepii-action": "Used as log message."
 }

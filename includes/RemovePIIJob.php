@@ -12,6 +12,7 @@ use Title;
 use User;
 use UserProfilePage;
 use WikiPage;
+use Wikimedia\AtEase\AtEase;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 	/** @var string */
@@ -441,7 +442,12 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$title = Title::newFromRow( $row );
 
 			$userPage = WikiPage::factory( $title );
-			$status = @$userPage->doDeleteArticleReal( '', $user, true, null, $error, null, [], 'delete', true );
+
+			AtEase::suppressWarnings();
+
+			$status = $userPage->doDeleteArticleReal( '', $user, true, null, $error, null, [], 'delete', true );
+
+			AtEase::restoreWarnings();
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );

@@ -68,6 +68,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$userActorId = $newName->getActorId( $dbw );
 
+		// todo: Migrate to config and add extension hook support for this
 		$tableUpdates = [
 			// Core
 			'recentchanges' => [

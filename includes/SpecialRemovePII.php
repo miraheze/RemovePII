@@ -9,7 +9,6 @@ use ExtensionRegistry;
 use FormSpecialPage;
 use GlobalRenameUser;
 use GlobalRenameUserDatabaseUpdates;
-use GlobalRenameUserLogger;
 use GlobalRenameUserStatus;
 use GlobalRenameUserValidator;
 use Html;

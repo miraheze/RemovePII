@@ -138,7 +138,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				new GlobalRenameUserStatus( $newUser->getName() ),
 				'JobQueueGroup::singleton',
 				new GlobalRenameUserDatabaseUpdates(),
-				new GlobalRenameUserLogger( $this->getUser() ),
+				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);
 

@@ -1,9 +1,7 @@
 {
 	"name": "RemovePII",
 	"version": "3.0.0",
-	"author": [
-		"Universal Omega"
-	],
+	"author": "Universal Omega",
 	"url": "https://github.com/miraheze/RemovePII",
 	"descriptionmsg": "removepii-desc",
 	"namemsg": "removepii-extensionname",

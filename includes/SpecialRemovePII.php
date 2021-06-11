@@ -18,6 +18,7 @@ use ManualLogEntry;
 use Status;
 use TitleFactory;
 use UserFactory;
+use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */

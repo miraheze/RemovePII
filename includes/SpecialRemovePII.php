@@ -16,20 +16,34 @@ use Html;
 use JobQueueGroup;
 use ManualLogEntry;
 use Status;
-use Title;
-use User;
+use TitleFactory;
+use UserFactory;
 
 class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */
 	private $config;
 
+	/** @var TitleFactory */
+	private $titleFactory;
+
+	/** @var UserFactory */
+	private $userFactory;
+
 	/**
 	 * @param ConfigFactory $configFactory
+	 * @param TitleFactory $titleFactory
+	 * @param UserFactory $userFactory
 	 */
-	public function __construct( ConfigFactory $configFactory ) {
+	public function __construct(
+		ConfigFactory $configFactory,
+		TitleFactory $titleFactory,
+		UserFactory $userFactory
+	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
+		$this->userFactory = $userFactory;
+		$this->titleFactory = $titleFactory;
 	}
 
 	/**
@@ -38,7 +52,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	protected function getFormFields() {
 		if (
 			$this->config->get( 'RemovePIICentralWiki' ) &&
-			$this->config->get( 'DBname' ) !== $this->config->get( 'RemovePIICentralWiki' )
+			WikiMap::isCurrentWikiId( $this->config->get( 'RemovePIICentralWiki' ) )
 		) {
 			return $this->msg( 'removepii-wiki-disabled' )->escaped();
 		}
@@ -92,7 +106,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-notinstalled' );
 		}
 
-		$oldUser = User::newFromName( $formData['oldname'] );
+		$oldUser = $this->userFactory->newFromName( $formData['oldname'] );
 		if ( !$oldUser ) {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}
@@ -101,20 +115,18 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-cannotself' );
 		}
 
-		$newUser = User::newFromName( $formData['newname'] );
+		$newUser = $this->userFactory->newFromName( $formData['newname'] );
 		if ( !$newUser ) {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
 		$validator = new GlobalRenameUserValidator();
-		$status = $validator->validate( $oldUser, $newUser );
-
-		return $status;
+		return $validator->validate( $oldUser, $newUser );
 	}
 
 	/**
 	 * @param array $formData
-	 * @return bool
+	 * @return bool|Status
 	 */
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
@@ -125,8 +137,8 @@ class SpecialRemovePII extends FormSpecialPage {
 				return $valid;
 			}
 
-			$oldUser = User::newFromName( $formData['oldname'] );
-			$newUser = User::newFromName( $formData['newname'], 'creatable' );
+			$oldUser = $this->userFactory->newFromName( $formData['oldname'] );
+			$newUser = $this->userFactory->newFromName( $formData['newname'], UserFactory::RIGOR_CREATABLE );
 
 			$session = $this->getContext()->exportSession();
 			$globalRenameUser = new GlobalRenameUser(
@@ -204,7 +216,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			$logEntry = new ManualLogEntry( 'removepii', 'action' );
 			$logEntry->setPerformer( $this->getUser() );
-			$logEntry->setTarget( Title::newFromText( 'RemovePII' , NS_SPECIAL ) );
+			$logEntry->setTarget( $this->titleFactory->newFromText( 'RemovePII' , NS_SPECIAL ) );
 			$logID = $logEntry->insert();
 			$logEntry->publish( $logID );
 

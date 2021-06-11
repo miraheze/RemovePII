@@ -42,8 +42,8 @@ class SpecialRemovePII extends FormSpecialPage {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
-		$this->userFactory = $userFactory;
 		$this->titleFactory = $titleFactory;
+		$this->userFactory = $userFactory;
 	}
 
 	/**

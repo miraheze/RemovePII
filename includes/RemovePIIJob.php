@@ -8,10 +8,8 @@ use ExtensionRegistry;
 use GenericParameterJob;
 use Job;
 use MediaWiki\MediaWikiServices;
-use Title;
 use User;
 use UserProfilePage;
-use WikiPage;
 use Wikimedia\AtEase\AtEase;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
@@ -44,8 +42,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Invalidate cache before we begin
 		$newCentral->invalidateCache();
 
-		$oldName = User::newFromName( $this->oldName );
-		$newName = User::newFromName( $this->newName );
+		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
+
+		$oldName = $userFactory->newFromName( $this->oldName );
+		$newName = $userFactory->newFromName( $this->newName );
 
 		$userOldName = $oldName->getName();
 		$userNewName = $newName->getName();
@@ -64,7 +64,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			return false;
 		}
 
-		$dbw = wfGetDB( DB_MASTER, [], $this->database );
+		$dbw = wfGetDB( DB_PRIMARY, [], $this->database );
 
 		$userActorId = $newName->getActorId( $dbw );
 
@@ -346,7 +346,9 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			}
 		}
 
-		$logTitle = Title::newFromText( 'CentralAuth', NS_SPECIAL )->getSubpage( $userNewName );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$logTitle = $titleFactory->newFromText( 'CentralAuth', NS_SPECIAL )->getSubpage( $userNewName );
 		$dbw->delete(
 			'logging', [
 				'log_action' => 'rename',
@@ -435,14 +437,16 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			__METHOD__
 		);
 
+		// Delete all revision history from user related pages
 		$dbw->query( 'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
 				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))' );
 
 		$error = '';
 		foreach ( $rows as $row ) {
-			$title = Title::newFromRow( $row );
+			$title = $titleFactory->newFromRow( $row );
 
-			$userPage = WikiPage::factory( $title );
+			$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
+			$userPage = $wikiPageFactory->newFromTitle( $title );
 
 			AtEase::suppressWarnings();
 
@@ -454,7 +458,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
 				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
 
-				continue;
+				break;
 			}
 		}
 		

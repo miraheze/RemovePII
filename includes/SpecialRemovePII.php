@@ -9,7 +9,6 @@ use ExtensionRegistry;
 use FormSpecialPage;
 use GlobalRenameUser;
 use GlobalRenameUserDatabaseUpdates;
-use GlobalRenameUserLogger;
 use GlobalRenameUserStatus;
 use GlobalRenameUserValidator;
 use Html;
@@ -151,7 +150,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				new GlobalRenameUserStatus( $newUser->getName() ),
 				'JobQueueGroup::singleton',
 				new GlobalRenameUserDatabaseUpdates(),
-				new GlobalRenameUserLogger( $this->getUser() ),
+				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);
 

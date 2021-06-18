@@ -68,7 +68,33 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$userActorId = $newName->getActorId( $dbw );
 
-		// todo: Migrate to config and add extension hook support for this
+		// TODO: Migrate to config and add extension hook support for this
+
+		$tableDeletions = [
+			// Extensions
+			'cu_changes' => [
+				[
+					'where' => [
+						'cuc_user' => $userId
+					]
+				]
+			],
+			'cu_log' => [
+				[
+					'where' => [
+						'cul_user' => $userId
+					]
+				]
+			],
+			'user_profile' => [
+				[
+					'where' => [
+						'up_actor' => $userActorId
+					]
+				]
+			],
+		];
+
 		$tableUpdates = [
 			// Core
 			'recentchanges' => [
@@ -92,6 +118,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					]
 				]
 			],
+
 			// Extensions
 			'abuse_filter_log' => [
 				[
@@ -318,13 +345,21 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			],
 		];
 
-		if ( $dbw->tableExists( 'user_profile' ) ) {
-			$dbw->delete(
-				'user_profile',
-				[
-					'up_actor' => $userActorId
-				]
-			);
+		foreach ( $tableDeletions as $key => $value ) {
+			if ( $dbw->tableExists( $key ) ) {
+				foreach ( $value as $name => $fields ) {
+					try {
+						$dbw->delete(
+							$key,
+							$fields['where']
+						);
+					} catch ( Exception $e ) {
+						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
+
+						continue;
+					}
+				}
+			}
 		}
 
 		foreach ( $tableUpdates as $key => $value ) {
@@ -334,10 +369,9 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 						$dbw->update(
 							$key,
 							$fields['fields'],
-							$fields['where'],
-							__METHOD__
+							$fields['where']
 						);
-					} catch( Exception $e ) {
+					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
 						continue;

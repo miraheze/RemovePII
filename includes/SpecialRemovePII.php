@@ -205,7 +205,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			}
 
 			// Run RemovePIIJob on all attached wikis
-			// todo: does this include deleted wikis?
+			// FIXME: does this include deleted wikis?
 			foreach ( $newCentral->listAttached() as $database ) {
 				$jobParams['database'] = $database;
 

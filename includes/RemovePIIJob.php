@@ -491,8 +491,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
 				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
-
-				break;
 			}
 		}
 		

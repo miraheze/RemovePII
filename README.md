@@ -1,7 +1,12 @@
 # RemovePII
+An extension designed to remove all personal identifiable information from a user.
 
-RemovePII is a Miraheze-developed extension that initially contains the **Special:GenerateRandomHash** special page accessible to users who hold the `generate-random-hash` user right.
+Developed by Miraheze.
 
-Permissioned users holding the `generate-random-hash` user right are able to generate a randomly generated hash of between 8 and 32 alphanumeric characters.
+Licensed under the GPLv3 (or later) LICENSE.
 
-The extension includes a full complement of MediaWiki localised interface help messages, able to be translated on translatewiki.net.
+# Security Vulnerabilities
+
+If you believe you have found a security vulnerability in any part of our code, please do not post it publicly by using our wikis or bug trackers for that; rather, please read our [security page](https://meta.miraheze.org/wiki/Security) carefully, and follow the instructions.
+
+As a quick overview, you can email security concerns to security@miraheze.org which will open a phabricator task that is hidden from public view. If you'd like, you can instead directly create a security-related task [here](https://phabricator.miraheze.org/maniphest/task/edit/form/2/), but please leave the "Security" project on the issue.

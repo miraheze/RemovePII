@@ -346,12 +346,13 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		];
 
 		foreach ( $tableDeletions as $key => $value ) {
-			if ( $dbw->tableExists( $key ) ) {
+			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
 						$dbw->delete(
 							$key,
-							$fields['where']
+							$fields['where'],
+							__METHOD__
 						);
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
@@ -363,13 +364,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		foreach ( $tableUpdates as $key => $value ) {
-			if ( $dbw->tableExists( $key ) ) {
+			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
 						$dbw->update(
 							$key,
 							$fields['fields'],
-							$fields['where']
+							$fields['where'],
+							__METHOD__
 						);
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
@@ -388,7 +390,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				'log_action' => 'rename',
 				'log_title' => $logTitle->getDBkey(),
 				'log_type' => 'gblrename'
-			]
+			],
+			__METHOD__
 		);
 
 		$dbw->delete(
@@ -396,7 +399,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				'log_action' => 'renameuser',
 				'log_title' => $oldName->getTitleKey(),
 				'log_type' => 'renameuser'
-			]
+			],
+			__METHOD__
 		);
 
 		$dbw->delete(
@@ -404,7 +408,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				'rc_log_action' => 'rename',
 				'rc_title' => $logTitle->getDBkey(),
 				'rc_log_type' => 'gblrename'
-			]
+			],
+			__METHOD__
 		);
 
 		$dbw->delete(
@@ -412,7 +417,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				'rc_log_action' => 'renameuser',
 				'rc_title' => $oldName->getTitleKey(),
 				'rc_log_type' => 'renameuser'
-			]
+			],
+			__METHOD__
 		);
 
 		$user = User::newSystemUser( 'MediaWiki default', [ 'steal' => true ] );
@@ -472,8 +478,11 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		// Delete all revision history from user related pages
-		$dbw->query( 'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
-				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))' );
+		$dbw->query(
+			'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))',
+			__METHOD__
+		);
 
 		$error = '';
 		foreach ( $rows as $row ) {
@@ -498,14 +507,16 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'logging', [
 				'(log_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
 				' OR log_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
-			]
+			],
+			__METHOD__
 		);
 
 		$dbw->delete(
 			'recentchanges', [
 				'(rc_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
 				' OR rc_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
-			]
+			],
+			__METHOD__
 		);
 
 		// Lock global account

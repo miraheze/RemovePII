@@ -54,7 +54,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			$this->config->get( 'RemovePIICentralWiki' ) &&
 			WikiMap::isCurrentWikiId( $this->config->get( 'RemovePIICentralWiki' ) )
 		) {
-			return $this->msg( 'removepii-wiki-disabled' )->escaped();
+			return Html::errorBox( $this->msg( 'removepii-wiki-disabled' )->escaped() );
 		}
 
 		$formDescriptor = [];
@@ -232,6 +232,12 @@ class SpecialRemovePII extends FormSpecialPage {
 		}
 		
 		return false;
+	}
+
+	public function onSuccess() {
+		$this->getOutput()->addHTML( Html::successBox( $this->msg( 'removepii-success' ) ) );
+
+		$this->getOutput()->returnToMain();
 	}
 
 	/**

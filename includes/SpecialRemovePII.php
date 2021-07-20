@@ -46,21 +46,23 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->userFactory = $userFactory;
 	}
 
-	/**
-	 * @return array|string
-	 */
-	protected function getFormFields() {
+	public function execute( $par ) {
 		if (
 			$this->config->get( 'RemovePIICentralWiki' ) &&
 			!WikiMap::isCurrentWikiId( $this->config->get( 'RemovePIICentralWiki' ) )
 		) {
-			$this->suppressDefaultSubmit();
-
 			return $this->getOutput()->addHTML(
 				Html::errorBox( $this->msg( 'removepii-wiki-disabled' )->escaped() )
 			);
 		}
 
+		parent::execute( $par );
+	}
+
+	/**
+	 * @return array|string
+	 */
+	protected function getFormFields() {
 		$formDescriptor = [];
 		
 		$formDescriptor['warning'] = [

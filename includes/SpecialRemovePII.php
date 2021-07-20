@@ -14,9 +14,9 @@ use GlobalRenameUserValidator;
 use Html;
 use JobQueueGroup;
 use ManualLogEntry;
+use MediaWiki\User\UserFactory;
 use Status;
 use TitleFactory;
-use UserFactory;
 use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {

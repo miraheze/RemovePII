@@ -224,7 +224,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			$logEntry = new ManualLogEntry( 'removepii', 'action' );
 			$logEntry->setPerformer( $this->getUser() );
-			$logEntry->setTarget( $this->titleFactory->newFromText( 'RemovePII' , NS_SPECIAL ) );
+			$logEntry->setTarget( $this->titleFactory->newFromText( 'RemovePII', NS_SPECIAL ) );
 			$logID = $logEntry->insert();
 			$logEntry->publish( $logID );
 
@@ -237,7 +237,11 @@ class SpecialRemovePII extends FormSpecialPage {
 	public function onSuccess() {
 		$this->getOutput()->addHTML( Html::successBox( $this->msg( 'removepii-success' ) ) );
 
-		$this->getOutput()->returnToMain();
+		$this->getOutput()->addReturnTo(
+			$this->titleFactory->newFromText( 'RemovePII', NS_SPECIAL ),
+			[],
+			wfMessage( 'removepii-returnto' )->escaped()
+		);
 	}
 
 	/**

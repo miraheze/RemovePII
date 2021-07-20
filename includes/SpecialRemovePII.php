@@ -240,7 +240,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->getOutput()->addReturnTo(
 			$this->titleFactory->newFromText( 'RemovePII', NS_SPECIAL ),
 			[],
-			wfMessage( 'removepii-returnto' )->escaped()
+			wfMessage( 'removepii' )->escaped()
 		);
 	}
 

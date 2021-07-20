@@ -52,9 +52,13 @@ class SpecialRemovePII extends FormSpecialPage {
 	protected function getFormFields() {
 		if (
 			$this->config->get( 'RemovePIICentralWiki' ) &&
-			WikiMap::isCurrentWikiId( $this->config->get( 'RemovePIICentralWiki' ) )
+			!WikiMap::isCurrentWikiId( $this->config->get( 'RemovePIICentralWiki' ) )
 		) {
-			return Html::errorBox( $this->msg( 'removepii-wiki-disabled' )->escaped() );
+			$this->suppressDefaultSubmit();
+
+			return $this->getOutput()->addHTML(
+				Html::errorBox( $this->msg( 'removepii-wiki-disabled' )->escaped() )
+			);
 		}
 
 		$formDescriptor = [];

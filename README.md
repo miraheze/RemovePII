@@ -1,7 +1,7 @@
 # RemovePII
 An extension designed to remove all personal identifiable information from a user.
 
-Developed by Miraheze.
+Developed by Universal Omega.
 
 Licensed under the GPLv3 (or later) LICENSE.
 

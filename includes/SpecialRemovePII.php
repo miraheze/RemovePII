@@ -225,8 +225,6 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			// Run RemovePIIJob on all attached wikis
 			foreach ( $newCentral->listAttached() as $database ) {
-				$jobParams['database'] = $database;
-
 				JobQueueGroup::singleton( $database )->push(
 					new RemovePIIJob( $jobParams )
 				);

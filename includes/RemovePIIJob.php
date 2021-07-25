@@ -61,7 +61,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			return false;
 		}
 
-		$dbw = wfGetDB( DB_PRIMARY );
+		$dbw = $lbFactory->getConnection( DB_PRIMARY );
 
 		$userActorId = $newName->getActorId( $dbw );
 
@@ -346,13 +346,13 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
-						$lbFactory->waitForReplication();
-
 						$dbw->delete(
 							$key,
 							$fields['where'],
 							__METHOD__
 						);
+
+						$lbFactory->waitForReplication();
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
@@ -366,14 +366,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
-						$lbFactory->waitForReplication();
-
 						$dbw->update(
 							$key,
 							$fields['fields'],
 							$fields['where'],
 							__METHOD__
 						);
+
+						$lbFactory->waitForReplication();
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
@@ -435,7 +435,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Hide deletions from RecentChanges
 		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
 
-		$dbr = wfGetDB( DB_REPLICA );
 		$userPageTitle = $oldName->getUserPage();
 
 		$namespaces = [
@@ -466,14 +465,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			);
 		}
 
-		$rows = $dbr->select(
+		$rows = $dbw->select(
 			'page', [
 				'page_namespace',
 				'page_title'
 			], [
 				'page_namespace IN (' . implode( ',', $namespaces ) . ')',
-				'(page_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR page_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
+				'(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
 			],
 			__METHOD__
 		);

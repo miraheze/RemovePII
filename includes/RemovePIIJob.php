@@ -14,9 +14,6 @@ use Wikimedia\AtEase\AtEase;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 	/** @var string */
-	private $database;
-
-	/** @var string */
 	private $oldName;
 
 	/** @var string */
@@ -28,7 +25,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 	public function __construct( array $params ) {
 		parent::__construct( 'RemovePIIJob', $params );
 
-		$this->database = $params['database'];
 		$this->oldName = $params['oldname'];
 		$this->newName = $params['newname'];
 	}
@@ -43,6 +39,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$newCentral->invalidateCache();
 
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 		$oldName = $userFactory->newFromName( $this->oldName );
 		$newName = $userFactory->newFromName( $this->newName );
@@ -64,7 +61,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			return false;
 		}
 
-		$dbw = wfGetDB( DB_PRIMARY, [], $this->database );
+		$dbw = $lbFactory->getConnection( DB_PRIMARY );
 
 		$userActorId = $newName->getActorId( $dbw );
 
@@ -354,6 +351,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 							$fields['where'],
 							__METHOD__
 						);
+
+						$lbFactory->waitForReplication();
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
@@ -373,6 +372,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 							$fields['where'],
 							__METHOD__
 						);
+
+						$lbFactory->waitForReplication();
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
@@ -434,7 +435,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Hide deletions from RecentChanges
 		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
 
-		$dbr = wfGetDB( DB_REPLICA, [], $this->database );
 		$userPageTitle = $oldName->getUserPage();
 
 		$namespaces = [
@@ -465,14 +465,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			);
 		}
 
-		$rows = $dbr->select(
+		$rows = $dbw->select(
 			'page', [
 				'page_namespace',
 				'page_title'
 			], [
 				'page_namespace IN (' . implode( ',', $namespaces ) . ')',
-				'(page_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR page_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
+				'(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
 			],
 			__METHOD__
 		);
@@ -505,16 +505,16 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		
 		$dbw->delete(
 			'logging', [
-				'(log_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR log_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
+				'(log_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR log_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
 			],
 			__METHOD__
 		);
 
 		$dbw->delete(
 			'recentchanges', [
-				'(rc_title ' . $dbr->buildLike( $userPageTitle->getDBkey() . '/', $dbr->anyString() ) .
-				' OR rc_title = ' . $dbr->addQuotes( $userPageTitle->getDBkey() ) . ')'
+				'(rc_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR rc_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
 			],
 			__METHOD__
 		);

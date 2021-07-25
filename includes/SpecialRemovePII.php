@@ -46,6 +46,10 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->userFactory = $userFactory;
 	}
 
+	/**
+	 * @param string $par
+	 * @return string
+	 */
 	public function execute( $par ) {
 		if (
 			$this->config->get( 'RemovePIICentralWiki' ) &&

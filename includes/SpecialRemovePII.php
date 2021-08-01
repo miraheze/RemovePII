@@ -51,6 +51,9 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return string
 	 */
 	public function execute( $par ) {
+		$this->getOutput()->disallowUserJs();
+		$this->checkPermissions();
+
 		if (
 			$this->config->get( 'RemovePIICentralWiki' ) &&
 			!WikiMap::isCurrentWikiId( $this->config->get( 'RemovePIICentralWiki' ) )
@@ -250,6 +253,27 @@ class SpecialRemovePII extends FormSpecialPage {
 			[],
 			wfMessage( 'removepii' )->escaped()
 		);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function doesWrites() {
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isListed() {
+		return $this->userCanExecute( $this->getUser() );
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getGroupName() {
+		return 'wikimanage';
 	}
 
 	/**

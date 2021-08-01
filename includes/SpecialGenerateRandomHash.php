@@ -58,6 +58,20 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isListed() {
+		return $this->userCanExecute( $this->getUser() );
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getGroupName() {
+		return 'wikimanage';
+	}
+
+	/**
 	 * @return string
 	 */
 	protected function getDisplayFormat() {

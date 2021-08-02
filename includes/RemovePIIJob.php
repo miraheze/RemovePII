@@ -479,11 +479,11 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		);
 
 		// Delete all revision history from user related pages
-		$dbw->query(
+		/* $dbw->query(
 			'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
 				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))',
 			__METHOD__
-		);
+		); */
 
 		$error = '';
 		foreach ( $rows as $row ) {
@@ -498,13 +498,20 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 			//AtEase::restoreWarnings();
 
-			// Potential alternative to the $dbw->query above
-			/* $dbw->delete(
-				'revision', [
-					'rev_page' => $row->page_id
-				],
-				__METHOD__
-			); */
+			try {
+				$dbw->delete(
+					'revision', [
+						'rev_page' => $row->page_id
+					],
+					__METHOD__
+				);
+
+				$lbFactory->waitForReplication();
+			} catch ( Exception $e ) {
+				$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
+
+				continue;
+			}
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );

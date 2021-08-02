@@ -246,7 +246,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	}
 
 	public function onSuccess() {
-		$this->getOutput()->addHTML( Html::successBox( $this->msg( 'removepii-success' ) ) );
+		$this->getOutput()->addHTML( Html::successBox( $this->msg( 'removepii-success' )->escaped() ) );
 
 		$this->getOutput()->addReturnTo(
 			$this->titleFactory->newFromText( 'RemovePII', NS_SPECIAL ),

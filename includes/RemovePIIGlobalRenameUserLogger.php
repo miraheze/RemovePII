@@ -6,9 +6,11 @@ use GlobalRenameUserLogger;
 
 class RemovePIIGlobalRenameUserLogger extends GlobalRenameUserLogger {
 	/**
-	 * @return bool
+	 * @param string $oldName
+	 * @param string $newName
+	 * @param array $options
 	 */
-	public function log() {
-		return false;
+	public function log( $oldName, $newName, $options ) {
+		return;
 	}
 }

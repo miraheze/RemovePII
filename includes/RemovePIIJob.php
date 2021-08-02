@@ -61,7 +61,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			return false;
 		}
 
-		$dbw = $lbFactory->getConnection( DB_PRIMARY );
+		$dbw = $lbFactory->getMainLB()->getConnection( DB_PRIMARY );
 
 		$userActorId = $newName->getActorId( $dbw );
 

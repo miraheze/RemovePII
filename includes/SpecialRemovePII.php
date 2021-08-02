@@ -199,7 +199,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(
 					Html::errorBox(
-						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['oldname'] )->escaped()
+						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['oldname'] )->parse()
 					)
 				);
 
@@ -209,7 +209,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			if ( $newCentral->renameInProgress() ) {
 				$out->addHTML(
 					Html::errorBox(
-						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['newname'] )->escaped()
+						$this->msg( 'centralauth-renameuser-global-inprogress', $formData['newname'] )->parse()
 					)
 				);
 
@@ -219,7 +219,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			if ( !$newCentral->exists() ) {
 				$out->addHTML(
 					Html::errorBox(
-						$this->msg( 'centralauth-admin-status-nonexistent', $formData['newname'] )->escaped()
+						$this->msg( 'centralauth-admin-status-nonexistent', $formData['newname'] )->parse()
 					)
 				);
 

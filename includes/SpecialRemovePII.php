@@ -178,7 +178,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			$globalRenameUser->rename(
 				array_merge( [
-					'movepages' => true,
+					'movepages' => false,
 					'suppressredirects' => true,
 					'reason' => null,
 					'force' => true

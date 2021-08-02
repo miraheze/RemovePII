@@ -103,17 +103,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					]
 				]
 			],
-			'user' => [
-				[
-					'fields' => [
-						'user_email' => '',
-						'user_real_name' => ''
-					],
-					'where' => [
-						'user_name' => $userNewName
-					]
-				]
-			],
 
 			// Extensions
 			'abuse_filter_log' => [

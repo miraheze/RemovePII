@@ -467,7 +467,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$rows = $dbw->select(
 			'page', [
-				// 'page_id',
+				'page_id',
 				'page_namespace',
 				'page_title'
 			], [

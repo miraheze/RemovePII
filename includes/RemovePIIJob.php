@@ -467,6 +467,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$rows = $dbw->select(
 			'page', [
+				// 'page_id',
 				'page_namespace',
 				'page_title'
 			], [
@@ -477,6 +478,13 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			__METHOD__
 		);
 
+		// Delete all revision history from user related pages
+		$dbw->query(
+			'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))',
+			__METHOD__
+		);
+
 		$error = '';
 		foreach ( $rows as $row ) {
 			$title = $titleFactory->newFromRow( $row );
@@ -484,24 +492,25 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
 			$userPage = $wikiPageFactory->newFromTitle( $title );
 
-			AtEase::suppressWarnings();
+			//AtEase::suppressWarnings();
 
 			$status = $userPage->doDeleteArticleReal( '', $user, true, null, $error, null, [], 'delete', true );
 
-			AtEase::restoreWarnings();
+			//AtEase::restoreWarnings();
+
+			// Potential alternative to the $dbw->query above
+			/* $dbw->delete(
+				'revision', [
+					'rev_page' => $row->page_id
+				],
+				__METHOD__
+			); */
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
 				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
 			}
 		}
-
-		// Delete all revision history from user related pages
-		$dbw->query(
-			'DELETE FROM revision WHERE rev_id IN (SELECT rev_id FROM `revision` LEFT JOIN `page` ON rev_page = page_id WHERE' . '(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
-				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . '))',
-			__METHOD__
-		);
 		
 		$dbw->delete(
 			'logging', [

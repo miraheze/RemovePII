@@ -477,8 +477,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 			try {
 				$dbw->delete(
-					'revision', [
-						'rev_page' => $row->page_id
+					'archive', [
+						'ar_page_id' => $row->page_id
 					],
 					__METHOD__
 				);

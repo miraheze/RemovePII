@@ -1,16 +1,14 @@
 {
 	"name": "RemovePII",
-	"version": "1.0.0",
-	"author": [
-		"Universal Omega"
-	],
+	"version": "3.0.0",
+	"author": "Universal Omega",
 	"url": "https://github.com/miraheze/RemovePII",
 	"descriptionmsg": "removepii-desc",
 	"namemsg": "removepii-extensionname",
 	"license-name": "GPL-3.0-or-later",
 	"type": "specialpage",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.36.0"
 	},
 	"MessagesDirs": {
 		"RemovePII": [
@@ -23,17 +21,41 @@
 	"AutoloadNamespaces": {
 		"Miraheze\\RemovePII\\": "includes/"
 	},
+	"JobClasses": {
+		"RemovePIIJob": "Miraheze\\RemovePII\\RemovePIIJob"
+	},
+	"LogActionsHandlers": {
+		"removepii/*": "LogFormatter"
+	},
+	"LogHeaders": {
+		"removepii": "removepii-log-header"
+	},
+	"LogNames": {
+		"removepii": "removepii-log-name"
+	},
+	"LogTypes": [
+		"removepii"
+	],
 	"ConfigRegistry": {
 		"RemovePII": "GlobalVarConfig::newInstance"
 	},
 	"AvailableRights": [
-		"generate-random-hash"
+		"generate-random-hash",
+		"handle-pii"
 	],
 	"SpecialPages": {
 		"GenerateRandomHash": {
 			"class": "Miraheze\\RemovePII\\SpecialGenerateRandomHash",
 			"services": [
 				"ConfigFactory"
+			]
+		},
+		"RemovePII": {
+			"class": "Miraheze\\RemovePII\\SpecialRemovePII",
+			"services": [
+				"ConfigFactory",
+				"TitleFactory",
+				"UserFactory"
 			]
 		}
 	},
@@ -45,6 +67,10 @@
 		"RemovePIIHashPrefix": {
 			"value": "",
 			"description": "The default hash prefix to use when generating a hash through Special:GenerateRandomHash. Will be used when $wgRemovePIIHashPrefixOptions is empty."
+		},
+		"RemovePIICentralWiki": {
+			"value": false,
+			"description": "Set to the database name of a central wiki, which should enable Special:RemovePII on only it. Leave it as false to enable it on all wikis."
 		}
 	},
 	"manifest_version": 2

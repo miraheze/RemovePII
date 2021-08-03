@@ -26,7 +26,7 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 	protected function getFormFields() {
 		$formDescriptor = [];
 
-		$formDescriptor['HashLength'] = [
+		$formDescriptor['length'] = [
 			'type' => 'int',
 			'default' => 32,
 			'max' => 32,
@@ -36,7 +36,7 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 		];
 
 		if ( $this->config->get( 'RemovePIIHashPrefixOptions' ) ) {
-			$formDescriptor['HashPrefix'] = [
+			$formDescriptor['prefix'] = [
 				'type' => 'select',
 				'options' => $this->config->get( 'RemovePIIHashPrefixOptions' ),
 				'required' => true,
@@ -53,8 +53,22 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
 
-		$generatedHash = ( $formData['HashPrefix'] ?? $this->config->get( 'RemovePIIHashPrefix' ) ) . substr( sha1( random_bytes( 10 ) ), 0, $formData['HashLength'] );
+		$generatedHash = ( $formData['prefix'] ?? $this->config->get( 'RemovePIIHashPrefix' ) ) . substr( sha1( random_bytes( 10 ) ), 0, $formData['length'] );
 		$out->addHTML( Html::successBox( $generatedHash ) );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isListed() {
+		return $this->userCanExecute( $this->getUser() );
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getGroupName() {
+		return 'wikimanage';
 	}
 
 	/**

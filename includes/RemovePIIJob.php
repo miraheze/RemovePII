@@ -455,7 +455,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$rows = $dbw->select(
 			'page', [
-				'page_id',
 				'page_namespace',
 				'page_title'
 			], [
@@ -475,26 +474,19 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 			$status = $userPage->doDeleteArticleReal( '', $user, true, null, $error, null, [], 'delete', true );
 
-			try {
-				$dbw->delete(
-					'archive', [
-						'ar_page_id' => $row->page_id
-					],
-					__METHOD__
-				);
-
-				$lbFactory->waitForReplication();
-			} catch ( Exception $e ) {
-				$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
-
-				continue;
-			}
-
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
 				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
 			}
 		}
+
+		$dbw->delete(
+			'archive', [
+				'(ar_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
+				' OR ar_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
+			],
+			__METHOD__
+		);
 		
 		$dbw->delete(
 			'logging', [

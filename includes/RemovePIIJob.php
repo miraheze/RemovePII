@@ -475,18 +475,12 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 			$status = $userPage->doDeleteArticleReal( '', $user, true, null, $error, null, [], 'delete', true );
 
-			try {
-				$dbw->delete(
-					'revision', [
-						'rev_page' => $row->page_id
-					],
-					__METHOD__
-				);
-			} catch ( Exception $e ) {
-				$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
-
-				continue;
-			}
+			$dbw->delete(
+				'revision', [
+					'rev_page' => $row->page_id
+				],
+				__METHOD__
+			);
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );

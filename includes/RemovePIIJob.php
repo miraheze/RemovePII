@@ -340,7 +340,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 							__METHOD__
 						);
 
-						$lbFactory->getMainLB()->waitForReplication();
+						$lbFactory->waitForReplication();
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
@@ -361,7 +361,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 							__METHOD__
 						);
 
-						$lbFactory->getMainLB()->waitForReplication();
+						$lbFactory->waitForReplication();
 					} catch ( Exception $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 
@@ -482,8 +482,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					],
 					__METHOD__
 				);
-
-				$lbFactory->getMainLB()->waitForReplication();
 			} catch ( Exception $e ) {
 				$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
 

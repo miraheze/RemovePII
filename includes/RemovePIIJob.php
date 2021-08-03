@@ -475,13 +475,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 			$status = $userPage->doDeleteArticleReal( '', $user, true, null, $error, null, [], 'delete', true );
 
-			$dbw->delete(
-				'revision', [
-					'rev_page' => $row->page_id
-				],
-				__METHOD__
-			);
-
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
 				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );

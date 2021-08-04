@@ -482,6 +482,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$dbw->delete(
 			'archive', [
+				'ar_namespace IN (' . implode( ',', $namespaces ) . ')',
 				'(ar_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
 				' OR ar_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
 			],

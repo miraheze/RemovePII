@@ -187,14 +187,17 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			return true;
 		} elseif ( $formData['action'] === 'removepii' ) {
+			$oldName => str_replace( '_', ' ', $formData['oldname'] );
+			$newName => str_replace( '_', ' ', $formData['newname'] );
+
 			$jobParams = [
-				'oldname' => $formData['oldname'],
-				'newname' => $formData['newname'],
+				'oldname' => $oldName,
+				'newname' => $newName,
 			];
 
-			$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
+			$oldCentral = CentralAuthUser::getInstanceByName( $oldName );
 
-			$newCentral = CentralAuthUser::getInstanceByName( $formData['newname'] );
+			$newCentral = CentralAuthUser::getInstanceByName( $newName );
 
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(

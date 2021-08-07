@@ -187,8 +187,8 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			return true;
 		} elseif ( $formData['action'] === 'removepii' ) {
-			$oldName => str_replace( '_', ' ', $formData['oldname'] );
-			$newName => str_replace( '_', ' ', $formData['newname'] );
+			$oldName = str_replace( '_', ' ', $formData['oldname'] );
+			$newName = str_replace( '_', ' ', $formData['newname'] );
 
 			$jobParams = [
 				'oldname' => $oldName,

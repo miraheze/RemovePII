@@ -39,6 +39,7 @@ jobs:
       run: |
         git clone https://github.com/miraheze/mediawiki.git --depth=1
         cd mediawiki
+        git submodule update --init extensions/CentralAuth
         composer install --no-dev
         cd ..
 

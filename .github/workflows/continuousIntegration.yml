@@ -40,6 +40,9 @@ jobs:
         git clone https://github.com/miraheze/mediawiki.git --depth=1
         cd mediawiki
         git submodule update --init extensions/CentralAuth
+        git submodule update --init extensions/BlogPage
+        git submodule update --init extensions/SimpleBlogPage
+        git submodule update --init extensions/SocialProfile
         composer install --no-dev
         cd ..
 

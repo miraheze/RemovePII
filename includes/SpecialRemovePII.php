@@ -71,7 +71,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	 */
 	protected function getFormFields() {
 		$formDescriptor = [];
-		
+
 		$formDescriptor['warning'] = [
 			'type' => 'info',
 			'help' => Html::warningBox( $this->msg( 'removepii-warning-irreversible' )->parse() ),
@@ -90,7 +90,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			'required' => true,
 			'label-message' => 'removepii-newname-label'
 		];
-		
+
 		$formDescriptor['action'] = [
 			'type' => 'select',
 			'options' => [
@@ -244,7 +244,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -254,7 +254,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->getOutput()->addReturnTo(
 			$this->titleFactory->newFromText( 'RemovePII', NS_SPECIAL ),
 			[],
-			$this->msg( 'removepii' )->escaped()
+			$this->msg( 'removepii' )->text()
 		);
 	}
 

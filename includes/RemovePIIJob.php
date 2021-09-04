@@ -9,7 +9,6 @@ use GenericParameterJob;
 use Job;
 use MediaWiki\MediaWikiServices;
 use User;
-use UserProfilePage;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 	/** @var string */
@@ -138,7 +137,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'echo_event' => [
 				[
 					'fields' => [
-						'event_agent_ip' => NULL
+						'event_agent_ip' => null
 					],
 					'where' => [
 						'event_agent_id' => $userId
@@ -148,7 +147,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'flow_tree_revision' => [
 				[
 					'fields' => [
-						'tree_orig_user_ip' => NULL
+						'tree_orig_user_ip' => null
 					],
 					'where' => [
 						'tree_orig_user_id' => $userId
@@ -158,7 +157,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'flow_revision' => [
 				[
 					'fields' => [
-						'rev_user_ip' => NULL
+						'rev_user_ip' => null
 					],
 					'where' => [
 						'rev_user_id' => $userId
@@ -166,7 +165,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				],
 				[
 					'fields' => [
-						'rev_mod_user_ip' => NULL
+						'rev_mod_user_ip' => null
 					],
 					'where' => [
 						'rev_mod_user_id' => $userId
@@ -174,7 +173,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				],
 				[
 					'fields' => [
-						'rev_edit_user_ip' => NULL
+						'rev_edit_user_ip' => null
 					],
 					'where' => [
 						'rev_edit_user_id' => $userId
@@ -429,7 +428,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			NS_USER,
 			NS_USER_TALK
 		];
-		
+
 		if ( class_exists( 'UserProfilePage' ) ) {
 			array_push( $namespaces,
 				NS_USER_WIKI,
@@ -438,7 +437,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				NS_USER_PROFILE_TALK
 			);
 		}
-		
+
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'BlogPage' ) ) {
 			array_push( $namespaces,
 				NS_BLOG,
@@ -488,7 +487,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			],
 			__METHOD__
 		);
-		
+
 		$dbw->delete(
 			'logging', [
 				'(log_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .

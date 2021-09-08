@@ -32,7 +32,7 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 			'max' => 32,
 			'min' => 8,
 			'required' => true,
-			'help-message' => 'hash-length-help',
+			'help-message' => 'removepii-hash-length-help',
 		];
 
 		if ( $this->config->get( 'RemovePIIHashPrefixOptions' ) ) {
@@ -40,7 +40,7 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 				'type' => 'select',
 				'options' => $this->config->get( 'RemovePIIHashPrefixOptions' ),
 				'required' => true,
-				'help-message' => 'hash-prefix-help',
+				'help-message' => 'removepii-hash-prefix-help',
 			];
 		}
 

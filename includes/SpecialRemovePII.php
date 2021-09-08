@@ -55,8 +55,11 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->checkPermissions();
 
 		if (
-			$this->config->get( 'RemovePIICentralWiki' ) &&
-			!WikiMap::isCurrentWikiId( $this->config->get( 'RemovePIICentralWiki' ) )
+			$this->config->get( 'RemovePIIAllowedStartingWikis' ) &&
+			!in_array(
+				$this->config->get( 'RemovePIIAllowedStartingWikis' ),
+				WikiMap::getCurrentWikiId()
+			)
 		) {
 			return $this->getOutput()->addHTML(
 				Html::errorBox( $this->msg( 'removepii-wiki-disabled' )->escaped() )

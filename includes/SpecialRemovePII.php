@@ -57,8 +57,8 @@ class SpecialRemovePII extends FormSpecialPage {
 		if (
 			$this->config->get( 'RemovePIIAllowedStartingWikis' ) &&
 			!in_array(
-				$this->config->get( 'RemovePIIAllowedStartingWikis' ),
-				WikiMap::getCurrentWikiId()
+				WikiMap::getCurrentWikiId(),
+				$this->config->get( 'RemovePIIAllowedStartingWikis' )
 			)
 		) {
 			return $this->getOutput()->addHTML(

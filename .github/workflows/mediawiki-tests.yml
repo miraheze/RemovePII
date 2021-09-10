@@ -43,12 +43,14 @@ jobs:
           npm install --save-dev
 
       - name: Check PHP
+        if: ${{ matrix.mw == 'master' }}
         run: |
           sh phpcbf.sh
           composer fix
           composer test
 
       - name: Check i18n
+        if: ${{ matrix.mw == 'master' }}
         run: |
           npm run lint:i18n
 
@@ -97,7 +99,7 @@ jobs:
 
       # Only patch code when it is a push event
       - name: Push the changes
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && ${{ matrix.mw == 'master' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

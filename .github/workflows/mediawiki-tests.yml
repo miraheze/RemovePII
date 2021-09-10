@@ -1,4 +1,4 @@
-name: PHP tests
+name: MediaWiki tests
 on:
   push:
     branches: [ master ]
@@ -35,6 +35,23 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: intl,ast
           tools: composer:${{ matrix.composer }}
+
+    - name: Install dependencies
+      run: |
+        composer validate
+        composer update
+        npm install --save-dev
+
+    - name: Check PHP
+      run: |
+        sh phpcbf.sh
+        composer fix
+        composer test
+
+    - name: Check i18n
+      run: |
+        npm run lint:i18n
+
       - name: Cache MediaWiki
         id: cache-mediawiki
         uses: actions/cache@v2
@@ -76,5 +93,18 @@ jobs:
 
       - name: Run phan
         run: |
-          composer update
           composer phan
+
+    # Only patch code when it is a push event
+    - name: Push the changes
+      if: github.event_name == 'push'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@users.noreply.github.com"
+        git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git add .
+        git commit -am "CI: lint code to MediaWiki standards" -m "Check commit and GitHub actions for more details" || echo "No changes to commit"
+        git pull --rebase
+        git push

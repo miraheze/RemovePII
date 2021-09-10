@@ -23,6 +23,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 	public function __construct( array $params ) {
 		parent::__construct( 'RemovePIIJob', $params );
 
+
 		$this->oldName = $params['oldname'];
 		$this->newName = $params['newname'];
 	}

@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: mediawiki
+        working-directory: ~
     steps:
       - uses: actions/checkout@v2
 

@@ -50,4 +50,5 @@ jobs:
 
       - name: Run phan
         run: |
+          ls
           composer phan

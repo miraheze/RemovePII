@@ -42,6 +42,7 @@ jobs:
           path: |
             mediawiki
             !mediawiki/extensions/
+            !mediawiki/extensions/CentralAuth
             !mediawiki/vendor/
           key: mw-${{ matrix.mw }}-${{ matrix.repo }}-php${{ matrix.php }}-v2
 
@@ -57,7 +58,7 @@ jobs:
 
       - name: Run phan
         run: |
-          [[ '${{ matrix.mw }}' != 'miraheze' ]] && [ ! -d "mediawiki/extensions/CentralAuth" ]
+          [[ '${{ matrix.mw }}' != 'miraheze' ]]
           git clone https://github.com/wikimedia/mediawiki-extensions-CentralAuth.git --depth=1 --branch=${{ matrix.mw }} mediawiki/extensions/CentralAuth
           git clone https://github.com/wikimedia/mediawiki-extensions-BlogPage.git --depth=1 mediawiki/extensions/BlogPage
           git clone https://github.com/wikimedia/mediawiki-extensions-SocialProfile.git --depth=1 mediawiki/extensions/SocialProfile

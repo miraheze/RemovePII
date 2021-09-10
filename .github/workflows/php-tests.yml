@@ -57,7 +57,7 @@ jobs:
 
       - name: Run phan
         run: |
-          [[ '${{ matrix.mw }}' !== 'miraheze' ]]
+          [[ '${{ matrix.mw }}' != 'miraheze' ]]
           git clone https://github.com/wikimedia/mediawiki-extensions-CentralAuth.git --depth=1 --branch=${{ matrix.mw }} mediawiki/extensions/CentralAuth
           git clone https://github.com/wikimedia/mediawiki-extensions-BlogPage.git --depth=1 mediawiki/extensions/BlogPage
           git clone https://github.com/wikimedia/mediawiki-extensions-SocialProfile.git --depth=1 mediawiki/extensions/SocialProfile

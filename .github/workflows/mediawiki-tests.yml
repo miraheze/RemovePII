@@ -16,21 +16,25 @@ jobs:
             repo: 'miraheze'
             php: 7.3
             composer: v2
+            continue-on-error: false
           # Miraheze version - PHP 7.4
           - mw: 'REL1_36'
             repo: 'miraheze'
             php: 7.4
             composer: v2
+            continue-on-error: true
           # Latest stable MediaWiki
           - mw: 'REL1_36'
             repo: 'wikimedia'
             php: 7.3
             composer: v2
+            continue-on-error: false
           # Latest MediaWiki master
           - mw: 'master'
             repo: 'wikimedia'
             php: 7.3
             composer: v2
+            continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -100,6 +104,7 @@ jobs:
           git submodule update --init extensions/SocialProfile
 
       - name: Run phan
+        continue-on-error: ${{ matrix.continue-on-error }}
         run: |
           composer phan
 

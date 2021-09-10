@@ -1,0 +1,38 @@
+name: notify
+
+on:
+  workflow_run:
+    types: [completed]
+
+  jobs:
+    notify-irc:
+      runs-on: ubuntu-latest
+      if: ${{ always() && github.repository_owner == 'miraheze' && ( github.ref	== 'refs/heads/master' || github.event_name == 'pull_request' ) }}
+      steps:
+        - name: succeeded
+          uses: rectalogic/notify-irc@v1
+          if: ${{ github.event.workflow_run.conclusion == 'success' }}
+          with:
+            channel: "#miraheze-sre"
+            server: "irc.libera.chat"
+            nickname: miraheze-github
+            message: ${{ github.repository }} - ${{ github.actor }} the build passed.
+            sasl_password: ${{ secrets.IRC_MIRAHEZEBOTS }}
+        - name: failed
+          uses: rectalogic/notify-irc@v1
+          if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+          with:
+            channel: "#miraheze-sre"
+            server: "irc.libera.chat"
+            nickname: miraheze-github
+            message: ${{ github.repository }} - ${{ github.actor }} the build has errored.
+            sasl_password: ${{ secrets.IRC_MIRAHEZEBOTS }}
+        - name: cancelled
+          uses: rectalogic/notify-irc@v1
+          if: ${{ github.event.workflow_run.conclusion == 'cancelled' }}
+          with:
+            channel: "#miraheze-sre"
+            server: "irc.libera.chat"
+            nickname: miraheze-github
+            message: ${{ github.repository }} - ${{ github.actor }} the build has been cancelled.
+            sasl_password: ${{ secrets.IRC_MIRAHEZEBOTS }}

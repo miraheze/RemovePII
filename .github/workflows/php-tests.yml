@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 jobs:
   test:
-    name: "MediaWiki ${{ matrix.mw }} ${{ matrix.repo }} | PHP ${{ matrix.php }}"
+    name: "${{ matrix.mw }} | ${{ matrix.repo }} | ${{ matrix.php }}"
     strategy:
       matrix:
         include:
@@ -17,10 +17,12 @@ jobs:
             composer: v2
           # Latest stable MediaWiki
           - mw: 'REL1_36'
+            repo: 'wikimedia'
             php: 7.3
             composer: v2
           # Latest MediaWiki master
           - mw: 'master'
+            repo: 'wikimedia'
             php: 7.3
             composer: v2
     runs-on: ubuntu-latest

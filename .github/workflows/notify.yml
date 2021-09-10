@@ -1,7 +1,7 @@
 name: notify
 on:
   workflow_run:
-    workflows: ["PHP tests", "Linting"]
+    workflows: ["MediaWiki tests"]
     types: [completed]
 
 jobs:

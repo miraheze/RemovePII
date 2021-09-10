@@ -9,5 +9,4 @@ tar -zxf "$MW_BRANCH".tar.gz
 mv mediawiki-"$MW_BRANCH" mediawiki
 
 cd mediawiki
-
 composer update --prefer-dist --no-progress

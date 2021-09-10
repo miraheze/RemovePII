@@ -1,0 +1,57 @@
+name: PHP tests
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  test:
+    name: "MediaWiki ${{ matrix.mw }} | PHP ${{ matrix.php }}"
+    strategy:
+      matrix:
+        include:
+          # Latest stable MediaWiki
+          - mw: 'REL1_36'
+            php: 7.3
+            composer: v2
+          # Latest MediaWiki master
+          - mw: 'master'
+            php: 7.3
+            composer: v2
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mediawiki
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl,ast
+          tools: composer:${{ matrix.composer }}
+      - name: Cache MediaWiki
+        id: cache-mediawiki
+        uses: actions/cache@v2
+        with:
+          path: |
+            mediawiki
+            !mediawiki/extensions/
+            !mediawiki/vendor/
+          key: mw-${{ matrix.mw }}-php${{ matrix.php }}-v2
+
+      - name: Cache Composer cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache
+          key: composer-php${{ matrix.php }}
+
+      - name: Download MediaWiki
+        if: steps.cache-mediawiki.outputs.cache-hit != 'true'
+        working-directory: ~
+        run: bash .github/workflows/download-mediawiki.sh ${{ matrix.mw }}
+
+      - name: Run phan
+        run: |
+          composer phan

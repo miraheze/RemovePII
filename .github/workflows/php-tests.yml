@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 jobs:
   test:
-    name: "MediaWiki ${{ matrix.mw }} | PHP ${{ matrix.php }}"
+    name: "MediaWiki ${{ matrix.mw }} ${{ matrix.repo }} | PHP ${{ matrix.php }}"
     strategy:
       matrix:
         include:

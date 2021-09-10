@@ -99,7 +99,7 @@ jobs:
 
       # Only patch code when it is a push event
       - name: Push the changes
-        if: github.event_name == 'push' && ${{ matrix.mw == 'master' }}
+        if: github.event_name == 'push' && matrix.mw == 'master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

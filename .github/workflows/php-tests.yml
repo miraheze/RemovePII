@@ -50,5 +50,5 @@ jobs:
 
       - name: Run phan
         run: |
-          composer update mediawiki/mediawiki-phan-config
+          composer update
           composer phan

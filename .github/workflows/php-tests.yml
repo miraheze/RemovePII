@@ -56,8 +56,8 @@ jobs:
         run: bash .github/workflows/download-mediawiki.sh ${{ matrix.mw }} ${{ matrix.repo }}
 
       - name: Clone extension dependencies
+        if: [[ '${{ matrix.repo }}' != 'miraheze' ]]
         run: |
-          [[ '${{ matrix.repo }}' != 'miraheze' ]]
           rm -rf mediawiki/extensions/*
           git clone https://github.com/wikimedia/mediawiki-extensions-CentralAuth.git --depth=1 --branch=${{ matrix.mw }} mediawiki/extensions/CentralAuth
           git clone https://github.com/wikimedia/mediawiki-extensions-BlogPage.git --depth=1 mediawiki/extensions/BlogPage
@@ -65,8 +65,8 @@ jobs:
           git clone https://github.com/Universal-Omega/SimpleBlogPage.git --depth=1 mediawiki/extensions/SimpleBlogPage
 
       - name: Checkout extension dependencies
+        if: [[ '${{ matrix.repo }}' == 'miraheze' ]]
         run: |
-          [[ '${{ matrix.repo }}' == 'miraheze' ]]
           cd mediawiki
           rm -rf extensions/*
           git submodule update --init extensions/CentralAuth

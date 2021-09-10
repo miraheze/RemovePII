@@ -2,6 +2,7 @@ name: notify
 
 on:
   workflow_run:
+    workflows: ["PHP tests", "Linting"]
     types: [completed]
 
 jobs:

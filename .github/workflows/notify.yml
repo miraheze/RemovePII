@@ -2,13 +2,13 @@ name: notify
 
 on:
   workflow_run:
-    workflows: ["PHP tests", "Linting"]
+    workflows: ["PHP tests"]
     types: [completed]
 
 jobs:
   notify-irc:
     runs-on: ubuntu-latest
-    if: ${{ always() && github.repository_owner == 'miraheze' && ( github.ref	== 'refs/heads/master' || github.event_name == 'pull_request' ) }}
+  #  if: ${{ always() && github.repository_owner == 'miraheze' && ( github.ref	== 'refs/heads/master' || github.event_name == 'pull_request' ) }}
     steps:
       - name: succeeded
         uses: rectalogic/notify-irc@v1

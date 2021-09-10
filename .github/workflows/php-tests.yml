@@ -19,9 +19,6 @@ jobs:
             php: 7.3
             composer: v2
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
     steps:
       - uses: actions/checkout@v2
 
@@ -49,9 +46,9 @@ jobs:
 
       - name: Download MediaWiki
         if: steps.cache-mediawiki.outputs.cache-hit != 'true'
-        working-directory: ~
         run: bash .github/workflows/download-mediawiki.sh ${{ matrix.mw }}
 
       - name: Run phan
         run: |
+          cd ~
           composer phan

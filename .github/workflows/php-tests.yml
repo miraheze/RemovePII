@@ -13,11 +13,11 @@ jobs:
           # Latest stable MediaWiki
           - mw: 'REL1_36'
             php: 7.3
-            composer: v1
+            composer: v2
           # Latest MediaWiki master
           - mw: 'master'
             php: 7.3
-            composer: v1
+            composer: v2
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -50,4 +50,5 @@ jobs:
 
       - name: Run phan
         run: |
+          composer update mediawiki/mediawiki-phan-config
           composer phan

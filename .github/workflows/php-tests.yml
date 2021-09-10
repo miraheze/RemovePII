@@ -1,0 +1,80 @@
+name: PHP tests
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  test:
+    name: "${{ matrix.mw }} | ${{ matrix.repo }} | ${{ matrix.php }}"
+    strategy:
+      matrix:
+        include:
+          # Miraheze version
+          - mw: 'REL1_36'
+            repo: 'miraheze'
+            php: 7.3
+            composer: v2
+          # Latest stable MediaWiki
+          - mw: 'REL1_36'
+            repo: 'wikimedia'
+            php: 7.3
+            composer: v2
+          # Latest MediaWiki master
+          - mw: 'master'
+            repo: 'wikimedia'
+            php: 7.3
+            composer: v2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl,ast
+          tools: composer:${{ matrix.composer }}
+      - name: Cache MediaWiki
+        id: cache-mediawiki
+        uses: actions/cache@v2
+        with:
+          path: |
+            mediawiki
+            !mediawiki/extensions/
+            !mediawiki/vendor/
+          key: mw-${{ matrix.mw }}-${{ matrix.repo }}-php${{ matrix.php }}-v2
+
+      - name: Cache Composer cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache
+          key: composer-php${{ matrix.php }}
+
+      - name: Download MediaWiki
+        if: steps.cache-mediawiki.outputs.cache-hit != 'true'
+        run: bash .github/workflows/download-mediawiki.sh ${{ matrix.mw }} ${{ matrix.repo }}
+
+      - name: Clone extension dependencies
+        if: ${{ matrix.repo != 'miraheze' }}
+        run: |
+          rm -rf mediawiki/extensions/*
+          git clone https://github.com/wikimedia/mediawiki-extensions-CentralAuth.git --depth=1 --branch=${{ matrix.mw }} mediawiki/extensions/CentralAuth
+          git clone https://github.com/wikimedia/mediawiki-extensions-BlogPage.git --depth=1 mediawiki/extensions/BlogPage
+          git clone https://github.com/wikimedia/mediawiki-extensions-SocialProfile.git --depth=1 mediawiki/extensions/SocialProfile
+          git clone https://github.com/Universal-Omega/SimpleBlogPage.git --depth=1 mediawiki/extensions/SimpleBlogPage
+
+      - name: Checkout extension dependencies
+        if: ${{ matrix.repo == 'miraheze' }}
+        run: |
+          cd mediawiki
+          rm -rf extensions/*
+          git submodule update --init extensions/CentralAuth
+          git submodule update --init extensions/BlogPage
+          git submodule update --init extensions/SimpleBlogPage
+          git submodule update --init extensions/SocialProfile
+
+      - name: Run phan
+        run: |
+          composer update
+          composer phan

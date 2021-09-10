@@ -6,16 +6,19 @@ on:
     branches: [ master ]
 jobs:
   test:
-    name: "${{ matrix.mw }} | ${{ matrix.repo }} | ${{ matrix.php }}"
+    name: "${{ matrix.mw }} | ${{ matrix.repo }} | PHP ${{ matrix.php }}"
     strategy:
       matrix:
         include:
-          # Miraheze version
+          # Miraheze version - PHP 7.3
           - mw: 'REL1_36'
             repo: 'miraheze'
-            php:
-              - 7.3
-              - 7.4
+            php: 7.3
+            composer: v2
+          # Miraheze version - PHP 7.4
+          - mw: 'REL1_36'
+            repo: 'miraheze'
+            php: 7.4
             composer: v2
           # Latest stable MediaWiki
           - mw: 'REL1_36'

@@ -12,7 +12,7 @@ jobs:
         include:
           # Miraheze version
           - mw: 'REL1_36'
-            repo: 'miraheze/mediawiki'
+            repo: 'miraheze'
             php: 7.3
             composer: v2
           # Latest stable MediaWiki

@@ -10,13 +10,13 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        experimental: [false]
         include:
           # Miraheze version - PHP 7.3
           - mw: 'REL1_36'
             repo: 'miraheze'
             php: 7.3
             composer: v2
+            experimental: false
           # Miraheze version - PHP 7.4
           - mw: 'REL1_36'
             repo: 'miraheze'
@@ -28,6 +28,7 @@ jobs:
             repo: 'wikimedia'
             php: 7.3
             composer: v2
+            experimental: false
           # Latest MediaWiki master
           - mw: 'master'
             repo: 'wikimedia'

@@ -50,5 +50,5 @@ jobs:
 
       - name: Run phan
         run: |
-          cd ~
+          cd ..
           composer phan

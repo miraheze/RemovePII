@@ -10,4 +10,3 @@ mv mediawiki-"$MW_BRANCH" mediawiki
 
 cd mediawiki
 composer update --prefer-dist --no-progress
-cd ..

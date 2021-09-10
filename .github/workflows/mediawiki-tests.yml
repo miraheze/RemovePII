@@ -7,8 +7,10 @@ on:
 jobs:
   test:
     name: "${{ matrix.mw }} | ${{ matrix.repo }} | PHP ${{ matrix.php }}"
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
+        experimental: [false]
         include:
           # Miraheze version - PHP 7.3
           - mw: 'REL1_36'
@@ -20,6 +22,7 @@ jobs:
             repo: 'miraheze'
             php: 7.4
             composer: v2
+            experimental: true
           # Latest stable MediaWiki
           - mw: 'REL1_36'
             repo: 'wikimedia'
@@ -30,6 +33,7 @@ jobs:
             repo: 'wikimedia'
             php: 7.3
             composer: v2
+            experimental: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

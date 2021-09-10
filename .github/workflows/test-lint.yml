@@ -1,18 +1,15 @@
-name: Continuous integration
+name: Linting
 
 on:
-  create:
   push:
+    branches: [ master ]
   pull_request:
-    types: [opened, synchronize]
+    branches: [ master ]
 
 jobs:
   test:
     name: Test and lint
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-versions: ['7.3', '7.4']
     steps:
     - uses: actions/checkout@v2
       
@@ -21,8 +18,6 @@ jobs:
         composer validate
         npm install --save-dev
         composer install --prefer-dist --no-progress
-        sudo pecl install ast
-        echo "extension=ast" | sudo tee -a /etc/php/8.0/cli/php.ini
 
     # Bypass the phpcbf non-standard exit code  
     - name: Check PHP
@@ -34,21 +29,6 @@ jobs:
     - name: Check i18n
       run: |
         npm run lint:i18n
-
-    - name: Clone MediaWiki
-      run: |
-        git clone https://github.com/miraheze/mediawiki.git --depth=1
-        cd mediawiki
-        git submodule update --init extensions/CentralAuth
-        git submodule update --init extensions/BlogPage
-        git submodule update --init extensions/SimpleBlogPage
-        git submodule update --init extensions/SocialProfile
-        composer install --no-dev
-        cd ..
-
-    - name: Run phan
-      run: |
-        composer phan
 
     # Only patch code when it is a push event
     - name: Push the changes
@@ -69,16 +49,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ always() && github.repository_owner == 'miraheze' && ( github.ref	== 'refs/heads/master' || github.event_name == 'pull_request' ) }}
     steps:
-      - name: succeeded
-        uses: technote-space/workflow-conclusion-action@v2
-      - uses: rectalogic/notify-irc@v1
-        if: env.WORKFLOW_CONCLUSION == 'success'
-        with:
-          channel: "#miraheze-sre"
-          server: "irc.libera.chat"
-          nickname: miraheze-github
-          message: ${{ github.repository }} - ${{ github.actor }} the build passed.
-          sasl_password: ${{ secrets.IRC_MIRAHEZEBOTS }}
       - name: failed
         uses: technote-space/workflow-conclusion-action@v2
       - uses: rectalogic/notify-irc@v1

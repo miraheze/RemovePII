@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hedda"
+		]
+	},
+	"removepii-desc": "Kişisel tanımlanabilir bilgilerin kaldırılmasını işlemek için Özel:RastgeleİşaretOluştur ve Özel:KTBkaldır adlı özel sayfaları oluşturur.",
+	"removepii-extensionname": "KTBkaldır",
+	"generaterandomhash": "Rastgele İşaret Oluştur",
+	"removepii": "KTBkaldır",
+	"action-generate-random-hash": "rastgele işaret oluştur",
+	"action-handle-pii": "kişisel tanımlanabilir bilgileri işle/kaldır",
+	"right-generate-random-hash": "rastgele kullanıcı adı işaretleri oluştur",
+	"right-handle-pii": "Kişisel tanımlanabilir bilgileri işle/kaldır",
+	"removepii-hash-length-help": "Oluşturulacak işaretlemenin içermesi gereken karakter sayısını girin. Min. 8, Maks. 32",
+	"removepii-hash-prefix-help": "İşaretleme oluşturmak için önek olarak kullanılacak uygun seçeneği açılır menüden seçin.",
+	"removepii-oldname-label": "Eski kullanıcı adı:",
+	"removepii-newname-label": "Yeni kullanıcı adı:",
+	"removepii-action-label": "Gerçekleştirmek istediğiniz eylemi seçin.",
+	"removepii-action-help": "Yeniden adlandırmalar, KTBkaldır'dan önce '''her zaman''' yapılmalıdır. RemovePII, kullanıcının genel hesabını da kilitleyecektir.",
+	"removepii-warning-irreversible": "'''Uyarı:''' KTBkaldır eylemini gerçekleştirmek üzeresiniz. Bu süreç geri döndürülemez. Lütfen, devam etmeden önce bilgilerin doğru olduğundan emin olun.",
+	"removepii-wiki-disabled": "KTBkaldır, bu viki'de devre dışı bırakılmıştır. Şu anda yalnızca merkezi bir viki'de etkinleştirilecek şekilde yapılandırılmıştır. Oradan başlatmalısın.",
+	"removepii-success": "Başarıyla gönderildi.",
+	"removepii-centralauth-notinstalled": "CentralAuth uzantısı yüklü değil.",
+	"removepii-log-name": "KTBkaldır günlüğü",
+	"removepii-log-header": "Bu, tüm KTBkaldır eylemlerinin temel günlüğüdür.",
+	"logentry-removepii-action": "$1, bir kullanıcıdan kişisel tanımlanabilir bilgileri kaldırdı."
+}

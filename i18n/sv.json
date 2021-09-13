@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Sabelöga"
+		]
+	},
+	"removepii-desc": "Skapar specialsidorna, Special:GenerateRandomHash och Special:RemovePII för att kunna ta bort identifierbar personlig information.",
+	"generaterandomhash": "Generera slumpmässig hash",
+	"removepii": "RemovePII",
+	"action-generate-random-hash": "generera en slumpmässig hash",
+	"action-handle-pii": "hantera/ta bort identifierbar personlig information",
+	"right-generate-random-hash": "Generera slumpmässig anvndarnamnhash",
+	"right-handle-pii": "Hantera/ta bort identifierbar personlig information",
+	"removepii-hash-length-help": "Skriv in antalet tecken den genererade hashen borde innehålla. Min. 8, max. 32",
+	"removepii-hash-prefix-help": "Välj ett lämpligt alternativ från rullgardinsmenyn som ska användas av prefixet för att generera hash.",
+	"removepii-oldname-label": "Gammalt användarnamn:",
+	"removepii-newname-label": "Nytt användarnamn:",
+	"removepii-action-label": "Välj åtgärden du vill utföra.",
+	"removepii-action-help": "Du bör '''alltid''' byta namn innan RemovePII. RemovePII kommer också låsa användarens globala konto.",
+	"removepii-warning-irreversible": "'''Varning''': du håller på att utföra RemovePII-åtgärden. Denna process kan inte göras ogjord. Se till att du har rätt information innan du fortsätter.",
+	"removepii-wiki-disabled": "RemovePII har avaktiverats på denna wiki. Den är för tillfället endast konfigurerad på den centrala wikin. Du måste göra detta där.",
+	"removepii-success": "Inskickad.",
+	"removepii-centralauth-notinstalled": "Tillägget CentralAuth har inte installerats.",
+	"removepii-log-name": "RemovePII-logg",
+	"removepii-log-header": "Detta är en grundlogg för alla RemovePII-åtgärder.",
+	"logentry-removepii-action": "$1 tog bort identifierbar personlig information från en användare."
+}

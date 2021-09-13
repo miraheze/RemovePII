@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ykhwong"
+		]
+	},
+	"generaterandomhash": "무작위 해시 생성",
+	"action-generate-random-hash": "무작위 해시 생성",
+	"right-generate-random-hash": "무작위 사용자 이름 해시를 생성합니다",
+	"removepii-hash-prefix-help": "드롭다운에서 해시 생성에 접두사로 사용할 적절한 옵션을 선택하십시오.",
+	"removepii-oldname-label": "기존 사용자 이름:",
+	"removepii-newname-label": "새 사용자 이름:",
+	"removepii-action-label": "수행하려는 동작을 선택하십시오.",
+	"removepii-success": "성공적으로 제출했습니다.",
+	"removepii-centralauth-notinstalled": "CentralAuth 확장 기능이 설치되어 있지 않습니다."
+}

@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"Rail"
+		]
+	},
+	"removepii-desc": "Dodaje strony specjalne „GenerateRandomHash” oraz „RemovePII”, przy których użyciu możliwe jest usunięcie osobistych informacji użytkowników",
+	"removepii-extensionname": "Usuwanie poufnych informacji",
+	"generaterandomhash": "Generowanie losowych hashy",
+	"removepii": "Usuwanie poufnych informacji",
+	"action-generate-random-hash": "generowania losowych hashy",
+	"action-handle-pii": "usuwania poufnych informacji użytkowników",
+	"right-generate-random-hash": "Generowanie losowych hashy nazw użytkowników",
+	"right-handle-pii": "Usuwanie poufnych informacji użytkowników",
+	"removepii-hash-length-help": "Wprowadź liczbę znaków, jaką powinien zawierać wygenerowany hash. Min., 8, max. 32.",
+	"removepii-hash-prefix-help": "Wybierz prawidłową opcję generowania prefiksu lub hasha z listy.",
+	"removepii-oldname-label": "Stara nazwa użytkownika:",
+	"removepii-newname-label": "Nowa nazwa użytkownika:",
+	"removepii-action-label": "Wybierz operację, którą chcesz wykonać.",
+	"removepii-action-help": "Zmiana nazwy użytkownika powinna '''zawsze''' mieć miejsce przez usuwaniem poufnych informacji. Ten proces zamknie także globalne konto użytkownika.",
+	"removepii-warning-irreversible": "'''Uwaga:''' zamierasz usunąć poufne informacje użytkownika. Tego procesu nie można cofnąć. Upewnij się, że podane informacje są poprawne, zanim przejdziesz dalej.",
+	"removepii-wiki-disabled": "Funkcja usuwania poufnych informacji została wyłączona na tej wiki. Obecna konfiguracja pozwala na uruchomienie jej wyłącznie z centralnej wiki.",
+	"removepii-success": "Przesłano pomyślnie.",
+	"removepii-centralauth-notinstalled": "Rozszerzenie CentralAuth nie jest zainstalowane.",
+	"removepii-log-name": "Rejestr usuwania poufnych informacji",
+	"removepii-log-header": "To jest rejestr akcji związanych z usuwaniem poufnych informacji użytkowników.",
+	"logentry-removepii-action": "$1 usunął poufne informacje użytkownika."
+}

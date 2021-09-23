@@ -313,10 +313,10 @@ jobs:
               branch=$(echo $dep | rev | cut -sd'|' -f1 | rev)
 
               if [ $repository == $branch ]; then
-                unset repository
+                repository=""
               fi
 
-              git clone --recurse-submodules -b "${branch:-${MEDIAWIKI_VERSION}}" --depth 1 "${repository:-https://gerrit.wikimedia.org/r/${dep}}" src/"$(echo $dependency | cut -d'/' -f2,3)"
+              git clone --recurse-submodules -b "${branch:-${MEDIAWIKI_VERSION}}" --depth 1 "${repository:-https://gerrit.wikimedia.org/r/${dependency}}" src/"$(echo $dependency | cut -d'/' -f2,3)"
             done
           fi
           git -C src/ log -n 1 --format="%H"

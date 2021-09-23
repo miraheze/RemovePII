@@ -4,9 +4,6 @@ CentralAuth:
 SocialProfile:
   branch: master
   repo: auto
-BlogPage:
-  branch: master
-  repo: auto
 SimpleBlogPage:
   branch: master
   repo: https://github.com/Universal-Omega/SimpleBlogPage

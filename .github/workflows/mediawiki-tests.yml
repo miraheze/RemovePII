@@ -319,6 +319,20 @@ jobs:
               git clone --recurse-submodules -b "${branch:-${MEDIAWIKI_VERSION}}" --depth 1 "${repository:-https://gerrit.wikimedia.org/r/${dependency}}" src/"$(echo $dependency | cut -d'/' -f2,3)"
             done
           fi
+
+          cd src/includes
+
+          if [ -e "$GITHUB_WORKSPACE"/.github/workflows/setup-fix.php ] && [ "${MEDIAWIKI_VERSION}" == 'REL1_36' ]; then
+            rm Setup.php
+            mv "$GITHUB_WORKSPACE"/.github/workflows/setup-fix.php Setup.php
+          fi
+
+          if [ -e "$GITHUB_WORKSPACE"/.github/workflows/globals.php ]; then
+            echo 'require_once __DIR__ . "/../extensions/${{ github.event.repository.name }}/.github/workflows/globals.php";' >> DevelopmentSettings.php
+          fi
+
+          cd ../..
+
           git -C src/ log -n 1 --format="%H"
 
       - name: Cache dependencies (composer and npm)

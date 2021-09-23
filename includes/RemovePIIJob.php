@@ -438,17 +438,17 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			);
 		}
 
-		if ( ExtensionRegistry::getInstance()->isLoaded( 'BlogPage' ) ) {
-			array_push( $namespaces,
-				NS_BLOG,
-				NS_BLOG_TALK
-			);
-		}
-
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'SimpleBlogPage' ) ) {
 			array_push( $namespaces,
 				NS_USER_BLOG,
 				NS_USER_BLOG_TALK
+			);
+		}
+
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'BlogPage' ) ) {
+			array_push( $namespaces,
+				500 /* NS_BLOG */,
+				501 /* NS_BLOG_TALK */
 			);
 		}
 

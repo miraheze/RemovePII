@@ -55,10 +55,10 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->checkPermissions();
 
 		if (
-			$this->config->get( 'RemovePIIAllowedStartingWikis' ) &&
+			$this->config->get( 'RemovePIIAllowedWikis' ) &&
 			!in_array(
 				WikiMap::getCurrentWikiId(),
-				$this->config->get( 'RemovePIIAllowedStartingWikis' )
+				$this->config->get( 'RemovePIIAllowedWikis' )
 			)
 		) {
 			return $this->getOutput()->addHTML(

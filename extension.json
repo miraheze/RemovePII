@@ -60,7 +60,7 @@
 		}
 	},
 	"config": {
-		"RemovePIIAllowedStartingWikis": {
+		"RemovePIIAllowedWikis": {
 			"value": [],
 			"description": "Set to an array of database names of wikis which RemovePII can be initiated from. Wikis not in this array will have Special:RemovePII disabled. Leave it empty to enable it on all wikis."
 		},

@@ -4,13 +4,22 @@
 			"Ykhwong"
 		]
 	},
+	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "무작위 해시 생성",
+	"removepii": "RemovePII",
 	"action-generate-random-hash": "무작위 해시 생성",
+	"action-handle-pii": "개인 식별 정보 처리/제거",
 	"right-generate-random-hash": "무작위 사용자 이름 해시를 생성합니다",
+	"right-handle-pii": "개인 식별 정보 처리/제거",
 	"removepii-hash-prefix-help": "드롭다운에서 해시 생성에 접두사로 사용할 적절한 옵션을 선택하십시오.",
 	"removepii-oldname-label": "기존 사용자 이름:",
 	"removepii-newname-label": "새 사용자 이름:",
 	"removepii-action-label": "수행하려는 동작을 선택하십시오.",
+	"removepii-action-help": "이름 변경은 '''무조건''' RemovePII 이전에 수행되어야 합니다. RemovePII은 사용자의 통합 계정 또한 잠급니다.",
+	"removepii-wiki-disabled": "RemovePII이 이 위키에서 비활성화되어 있습니다. 현재 특정 위키에서만 활성화되도록 구성되어 있습니다. 그곳에서 시작해야 합니다.",
 	"removepii-success": "성공적으로 제출했습니다.",
-	"removepii-centralauth-notinstalled": "CentralAuth 확장 기능이 설치되어 있지 않습니다."
+	"removepii-centralauth-notinstalled": "CentralAuth 확장 기능이 설치되어 있지 않습니다.",
+	"removepii-log-name": "RemovePII 기록",
+	"removepii-log-header": "다음은 모든 RemovePII 동작의 기본 기록입니다.",
+	"logentry-removepii-action": "$1님이 사용자로부터 개인 식별 정보를 제거했습니다."
 }

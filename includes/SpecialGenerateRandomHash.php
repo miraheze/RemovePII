@@ -54,7 +54,9 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
 
-		$generatedHash = ( $formData['prefix'] ?? $this->config->get( 'RemovePIIHashPrefix' ) ) . substr( sha1( random_bytes( 10 ) ), 0, $formData['length'] );
+		$hashPrefix = $formData['prefix'] ?? $this->config->get( 'RemovePIIHashPrefix' );
+		$generatedHash = $hashPrefix . substr( sha1( random_bytes( 10 ) ), 0, $formData['length'] );
+
 		$out->addHTML( Html::successBox( $generatedHash ) );
 
 		return false;

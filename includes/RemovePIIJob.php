@@ -452,9 +452,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'BlogPage' ) ) {
+			/* NS_BLOG and NS_BLOG_TALK */
 			array_push( $namespaces,
-				500 /* NS_BLOG */,
-				501 /* NS_BLOG_TALK */
+				500,
+				501
 			);
 		}
 
@@ -481,7 +482,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
-				$this->setLastError( "Failed to delete user {$userOldName} page, likely does not have a user page. Error: {$errorMessage}" );
+				$this->setLastError( "Failed to delete user {$userOldName} page. Error: {$errorMessage}" );
 			}
 		}
 

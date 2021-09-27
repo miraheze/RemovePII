@@ -10,5 +10,6 @@ class RemovePIIGlobalRenameUserLogger extends GlobalRenameUserLogger {
 	 * @param string $newName
 	 * @param array $options
 	 */
-	public function log( $oldName, $newName, $options ) {}
+	public function log( $oldName, $newName, $options ) {
+	}
 }

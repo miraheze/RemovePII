@@ -172,7 +172,6 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			$session = $this->getContext()->exportSession();
 
-
 			if ( class_exists( GlobalRenameUser::class ) ) {
 				$globalRenameUserClass = GlobalRenameUser::class;
 				$globalRenameUserDatabaseUpdatesClass = GlobalRenameUserDatabaseUpdates::class;

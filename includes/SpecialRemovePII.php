@@ -145,10 +145,13 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		if ( class_exists( GlobalRenameUserValidator::class ) ) {
-			$validator = new GlobalRenameUserValidator();
-		} else {
+		// @phan-suppress-next-line PhanUndeclaredClassReference
+		if ( class_exists( \GlobalRenameUserValidator::class ) ) {
+			// @phan-suppress-next-line PhanUndeclaredClassMethod
 			$validator = new \GlobalRenameUserValidator();
+		} else {
+			// @phan-suppress-next-line PhanUndeclaredClassMethod
+			$validator = new GlobalRenameUserValidator();
 		}
 
 		return $validator->validate( $oldUser, $newUser );
@@ -172,14 +175,25 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			$session = $this->getContext()->exportSession();
 
-			if ( class_exists( GlobalRenameUser::class ) ) {
-				$globalRenameUserClass = GlobalRenameUser::class;
-				$globalRenameUserDatabaseUpdatesClass = GlobalRenameUserDatabaseUpdates::class;
-				$globalRenameUserStatusClass = GlobalRenameUserStatus::class;
-			} else {
+			// @phan-suppress-next-line PhanUndeclaredClassReference
+			if ( class_exists( \GlobalRenameUser::class ) ) {
+				// @phan-suppress-next-line PhanUndeclaredClassReference
 				$globalRenameUserClass = \GlobalRenameUser::class;
+
+				// @phan-suppress-next-line PhanUndeclaredClassReference
 				$globalRenameUserDatabaseUpdatesClass = \GlobalRenameUserDatabaseUpdates::class;
+
+				// @phan-suppress-next-line PhanUndeclaredClassReference
 				$globalRenameUserStatusClass = \GlobalRenameUserStatus::class;
+			} else {
+				// @phan-suppress-next-line PhanUndeclaredClassReference
+				$globalRenameUserClass = GlobalRenameUser::class;
+
+				// @phan-suppress-next-line PhanUndeclaredClassReference
+				$globalRenameUserDatabaseUpdatesClass = GlobalRenameUserDatabaseUpdates::class;
+
+				// @phan-suppress-next-line PhanUndeclaredClassReference
+				$globalRenameUserStatusClass = GlobalRenameUserStatus::class;
 			}
 
 			$globalRenameUser = new $globalRenameUserClass(

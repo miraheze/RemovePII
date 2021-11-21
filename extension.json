@@ -54,6 +54,7 @@
 			"class": "Miraheze\\RemovePII\\SpecialRemovePII",
 			"services": [
 				"ConfigFactory",
+				"JobQueueGroupFactory",
 				"TitleFactory",
 				"UserFactory"
 			]

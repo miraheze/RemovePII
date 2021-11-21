@@ -2,13 +2,7 @@
 
 namespace Miraheze\RemovePII;
 
-use GlobalRenameUserLogger;
-
-// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
-@class_alias(
-	'MediaWiki\\Extension\\CentralAuth\\GlobalRename\\GlobalRenameUserLogger',
-	'GlobalRenameUserLogger'
-);
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserLogger;
 
 class RemovePIIGlobalRenameUserLogger extends GlobalRenameUserLogger {
 	/**

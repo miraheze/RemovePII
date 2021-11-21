@@ -7,13 +7,13 @@ use Config;
 use ConfigFactory;
 use ExtensionRegistry;
 use FormSpecialPage;
-use GlobalRenameUser;
-use GlobalRenameUserDatabaseUpdates;
-use GlobalRenameUserStatus;
-use GlobalRenameUserValidator;
 use Html;
 use JobQueueGroup;
 use ManualLogEntry;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
 use MediaWiki\User\UserFactory;
 use Status;
 use TitleFactory;
@@ -145,7 +145,12 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		$validator = new GlobalRenameUserValidator();
+		if ( class_exists( GlobalRenameUserValidator::class ) {
+			$validator = new GlobalRenameUserValidator();
+		} else {
+			$validator = new \GlobalRenameUserValidator();
+		}
+
 		return $validator->validate( $oldUser, $newUser );
 	}
 
@@ -166,15 +171,27 @@ class SpecialRemovePII extends FormSpecialPage {
 			$newUser = $this->userFactory->newFromName( $formData['newname'], UserFactory::RIGOR_CREATABLE );
 
 			$session = $this->getContext()->exportSession();
-			$globalRenameUser = new GlobalRenameUser(
+
+
+			if ( class_exists( GlobalRenameUser::class ) {
+				$globalRenameUserClass = GlobalRenameUser::class;
+				$globalRenameUserDatabaseUpdatesClass = GlobalRenameUserDatabaseUpdates::class;
+				$globalRenameUserStatusClass = GlobalRenameUserStatus::class;
+			} else {
+				$globalRenameUserClass = \GlobalRenameUser::class;
+				$globalRenameUserDatabaseUpdatesClass = \GlobalRenameUserDatabaseUpdates::class;
+				$globalRenameUserStatusClass = \GlobalRenameUserStatus::class;
+			}
+
+			$globalRenameUser = new $globalRenameUserClass(
 				$this->getUser(),
 				$oldUser,
 				CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
 				CentralAuthUser::getInstance( $newUser ),
-				new GlobalRenameUserStatus( $newUser->getName() ),
+				new $globalRenameUserStatusClass( $newUser->getName() ),
 				'JobQueueGroup::singleton',
-				new GlobalRenameUserDatabaseUpdates(),
+				new $globalRenameUserDatabaseUpdatesClass(),
 				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);

@@ -34,6 +34,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 	/**
 	 * @param ConfigFactory $configFactory
+	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
 	 */

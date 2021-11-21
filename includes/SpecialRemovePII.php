@@ -152,7 +152,6 @@ class SpecialRemovePII extends FormSpecialPage {
 		}
 
 		$validator = new GlobalRenameUserValidator();
-
 		return $validator->validate( $oldUser, $newUser );
 	}
 

@@ -145,7 +145,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		if ( class_exists( GlobalRenameUserValidator::class ) {
+		if ( class_exists( GlobalRenameUserValidator::class ) ) {
 			$validator = new GlobalRenameUserValidator();
 		} else {
 			$validator = new \GlobalRenameUserValidator();
@@ -173,7 +173,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			$session = $this->getContext()->exportSession();
 
 
-			if ( class_exists( GlobalRenameUser::class ) {
+			if ( class_exists( GlobalRenameUser::class ) ) {
 				$globalRenameUserClass = GlobalRenameUser::class;
 				$globalRenameUserDatabaseUpdatesClass = GlobalRenameUserDatabaseUpdates::class;
 				$globalRenameUserStatusClass = GlobalRenameUserStatus::class;

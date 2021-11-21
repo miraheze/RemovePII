@@ -145,14 +145,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		// @phan-suppress-next-line PhanUndeclaredClassReference
-		if ( class_exists( \GlobalRenameUserValidator::class ) ) {
-			// @phan-suppress-next-line PhanUndeclaredClassMethod
-			$validator = new \GlobalRenameUserValidator();
-		} else {
-			// @phan-suppress-next-line PhanUndeclaredClassMethod
-			$validator = new GlobalRenameUserValidator();
-		}
+		$validator = new GlobalRenameUserValidator();
 
 		return $validator->validate( $oldUser, $newUser );
 	}
@@ -174,37 +167,15 @@ class SpecialRemovePII extends FormSpecialPage {
 			$newUser = $this->userFactory->newFromName( $formData['newname'], UserFactory::RIGOR_CREATABLE );
 
 			$session = $this->getContext()->exportSession();
-
-			// @phan-suppress-next-line PhanUndeclaredClassReference
-			if ( class_exists( \GlobalRenameUser::class ) ) {
-				// @phan-suppress-next-line PhanUndeclaredClassReference
-				$globalRenameUserClass = \GlobalRenameUser::class;
-
-				// @phan-suppress-next-line PhanUndeclaredClassReference
-				$globalRenameUserDatabaseUpdatesClass = \GlobalRenameUserDatabaseUpdates::class;
-
-				// @phan-suppress-next-line PhanUndeclaredClassReference
-				$globalRenameUserStatusClass = \GlobalRenameUserStatus::class;
-			} else {
-				// @phan-suppress-next-line PhanUndeclaredClassReference
-				$globalRenameUserClass = GlobalRenameUser::class;
-
-				// @phan-suppress-next-line PhanUndeclaredClassReference
-				$globalRenameUserDatabaseUpdatesClass = GlobalRenameUserDatabaseUpdates::class;
-
-				// @phan-suppress-next-line PhanUndeclaredClassReference
-				$globalRenameUserStatusClass = GlobalRenameUserStatus::class;
-			}
-
-			$globalRenameUser = new $globalRenameUserClass(
+			$globalRenameUser = new GlobalRenameUser(
 				$this->getUser(),
 				$oldUser,
 				CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
 				CentralAuthUser::getInstance( $newUser ),
-				new $globalRenameUserStatusClass( $newUser->getName() ),
+				new GlobalRenameUserStatus( $newUser->getName() ),
 				'JobQueueGroup::singleton',
-				new $globalRenameUserDatabaseUpdatesClass(),
+				new GlobalRenameUserDatabaseUpdates(),
 				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);

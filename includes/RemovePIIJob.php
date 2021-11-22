@@ -471,14 +471,17 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			__METHOD__
 		);
 
-		$error = '';
 		foreach ( $rows as $row ) {
 			$title = $titleFactory->newFromRow( $row );
 
 			$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
-			$userPage = $wikiPageFactory->newFromTitle( $title );
+			$deletePageFactory = MediaWikiServices::getInstance()->getDeletePageFactory();
+			$deletePage = $deletePageFactory->newDeletePage(
+				$wikiPageFactory->newFromTitle( $title ),
+				$user
+			);
 
-			$status = $userPage->doDeleteArticleReal( '', $user, true, null, $error, null, [], 'delete', true );
+			$status = $deletePage->setSuppress( true )->forceImmediate( true )->deleteIfAllowed( '' );
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );

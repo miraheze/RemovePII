@@ -7,13 +7,13 @@ use Config;
 use ConfigFactory;
 use ExtensionRegistry;
 use FormSpecialPage;
-use GlobalRenameUser;
-use GlobalRenameUserDatabaseUpdates;
-use GlobalRenameUserStatus;
-use GlobalRenameUserValidator;
 use Html;
-use JobQueueGroup;
 use ManualLogEntry;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
+use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\User\UserFactory;
 use Status;
 use TitleFactory;
@@ -23,6 +23,9 @@ class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */
 	private $config;
 
+	/** @var JobQueueGroupFactory */
+	private $jobQueueGroupFactory;
+
 	/** @var TitleFactory */
 	private $titleFactory;
 
@@ -31,17 +34,20 @@ class SpecialRemovePII extends FormSpecialPage {
 
 	/**
 	 * @param ConfigFactory $configFactory
+	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
 		ConfigFactory $configFactory,
+		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
 		UserFactory $userFactory
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
+		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->titleFactory = $titleFactory;
 		$this->userFactory = $userFactory;
 	}
@@ -173,7 +179,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				$newUser,
 				CentralAuthUser::getInstance( $newUser ),
 				new GlobalRenameUserStatus( $newUser->getName() ),
-				'JobQueueGroup::singleton',
+				[ $this->jobQueueGroupFactory, 'makeJobQueueGroup' ],
 				new GlobalRenameUserDatabaseUpdates(),
 				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 				$session
@@ -234,7 +240,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			// Run RemovePIIJob on all attached wikis
 			foreach ( $newCentral->listAttached() as $database ) {
-				JobQueueGroup::singleton( $database )->push(
+				$this->jobQueueGroupFactory->makeJobQueueGroup( $database )->push(
 					new RemovePIIJob( $jobParams )
 				);
 			}

@@ -2,7 +2,7 @@
 
 namespace Miraheze\RemovePII;
 
-use GlobalRenameUserLogger;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserLogger;
 
 class RemovePIIGlobalRenameUserLogger extends GlobalRenameUserLogger {
 	/**

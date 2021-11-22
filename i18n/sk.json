@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yardom78"
+		]
+	},
+	"removepii-desc": "Vytvorí špeciálne stránky Special:GenerateRandomHash a Special:RemovePII pre zvládnutie odstránenie osobných identifikačných informácií.",
+	"removepii-extensionname": "RemovePII",
+	"generaterandomhash": "Vygenerovať Náhodný Hash",
+	"removepii": "RemovePII",
+	"action-generate-random-hash": "vygenerovať náhodný hash",
+	"action-handle-pii": "zvládnuť/odstrániť osobné identifikačné informácie",
+	"right-generate-random-hash": "Vygenerovať náhodné hashe používateľských mien",
+	"right-handle-pii": "Zvládnuť/odstrániť osobné identifikačné informácie",
+	"removepii-hash-length-help": "Zadajte počet znakov, ktoré má vygenerovaný hash obsahovať. Minimálne 8 a maximálne 32.",
+	"removepii-hash-prefix-help": "Vyberte zo zoznamu vhodnú možnosť pre použitie predpony pre vygenerovanie hashu.",
+	"removepii-oldname-label": "Staré používateľské meno:",
+	"removepii-newname-label": "Nové používateľské meno:",
+	"removepii-action-label": "Vyberte akciu, ktorú chcete vykonať.",
+	"removepii-action-help": "Premenovanie by malo byť vždy urobené pred RemovePII. RemovePII uzamkne globálny účet používateľa.",
+	"removepii-warning-irreversible": "\"Upozornenie:\" chystáte sa vykonať akciu RemovePII. Tento proces sa nedá vrátiť. Uistite sa, že všetky informácie sú správne.",
+	"removepii-wiki-disabled": "RemovePII je na tejto wiki vypnuté. Je nastavené na použitie len na centrálne wiki. Musíte to vykonať odtiaľ.",
+	"removepii-success": "Úspešne odoslané.",
+	"removepii-centralauth-notinstalled": "Rozšírenie CentralAuth nie je nainštalované.",
+	"removepii-log-name": "Denník RemovePII",
+	"removepii-log-header": "Toto je základný denník všetkých akcií RemovePII.",
+	"logentry-removepii-action": "$1 odstránilo osobné identifikačné informácie používateľa."
+}

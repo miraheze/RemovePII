@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"RYOUMA1117"
+			"RYOUMA1117",
+			"しぃ"
 		]
 	},
 	"removepii-desc": "個人を特定できる情報の削除を処理するための特別なページ、Special:GenerateRandomHashおよびSpecial:RemovePIIを作成します。",
@@ -17,9 +18,9 @@
 	"removepii-oldname-label": "古い利用者名：",
 	"removepii-newname-label": "新しい利用者名:",
 	"removepii-action-label": "実行するアクションを選択します。",
-	"removepii-action-help": "名前の変更は、RemovePIIの前に「常に」行う必要があります。\nRemovePIIは、ユーザーのグローバルアカウントもロックします。",
-	"removepii-warning-irreversible": "'''警告''':RemovePIIアクションを実行しようとしています。\nこのプロセスは元に戻せません。先に進む前に情報が正しいことを確認してください。",
-	"removepii-wiki-disabled": "このWikiではRemovePIIが無効になっています。\n現在、中央のWikiでのみ有効になるように構成されています。\nそこから開始する必要があります。",
+	"removepii-action-help": "名前の変更は、RemovePIIの前に「常に」行う必要があります。RemovePIIは、ユーザーのグローバルアカウントもロックします。",
+	"removepii-warning-irreversible": "'''警告''':RemovePIIアクションを実行しようとしています。このプロセスは元に戻せません。先に進む前に情報が正しいことを確認してください。",
+	"removepii-wiki-disabled": "このWikiではRemovePIIが無効になっています。現在、中央のWikiでのみ有効になるように構成されています。そこから開始する必要があります。",
 	"removepii-success": "送信が完了しました。",
 	"removepii-centralauth-notinstalled": "CentralAuth拡張機能がインストールされていません。",
 	"removepii-log-name": "RemovePIIのログ",

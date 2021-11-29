@@ -20,7 +20,7 @@
 	"removepii-action-label": "Seleccione la acción que deseas realizar.",
 	"removepii-action-help": "Los cambios de nombre deben hacerse '''siempre''' antes de RemovePII. RemovePII también bloqueará la cuenta global del usuario.",
 	"removepii-warning-irreversible": "'''Advertencia:''' estás a punto de realizar la acción RemovePII. Este proceso es irreversible. Asegúrate de tener la información correcta antes de continuar.",
-	"removepii-wiki-disabled": "RemovePII ha sido deshabilitado en este wiki. Actualmente está configurado para habilitarse solo en una wiki central. Debes iniciarlo desde allí.",
+	"removepii-wiki-disabled": "RemovePII ha sido deshabilitado en esta wiki. Actualmente está configurado para habilitarse solo en una wiki central. Debes iniciarlo desde allí.",
 	"removepii-success": "Envío exitoso.",
 	"removepii-centralauth-notinstalled": "La extensión CentralAuth no está instalada.",
 	"removepii-log-name": "Registro de RemovePII",

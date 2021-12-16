@@ -1,0 +1,25 @@
+{
+	"@metadata": {
+		"authors": [
+			"MITO",
+			"Veikk0.ma"
+		]
+	},
+	"removepii-desc": "Luo toimintosivut Special:GenerateRandomHash ja Special:RemovePII henkilökohtaisen tunnistetiedon poistamista varten.",
+	"generaterandomhash": "Luo satunnainen tiiviste",
+	"action-generate-random-hash": "luoda satunnaista tiivistettä",
+	"action-handle-pii": "käsitellä/poistaa henkilökohtaisia tunnistetietoja",
+	"right-generate-random-hash": "Luoda satunnaisia käyttäjänimitiivisteitä",
+	"right-handle-pii": "Käsitellä/poistaa henkilökohtaisia tunnistetietoja",
+	"removepii-hash-length-help": "Syötä kuinka monta merkkiä luodussa tiivisteessä tulee olla. Vähintään 8, enintään 32.",
+	"removepii-oldname-label": "Vanha käyttäjänimi:",
+	"removepii-newname-label": "Uusi käyttäjänimi:",
+	"removepii-action-label": "Valitse toiminto, jonka haluat suorittaa.",
+	"removepii-action-help": "Uudelleennimeäminen tulee '''aina''' tehdä ennen RemovePII-toimintoa. RemovePII myös lukitsee käyttäjän globaalin tilin.",
+	"removepii-warning-irreversible": "'''Varoitus:''' olet suorittamassa RemovePII-toiminnon. Tätä prosessia ei voi peruuttaa. Varmista että syöttämäsi tiedot ovat oikein ennen kuin jatkat.",
+	"removepii-wiki-disabled": "RemovePII on poistettu käytöstä tässä wikissä. Se on tällä hetkellä käytössä vain keskuswikissä. Sinun tulee käynnistää se keskuswikin kautta.",
+	"removepii-success": "Lähetettiin onnistuneesti.",
+	"removepii-centralauth-notinstalled": "CentralAuth-laajennusta ei ole asennettu.",
+	"removepii-log-header": "Tämä on perusloki kaikista RemovePII-toiminnoista.",
+	"logentry-removepii-action": "$1 poisti käyttäjän henkilökohtaisia tunnistetietoja."
+}

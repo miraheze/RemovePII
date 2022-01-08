@@ -8,6 +8,7 @@ use ExtensionRegistry;
 use FormSpecialPage;
 use Html;
 use ManualLogEntry;
+use MediaWiki\Extension\CentralAuth\CentralAuthDatabaseManager;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
@@ -20,6 +21,9 @@ use TitleFactory;
 use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {
+	/** @var CentralAuthDatabaseManager */
+	private $centralAuthDatabaseManager;
+
 	/** @var Config */
 	private $config;
 
@@ -36,6 +40,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	private $userFactory;
 
 	/**
+	 * @param CentralAuthDatabaseManager $centralAuthDatabaseManager
 	 * @param ConfigFactory $configFactory
 	 * @param GlobalRenameUserValidator $globalRenameUserValidator
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
@@ -43,6 +48,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
+		CentralAuthDatabaseManager $centralAuthDatabaseManager,
 		ConfigFactory $configFactory,
 		GlobalRenameUserValidator $globalRenameUserValidator,
 		JobQueueGroupFactory $jobQueueGroupFactory,
@@ -51,6 +57,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
+		$this->centralAuthDatabaseManager = $centralAuthDatabaseManager;
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
 		$this->globalRenameUserValidator = $globalRenameUserValidator;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
@@ -185,7 +192,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				CentralAuthUser::getInstance( $newUser ),
 				new GlobalRenameUserStatus( $newUser->getName() ),
 				[ $this->jobQueueGroupFactory, 'makeJobQueueGroup' ],
-				new GlobalRenameUserDatabaseUpdates(),
+				new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
 				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);

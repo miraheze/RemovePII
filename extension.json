@@ -8,7 +8,7 @@
 	"license-name": "GPL-3.0-or-later",
 	"type": "specialpage",
 	"requires": {
-		"MediaWiki": ">= 1.37.0"
+		"MediaWiki": ">= 1.38.0"
 	},
 	"MessagesDirs": {
 		"RemovePII": [
@@ -54,6 +54,7 @@
 			"class": "Miraheze\\RemovePII\\SpecialRemovePII",
 			"services": [
 				"ConfigFactory",
+				"CentralAuth.GlobalRenameUserValidator",
 				"JobQueueGroupFactory",
 				"TitleFactory",
 				"UserFactory"

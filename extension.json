@@ -53,6 +53,7 @@
 		"RemovePII": {
 			"class": "Miraheze\\RemovePII\\SpecialRemovePII",
 			"services": [
+				"CentralAuth.CentralAuthDatabaseManager",
 				"ConfigFactory",
 				"CentralAuth.GlobalRenameUserValidator",
 				"JobQueueGroupFactory",

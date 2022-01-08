@@ -2,7 +2,6 @@
 
 namespace Miraheze\RemovePII;
 
-use CentralAuthUser;
 use Config;
 use ConfigFactory;
 use ExtensionRegistry;
@@ -13,6 +12,7 @@ use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\User\UserFactory;
 use Status;
@@ -22,6 +22,9 @@ use WikiMap;
 class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */
 	private $config;
+
+	/** @var GlobalRenameUserValidator */
+	private $globalRenameUserValidator;
 
 	/** @var JobQueueGroupFactory */
 	private $jobQueueGroupFactory;
@@ -34,12 +37,14 @@ class SpecialRemovePII extends FormSpecialPage {
 
 	/**
 	 * @param ConfigFactory $configFactory
+	 * @param GlobalRenameUserValidator $globalRenameUserValidator
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
 		ConfigFactory $configFactory,
+		GlobalRenameUserValidator $globalRenameUserValidator,
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
 		UserFactory $userFactory
@@ -47,6 +52,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
+		$this->globalRenameUserValidator = $globalRenameUserValidator;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->titleFactory = $titleFactory;
 		$this->userFactory = $userFactory;
@@ -151,8 +157,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		$validator = new GlobalRenameUserValidator();
-		return $validator->validate( $oldUser, $newUser );
+		return $this->globalRenameUserValidator->validate( $oldUser, $newUser );
 	}
 
 	/**

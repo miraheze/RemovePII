@@ -278,7 +278,10 @@ class GeneratePII extends Maintenance {
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
 		$dbName = $config->get( 'DBname' );
 
-		file_put_contents( $this->getOption( 'directory' ) . "/{$username}-{$dbName}.json", json_encode( $output ), LOCK_EX );
+		file_put_contents(
+			$this->getOption( 'directory' ) . "/{$username}-{$dbName}.json",
+			json_encode( $output ), LOCK_EX
+		);
 
 		return true;
 	}

@@ -277,7 +277,7 @@ class GeneratePII extends Maintenance {
 
 		$output['email'] = $user->getEmail();
 		$output['realname'] = $user->getRealName();
-		file_put_contents( "/srv/mediawiki/cache/RemovePII/{$username}-{$dbName}", $output );
+		file_put_contents( "/srv/mediawiki/cache/RemovePII/{$username}-{$dbName}.json", json_encode( $output ), LOCK_EX );
 
 		return true;
 	}

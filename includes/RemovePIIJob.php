@@ -261,10 +261,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$output = [];
 		foreach ( $tableSelections as $key => $value ) {
-			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
+			if ( $dbr->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
-						$output[$key] = $dbw->select(
+						$output[$key] = $dbr->select(
 							$key,
 							$fields['fields'],
 							$fields['where'],

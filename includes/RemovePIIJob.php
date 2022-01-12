@@ -2,13 +2,10 @@
 
 namespace Miraheze\RemovePII;
 
-use CentralAuthUser;
 use Exception;
-use ExtensionRegistry;
 use GenericParameterJob;
 use Job;
 use MediaWiki\MediaWikiServices;
-use User;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 	/** @var string */

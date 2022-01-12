@@ -8,7 +8,8 @@ class GeneratePII extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-		$this->addOption( 'user', 'User', true, true );
+		$this->addOption( 'user', 'User to get PII for.', true, true );
+		$this->addOption( 'directory', 'Directory to place outputted JSON file of PII in.', true, true );
 	}
 
 	/**
@@ -20,10 +21,6 @@ class GeneratePII extends Maintenance {
 
 		$username = $this->getOption( 'user' );
 		$user = $userFactory->newFromName( $username );
-
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
-
-		$dbName = $config->get( 'DBname' );
 
 		if ( !$user ) {
 			$this->output( "User {$username} is not a valid name" );
@@ -277,7 +274,12 @@ class GeneratePII extends Maintenance {
 
 		$output['email'] = $user->getEmail();
 		$output['realname'] = $user->getRealName();
-		file_put_contents( "/srv/mediawiki/cache/RemovePII/{$username}-{$dbName}.json", json_encode( $output ), LOCK_EX );
+
+
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
+		$dbName = $config->get( 'DBname' );
+
+		file_put_contents( $this->getOption( 'directory' ) . "/{$username}-{$dbName}.json", json_encode( $output ), LOCK_EX );
 
 		return true;
 	}

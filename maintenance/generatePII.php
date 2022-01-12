@@ -263,7 +263,7 @@ class GeneratePII extends Maintenance {
 						);
 
 						foreach ( $res as $row ) {
-							$output[$key] = $row;
+							$output[] = $row;
 						}
 
 						$lbFactory->waitForReplication();

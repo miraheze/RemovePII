@@ -282,7 +282,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		$output['email'] = $user->getEmail();
-		file_put_contents( "/srv/mediawiki/cache/RemovePII/{$GLOBALS['DBname']}", $output );
+		$output['realname'] = $user->getRealName();
+		file_put_contents( "/srv/mediawiki/cache/RemovePII/{$username}-{$GLOBALS['DBname']}", $output );
 
 		return true;
 	}

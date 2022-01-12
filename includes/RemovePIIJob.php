@@ -29,7 +29,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$user = $userFactory->newFromName( $this->username );
 
-		$username = $user->getName();
+		$username = $this->username;
 
 		if ( !$user ) {
 			$this->setLastError( "User {$username} is not a valid name" );

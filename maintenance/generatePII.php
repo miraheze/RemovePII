@@ -255,12 +255,16 @@ class GeneratePII extends Maintenance {
 			if ( $dbr->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
-						$output[$key] = $dbr->select(
+						$res = $dbr->select(
 							$key,
 							$fields['fields'],
 							$fields['where'],
 							__METHOD__
 						);
+
+						foreach ( $res as $row ) {
+							$output[$key] = $row;
+						}
 
 						$lbFactory->waitForReplication();
 					} catch ( Exception $e ) {

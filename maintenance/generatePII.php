@@ -1,6 +1,6 @@
 <?php
 
-require_once( __DIR__ . '/../../../maintenance/Maintenance.php' );
+require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 
 use MediaWiki\MediaWikiServices;
 

@@ -275,7 +275,6 @@ class GeneratePII extends Maintenance {
 		$output['email'] = $user->getEmail();
 		$output['realname'] = $user->getRealName();
 
-
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
 		$dbName = $config->get( 'DBname' );
 

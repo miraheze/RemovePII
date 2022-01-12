@@ -23,7 +23,7 @@ class GeneratePII extends Maintenance {
 
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
 
-		$dbName = $config->get( 'DBname' )
+		$dbName = $config->get( 'DBname' );
 
 		if ( !$user ) {
 			$this->output( "User {$username} is not a valid name" );

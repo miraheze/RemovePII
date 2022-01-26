@@ -287,10 +287,7 @@ class GeneratePII extends Maintenance {
 		$output['realname'] = $user->getRealName();
 		$output['gender'] = $genderCache->getGenderOf( $username );
 
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
-		$dbName = $config->get( 'DBname' );
-
-		$file = fopen( $this->getOption( 'directory' ) . "/{$username}-{$dbName}.csv", 'w' );
+		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'w' );
 
 		foreach ( $output as $fields ) {
 			fputcsv( $file, $fields );

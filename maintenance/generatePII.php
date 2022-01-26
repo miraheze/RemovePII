@@ -24,6 +24,9 @@ class GeneratePII extends Maintenance {
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
+		$dbName = $config->get( 'DBname' );
+
 		$username = $this->getOption( 'user' );
 		$user = $userFactory->newFromName( $username );
 
@@ -268,7 +271,9 @@ class GeneratePII extends Maintenance {
 						);
 
 						foreach ( $res as $row ) {
-							$output[] = $row;
+							foreach ( $fields['fields'] as $field ) {
+								$output[] = $row->$field ? "{$field}: " . $row->$field . " ({$dbName})" : null;
+							}
 						}
 
 						$lbFactory->waitForReplication();
@@ -287,11 +292,21 @@ class GeneratePII extends Maintenance {
 		$output['realname'] = $user->getRealName();
 		$output['gender'] = $genderCache->getGenderOf( $username );
 
-		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'c' );
+		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'c+' );
+		$output += fgetcsv( $file, null, "\r" ) ?: [];
+		fclose( $file );
 
-		foreach ( $output as $fields ) {
-			fputcsv( $file, (array)$fields );
+		$output = array_filter( $output );
+
+		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'w' );
+
+		foreach ( $output as $key => $field ) {
+			if ( is_string( $key ) ) {
+				$output[$key] = "{$key}: {$field} ({$dbName})";
+			}
 		}
+
+		fputcsv( $file, $output, "\r" );
 
 		fclose( $file );
 

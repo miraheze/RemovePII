@@ -276,8 +276,11 @@ class GeneratePII extends Maintenance {
 			}
 		}
 
+		$genderCache = MediaWikiServices::getInstance()->getGenderCache();
+
 		$output['email'] = $user->getEmail();
 		$output['realname'] = $user->getRealName();
+		$output['gender'] = $genderCache->getGenderOf( $username );
 
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
 		$dbName = $config->get( 'DBname' );

@@ -276,7 +276,7 @@ class GeneratePII extends Maintenance {
 			}
 		}
 
-		$genderCache = new GenderCache();
+		$genderCache = MediaWikiServices::getInstance()->getGenderCache();
 
 		$output['email'] = $user->getEmail();
 		$output['realname'] = $user->getRealName();

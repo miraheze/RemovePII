@@ -290,7 +290,7 @@ class GeneratePII extends Maintenance {
 		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'c' );
 
 		foreach ( $output as $fields ) {
-			fputcsv( $file, $fields );
+			fputcsv( $file, (array)$fields );
 		}
 
 		fclose( $file );

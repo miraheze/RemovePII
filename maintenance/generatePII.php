@@ -10,14 +10,22 @@ class GeneratePII extends Maintenance {
 
 		$this->addOption( 'user', 'User to get PII for.', true, true );
 		$this->addOption( 'directory', 'Directory to place outputted JSON file of PII in.', true, true );
+		$this->addOption( 'generate', 'Only generate a database list of attached wikis for the user?' );
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function execute() {
+		if ( $this->hasOption( 'generate' ) ) {
+			return $this->generateAttachedDatabaseList();
+		}
+
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
+		$dbName = $config->get( 'DBname' );
 
 		$username = $this->getOption( 'user' );
 		$user = $userFactory->newFromName( $username );
@@ -263,7 +271,9 @@ class GeneratePII extends Maintenance {
 						);
 
 						foreach ( $res as $row ) {
-							$output[] = $row;
+							foreach ( $fields['fields'] as $field ) {
+								$output[] = $row->$field ? "{$field}: " . $row->$field . " ({$dbName})" : null;
+							}
 						}
 
 						$lbFactory->waitForReplication();
@@ -282,13 +292,38 @@ class GeneratePII extends Maintenance {
 		$output['realname'] = $user->getRealName();
 		$output['gender'] = $genderCache->getGenderOf( $username );
 
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
-		$dbName = $config->get( 'DBname' );
+		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'c+' );
+		$output += fgetcsv( $file, 0, "\r" ) ?: [];
+		fclose( $file );
+
+		$output = array_filter( $output );
+
+		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'w' );
+
+		foreach ( $output as $key => $field ) {
+			if ( is_string( $key ) ) {
+				$output[$key] = "{$key}: {$field} ({$dbName})";
+			}
+		}
+
+		fputcsv( $file, $output, "\r" );
+
+		fclose( $file );
+
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function generateAttachedDatabaseList() {
+		$user = $this->getOption( 'user' );
+		$centralUser = CentralAuthUser::getInstanceByName( $user );
 
 		file_put_contents(
-			$this->getOption( 'directory' ) . "/{$username}-{$dbName}.json",
-			json_encode( $output ), LOCK_EX
-		);
+			$this->getOption( 'directory' ) . "/{$user}.json",
+			json_encode( [ 'combi' => array_fill_keys( $centralUser->listAttached(), [] ) ]
+		), LOCK_EX );
 
 		return true;
 	}

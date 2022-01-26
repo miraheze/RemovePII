@@ -293,7 +293,7 @@ class GeneratePII extends Maintenance {
 		$output['gender'] = $genderCache->getGenderOf( $username );
 
 		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'c+' );
-		$output += fgetcsv( $file, null, "\r" ) ?: [];
+		$output += fgetcsv( $file, 0, "\r" ) ?: [];
 		fclose( $file );
 
 		$output = array_filter( $output );

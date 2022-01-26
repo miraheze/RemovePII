@@ -287,7 +287,7 @@ class GeneratePII extends Maintenance {
 		$output['realname'] = $user->getRealName();
 		$output['gender'] = $genderCache->getGenderOf( $username );
 
-		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'w' );
+		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'c' );
 
 		foreach ( $output as $fields ) {
 			fputcsv( $file, $fields );
@@ -307,7 +307,7 @@ class GeneratePII extends Maintenance {
 
 		file_put_contents(
 			$this->getOption( 'directory' ) . "/{$user}.json",
-			json_encode( [ 'combi' => $centralUser->listAttached() ]
+			json_encode( [ 'combi' => array_fill_keys( $centralUser->listAttached(), [] ) ]
 		), LOCK_EX );
 
 		return true;

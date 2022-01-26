@@ -10,12 +10,17 @@ class GeneratePII extends Maintenance {
 
 		$this->addOption( 'user', 'User to get PII for.', true, true );
 		$this->addOption( 'directory', 'Directory to place outputted JSON file of PII in.', true, true );
+		$this->addOption( 'generate', 'Only generate a database list of attached wikis for the user?' );
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function execute() {
+		if ( $this->hasOption( 'generate' ) ) {
+			return $this->generateAttachedDatabaseList();
+		}
+
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
@@ -285,10 +290,28 @@ class GeneratePII extends Maintenance {
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
 		$dbName = $config->get( 'DBname' );
 
+		$file = fopen( $this->getOption( 'directory' ) . "/{$username}-{$dbName}.csv", 'w' );
+
+		foreach ( $output as $fields ) {
+			fputcsv( $file, $fields );
+		}
+
+		fclose( $file );
+
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function generateAttachedDatabaseList() {
+		$user = $this->getOption( 'user' );
+		$centralUser = CentralAuthUser::getInstanceByName( $user );
+
 		file_put_contents(
-			$this->getOption( 'directory' ) . "/{$username}-{$dbName}.json",
-			json_encode( $output ), LOCK_EX
-		);
+			$this->getOption( 'directory' ) . "/{$user}.json",
+			json_encode( [ 'combi' => $centralUser->listAttached() ]
+		), LOCK_EX );
 
 		return true;
 	}

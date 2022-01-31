@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\CreateWiki\Maintenance;
+namespace Miraheze\RemovePII\Maintenance;
 
 $IP = getenv( 'MW_INSTALL_PATH' );
 if ( $IP === false ) {

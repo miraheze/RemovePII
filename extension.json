@@ -19,8 +19,7 @@
 		"RemovePIIAliases": "RemovePIIAliases.php"
 	},
 	"AutoloadNamespaces": {
-		"Miraheze\\RemovePII\\": "src/",
-		"Miraheze\\RemovePII\\Maintenance\\": "maintenance/"
+		"Miraheze\\RemovePII\\": "src/"
 	},
 	"JobClasses": {
 		"RemovePIIJob": "Miraheze\\RemovePII\\RemovePIIJob"

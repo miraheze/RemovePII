@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"DDPAT"
+			"DDPAT",
+			"Ice bulldog"
 		]
 	},
 	"removepii-desc": "Створює спеціальні сторінки, Special:GenerateRandomHash та Special:RemovePII для обробки видалення особистої інформації.",

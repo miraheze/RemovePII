@@ -16,7 +16,7 @@
 		]
 	},
 	"ExtensionMessagesFiles": {
-		"RemovePIIAliases": "includes/RemovePIIAliases.php"
+		"RemovePIIAliases": "RemovePIIAliases.php"
 	},
 	"AutoloadNamespaces": {
 		"Miraheze\\RemovePII\\": "includes/"

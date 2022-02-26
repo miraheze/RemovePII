@@ -16,10 +16,10 @@
 		]
 	},
 	"ExtensionMessagesFiles": {
-		"RemovePIIAliases": "RemovePIIAliases.php"
+		"RemovePIIAliases": "includes/RemovePIIAliases.php"
 	},
 	"AutoloadNamespaces": {
-		"Miraheze\\RemovePII\\": "src/"
+		"Miraheze\\RemovePII\\": "includes/"
 	},
 	"JobClasses": {
 		"RemovePIIJob": "Miraheze\\RemovePII\\RemovePIIJob"

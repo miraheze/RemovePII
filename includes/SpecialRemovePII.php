@@ -15,6 +15,7 @@ use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
+use MediaWiki\User\UserFactory;
 use Status;
 use TitleFactory;
 use WikiMap;
@@ -133,7 +134,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}
 
-		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
+		$oldCentral = \CentralAuthUser::getInstanceByName( $formData['oldname'] );
 		$canOversight = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-oversight' );
 
 		if ( ( $oldCentral->isOversighted() || $oldCentral->isHidden() ) &&
@@ -175,7 +176,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			$globalRenameUser = new GlobalRenameUser(
 				$this->getUser(),
 				$oldUser,
-				CentralAuthUser::getInstance( $oldUser ),
+				\CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
 				CentralAuthUser::getInstance( $newUser ),
 				new GlobalRenameUserStatus( $newUser->getName() ),
@@ -204,9 +205,9 @@ class SpecialRemovePII extends FormSpecialPage {
 				'newname' => $newName,
 			];
 
-			$oldCentral = CentralAuthUser::getInstanceByName( $oldName );
+			$oldCentral = \CentralAuthUser::getInstanceByName( $oldName );
 
-			$newCentral = CentralAuthUser::getInstanceByName( $newName );
+			$newCentral = \CentralAuthUser::getInstanceByName( $newName );
 
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(

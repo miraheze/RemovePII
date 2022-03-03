@@ -69,6 +69,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->userFactory = $userFactory;
 
 		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
+			// @phan-suppress-next-line PhanUndeclaredClassReference
 			$this->centralAuthUser = CentralAuthUser::class;
 		} else {
 			$this->centralAuthUser = \CentralAuthUser::class;
@@ -198,11 +199,13 @@ class SpecialRemovePII extends FormSpecialPage {
 				$globalRenameUser = new GlobalRenameUser(
 					$this->getUser(),
 					$oldUser,
-					CentralAuthUser::getInstance( $oldUser ),
+					$this->centralAuthUser::getInstance( $oldUser ),
 					$newUser,
-					CentralAuthUser::getInstance( $newUser ),
+					$this->centralAuthUser::getInstance( $newUser ),
 					new GlobalRenameUserStatus( $newUser->getName() ),
+					// @phan-suppress-next-line PhanTypeMismatchArgument
 					$this->jobQueueGroupFactory,
+					// @phan-suppress-next-line PhanParamTooMany
 					new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
 					new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 					$session
@@ -211,9 +214,9 @@ class SpecialRemovePII extends FormSpecialPage {
 				$globalRenameUser = new GlobalRenameUser(
 					$this->getUser(),
 					$oldUser,
-					\CentralAuthUser::getInstance( $oldUser ),
+					$this->centralAuthUser::getInstance( $oldUser ),
 					$newUser,
-					\CentralAuthUser::getInstance( $newUser ),
+					$this->centralAuthUser::getInstance( $newUser ),
 					new GlobalRenameUserStatus( $newUser->getName() ),
 					[ $this->jobQueueGroupFactory, 'makeJobQueueGroup' ],
 					new GlobalRenameUserDatabaseUpdates(),

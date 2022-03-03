@@ -41,16 +41,16 @@ class SpecialRemovePII extends FormSpecialPage {
 
 	/**
 	 * @param CentralAuthDatabaseManager $centralAuthDatabaseManager
-	 * @param ConfigFactory $configFactory
 	 * @param GlobalRenameUserValidator $globalRenameUserValidator
+	 * @param ConfigFactory $configFactory
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
 		CentralAuthDatabaseManager $centralAuthDatabaseManager,
-		ConfigFactory $configFactory,
 		GlobalRenameUserValidator $globalRenameUserValidator,
+		ConfigFactory $configFactory,
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
 		UserFactory $userFactory,

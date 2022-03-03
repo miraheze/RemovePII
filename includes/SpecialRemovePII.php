@@ -53,7 +53,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		ConfigFactory $configFactory,
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
-		UserFactory $userFactory,
+		UserFactory $userFactory
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 

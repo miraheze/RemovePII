@@ -332,13 +332,7 @@ class GeneratePII extends Maintenance {
 	 */
 	public function generateAttachedDatabaseList() {
 		$user = $this->getOption( 'user' );
-
-		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
-			// @phan-suppress-next-line PhanUndeclaredClassMethod
-			$centralUser = CentralAuthUser::getInstanceByName( $user );
-		} else {
-			$centralUser = \CentralAuthUser::getInstanceByName( $user );
-		}
+		$centralUser = CentralAuthUser::getInstanceByName( $user );
 
 		file_put_contents(
 			$this->getOption( 'directory' ) . "/{$user}.json",

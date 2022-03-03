@@ -9,9 +9,9 @@ if ( $IP === false ) {
 
 require_once "$IP/maintenance/Maintenance.php";
 
-use CentralAuthUser;
 use Exception;
 use Maintenance;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
 
 class GeneratePII extends Maintenance {
@@ -332,7 +332,13 @@ class GeneratePII extends Maintenance {
 	 */
 	public function generateAttachedDatabaseList() {
 		$user = $this->getOption( 'user' );
-		$centralUser = CentralAuthUser::getInstanceByName( $user );
+
+		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
+			// @phan-suppress-next-line PhanUndeclaredClassReference
+			$centralUser = CentralAuthUser::getInstanceByName( $user );
+		} else {
+			$centralUser = \CentralAuthUser::getInstanceByName( $user );
+		}
 
 		file_put_contents(
 			$this->getOption( 'directory' ) . "/{$user}.json",

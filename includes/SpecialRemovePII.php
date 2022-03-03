@@ -21,11 +21,8 @@ use TitleFactory;
 use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {
-	/** @var ?CentralAuthDatabaseManager */
+	/** @var CentralAuthDatabaseManager */
 	private $centralAuthDatabaseManager;
-
-	/** @var string */
-	private $centralAuthUser;
 
 	/** @var Config */
 	private $config;
@@ -43,37 +40,29 @@ class SpecialRemovePII extends FormSpecialPage {
 	private $userFactory;
 
 	/**
+	 * @param CentralAuthDatabaseManager $centralAuthDatabaseManager
 	 * @param ConfigFactory $configFactory
+	 * @param GlobalRenameUserValidator $globalRenameUserValidator
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
-	 * @param ?CentralAuthDatabaseManager $centralAuthDatabaseManager
-	 * @param ?GlobalRenameUserValidator $globalRenameUserValidator
 	 */
 	public function __construct(
+		CentralAuthDatabaseManager $centralAuthDatabaseManager,
 		ConfigFactory $configFactory,
+		GlobalRenameUserValidator $globalRenameUserValidator,
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
 		UserFactory $userFactory,
-		?CentralAuthDatabaseManager $centralAuthDatabaseManager,
-		?GlobalRenameUserValidator $globalRenameUserValidator
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
 		$this->centralAuthDatabaseManager = $centralAuthDatabaseManager;
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
-		$this->globalRenameUserValidator = $globalRenameUserValidator ??
-			new GlobalRenameUserValidator();
+		$this->globalRenameUserValidator = $globalRenameUserValidator;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->titleFactory = $titleFactory;
 		$this->userFactory = $userFactory;
-
-		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
-			// @phan-suppress-next-line PhanUndeclaredClassReference
-			$this->centralAuthUser = CentralAuthUser::class;
-		} else {
-			$this->centralAuthUser = \CentralAuthUser::class;
-		}
 	}
 
 	/**
@@ -157,7 +146,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}
 
-		$oldCentral = $this->centralAuthUser::getInstanceByName( $formData['oldname'] );
+		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
 		$canOversight = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-oversight' );
 
 		if ( ( $oldCentral->isOversighted() || $oldCentral->isHidden() ) &&
@@ -195,35 +184,18 @@ class SpecialRemovePII extends FormSpecialPage {
 			$newUser = $this->userFactory->newFromName( $formData['newname'], UserFactory::RIGOR_CREATABLE );
 
 			$session = $this->getContext()->exportSession();
-			if ( $this->centralAuthDatabaseManager ) {
-				$globalRenameUser = new GlobalRenameUser(
-					$this->getUser(),
-					$oldUser,
-					$this->centralAuthUser::getInstance( $oldUser ),
-					$newUser,
-					$this->centralAuthUser::getInstance( $newUser ),
-					new GlobalRenameUserStatus( $newUser->getName() ),
-					// @phan-suppress-next-line PhanTypeMismatchArgument
-					$this->jobQueueGroupFactory,
-					// @phan-suppress-next-line PhanParamTooMany
-					new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
-					new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
-					$session
-				);
-			} else {
-				$globalRenameUser = new GlobalRenameUser(
-					$this->getUser(),
-					$oldUser,
-					$this->centralAuthUser::getInstance( $oldUser ),
-					$newUser,
-					$this->centralAuthUser::getInstance( $newUser ),
-					new GlobalRenameUserStatus( $newUser->getName() ),
-					[ $this->jobQueueGroupFactory, 'makeJobQueueGroup' ],
-					new GlobalRenameUserDatabaseUpdates(),
-					new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
-					$session
-				);
-			}
+			$globalRenameUser = new GlobalRenameUser(
+				$this->getUser(),
+				$oldUser,
+				CentralAuthUser::getInstance( $oldUser ),
+				$newUser,
+				CentralAuthUser::getInstance( $newUser ),
+				new GlobalRenameUserStatus( $newUser->getName() ),
+				$this->jobQueueGroupFactory,
+				new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
+				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
+				$session
+			);
 
 			$globalRenameUser->rename(
 				array_merge( [
@@ -244,9 +216,9 @@ class SpecialRemovePII extends FormSpecialPage {
 				'newname' => $newName,
 			];
 
-			$oldCentral = $this->centralAuthUser::getInstanceByName( $oldName );
+			$oldCentral = CentralAuthUser::getInstanceByName( $oldName );
 
-			$newCentral = $this->centralAuthUser::getInstanceByName( $newName );
+			$newCentral = CentralAuthUser::getInstanceByName( $newName );
 
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(

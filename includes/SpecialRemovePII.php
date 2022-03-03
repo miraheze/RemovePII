@@ -55,7 +55,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
 		UserFactory $userFactory,
-		?CentralAuthDatabaseManager $centralAuthDatabaseManager
+		?CentralAuthDatabaseManager $centralAuthDatabaseManager,
 		?GlobalRenameUserValidator $globalRenameUserValidator
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );

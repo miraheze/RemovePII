@@ -32,7 +32,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 	 */
 	public function run() {
 		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
-			// @phan-suppress-next-line PhanUndeclaredClassReference
+			// @phan-suppress-next-line PhanUndeclaredClassMethod
 			$newCentral = CentralAuthUser::getInstanceByName( $this->newName );
 		} else {
 			$newCentral = \CentralAuthUser::getInstanceByName( $this->newName );

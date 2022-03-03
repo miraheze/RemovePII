@@ -68,10 +68,10 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->titleFactory = $titleFactory;
 		$this->userFactory = $userFactory;
 
-		if ( version_compare( MW_VERSION, '1.38', '<' ) ) {
-			$this->centralAuthUser = \CentralAuthUser::class;
-		} else {
+		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
 			$this->centralAuthUser = CentralAuthUser::class;
+		} else {
+			$this->centralAuthUser = \CentralAuthUser::class;
 		}
 	}
 

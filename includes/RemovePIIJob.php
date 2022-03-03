@@ -2,11 +2,11 @@
 
 namespace Miraheze\RemovePII;
 
-use CentralAuthUser;
 use Exception;
 use ExtensionRegistry;
 use GenericParameterJob;
 use Job;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
 use User;
 
@@ -31,7 +31,12 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 	 * @return bool
 	 */
 	public function run() {
-		$newCentral = CentralAuthUser::getInstanceByName( $this->newName );
+		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
+			// @phan-suppress-next-line PhanUndeclaredClassReference
+			$newCentral = CentralAuthUser::getInstanceByName( $this->newName );
+		} else {
+			$newCentral = \CentralAuthUser::getInstanceByName( $this->newName );
+		}
 
 		// Invalidate cache before we begin
 		$newCentral->invalidateCache();

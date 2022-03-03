@@ -57,6 +57,10 @@
 				"JobQueueGroupFactory",
 				"TitleFactory",
 				"UserFactory"
+			],
+			"optional_services": [
+				"CentralAuth.CentralAuthDatabaseManager",
+				"CentralAuth.GlobalRenameUserValidator"
 			]
 		}
 	},

@@ -14,10 +14,10 @@ jobs:
       matrix:
         include:
           # Latest stable MediaWiki - PHP 7.4 (phan)
-          - mw: 'REL1_38'
+          - mw: 'master'
             php: 7.4
             php-docker: 74
-            experimental: true
+            experimental: false
             stage: phan
 
           # Latest MediaWiki master - PHP 7.4 (phan)
@@ -28,10 +28,10 @@ jobs:
             stage: phan
 
           # Latest stable MediaWiki - PHP 7.4 (phpunit-unit)
-          - mw: 'REL1_38'
+          - mw: 'master'
             php: 7.4
             php-docker: 74
-            experimental: true
+            experimental: false
             stage: phpunit-unit
 
           # Latest MediaWiki master - PHP 7.4 (phpunit-unit)
@@ -42,10 +42,10 @@ jobs:
             stage: phpunit-unit
 
           # Latest stable MediaWiki - PHP 7.4 (phpunit)
-          - mw: 'REL1_38'
+          - mw: 'master'
             php: 7.4
             php-docker: 74
-            experimental: true
+            experimental: false
             stage: phpunit
 
           # Latest MediaWiki master - PHP 7.4 (phpunit)
@@ -56,10 +56,10 @@ jobs:
             stage: phpunit
 
           # Latest stable MediaWiki - PHP 7.4 (selenium)
-          - mw: 'REL1_38'
+          - mw: 'master'
             php: 7.4
             php-docker: 74
-            experimental: true
+            experimental: false
             stage: selenium
 
           # Latest MediaWiki master - PHP 7.4 (selenium)
@@ -70,10 +70,10 @@ jobs:
             stage: selenium
 
           # Latest stable MediaWiki - PHP 7.4 (qunit)
-          - mw: 'REL1_38'
+          - mw: 'master'
             php: 7.4
             php-docker: 74
-            experimental: true
+            experimental: false
             stage: qunit
 
           # Latest MediaWiki master - PHP 7.4 (qunit)
@@ -83,14 +83,14 @@ jobs:
             experimental: false
             stage: qunit
 
-          # Latest MediaWiki master - PHP 7.4 (npm-test)
+          # Latest stable MediaWiki - PHP 7.4 (npm-test)
           - mw: 'master'
             php: 7.4
             php-docker: 74
             experimental: false
             stage: npm-test
   
-          # Latest MediaWiki master - PHP 7.4 (composer-test)
+          # Latest stable MediaWiki - PHP 7.4 (composer-test)
           - mw: 'master'
             php: 7.4
             php-docker: 74

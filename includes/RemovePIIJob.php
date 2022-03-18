@@ -523,8 +523,15 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Remove user email
 		$userLatest = $newName->getInstanceForUpdate();
 
-		if ( $userLatest->getEmail() ) {
-			$userLatest->invalidateEmail();
+		if ( $userLatest->getEmail() || $userLatest->getRealName() ) {
+			if ( $userLatest->getEmail() ) {
+				$userLatest->invalidateEmail();
+			}
+
+			if ( $userLatest->getRealName() ) {
+				$userLatest->setRealName( '' );
+			}
+
 			$userLatest->saveSettings();
 		}
 

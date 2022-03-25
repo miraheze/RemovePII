@@ -5,6 +5,7 @@
 		]
 	},
 	"removepii-desc": "Skapar specialsidorna, Special:GenerateRandomHash och Special:RemovePII för att kunna ta bort identifierbar personlig information.",
+	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "Generera slumpmässig hash",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "generera en slumpmässig hash",

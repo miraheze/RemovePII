@@ -147,10 +147,10 @@ class SpecialRemovePII extends FormSpecialPage {
 		}
 
 		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
-		$canOversight = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-oversight' );
+		$canSuppress = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-suppress' );
 
 		if ( ( $oldCentral->isSuppressed() || $oldCentral->isHidden() ) &&
-			!$canOversight
+			!$canSuppress
 		) {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}

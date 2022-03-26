@@ -520,7 +520,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Invalidate cache now
 		$newCentral->invalidateCache();
 
-		// Remove user email
+		// Remove user email and real name
 		$userLatest = $newName->getInstanceForUpdate();
 
 		if ( $userLatest->getEmail() ) {

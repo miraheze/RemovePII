@@ -481,7 +481,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				$user
 			);
 
-			$status = $deletePage->setSuppress( true )->forceImmediate( true )->deleteIfAllowed( '' );
+			$status = $deletePage->setSuppress( true )->forceImmediate( true )->deleteUnsafe( '' );
 
 			if ( !$status->isOK() ) {
 				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );

@@ -74,9 +74,13 @@
 			"value": "",
 			"description": "The default hash prefix to use when generating a hash through Special:GenerateRandomHash. Will be used when $wgRemovePIIHashPrefixOptions is empty."
 		},
+		"RemovePIIAutoPrefix": {
+			"value": "",
+			"description": "The prefix to automatically use when using Special:RemovePII to remove personal identifiable information or rename a user. Automatically prepends, if using DPA validation this should be set, otherwise DPA validation will fail of attempting to manually provide prefix."
+		},
 		"RemovePIIDPAEndpoint": {
 			"value": "",
-			"description": "Set to the full URL of an API to validate DPA IDs. {dpa_id} is replaced with the ID (equivalent to the new username), and {username} is replaced with the old username. Leave as an empty string to disable validation."
+			"description": "Set to the full URL of an API to validate DPA IDs. {dpa_id} is replaced with the ID, and {username} is replaced with the old username. Leave as an empty string to disable validation."
 		}
 	},
 	"manifest_version": 2

@@ -76,7 +76,7 @@
 		},
 		"RemovePIIAutoPrefix": {
 			"value": "",
-			"description": "The prefix to automatically use when using Special:RemovePII to remove personal identifiable information or rename a user. Automatically prepends, if using DPA validation this should be set, otherwise DPA validation will fail of attempting to manually provide prefix."
+			"description": "The prefix to automatically use when using Special:RemovePII to remove personal identifiable information or rename a user. Automatically prepends, if using DPA validation this should be set, otherwise it will fail to validate."
 		},
 		"RemovePIIDPAEndpoint": {
 			"value": "",

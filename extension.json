@@ -54,6 +54,7 @@
 			"class": "Miraheze\\RemovePII\\SpecialRemovePII",
 			"services": [
 				"ConfigFactory",
+				"HttpRequestFactory",
 				"JobQueueGroupFactory",
 				"TitleFactory",
 				"UserFactory"
@@ -72,6 +73,10 @@
 		"RemovePIIHashPrefix": {
 			"value": "",
 			"description": "The default hash prefix to use when generating a hash through Special:GenerateRandomHash. Will be used when $wgRemovePIIHashPrefixOptions is empty."
+		},
+		"RemovePIIDPAEndpoint": {
+			"value": "",
+			"description": "Set to the full URL of an API to validate DPA IDs. {dpa} is replaced with the ID, and {username} is replaced with the old username. Leave as an empty string to disable validation."
 		}
 	},
 	"manifest_version": 2

@@ -13,6 +13,7 @@ use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
+use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\User\UserFactory;
 use Status;
@@ -22,6 +23,9 @@ use WikiMap;
 class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */
 	private $config;
+
+	/** @var HttpRequestFactory */
+	private $httpRequestFactory;
 
 	/** @var JobQueueGroupFactory */
 	private $jobQueueGroupFactory;
@@ -34,12 +38,14 @@ class SpecialRemovePII extends FormSpecialPage {
 
 	/**
 	 * @param ConfigFactory $configFactory
+	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
 		ConfigFactory $configFactory,
+		HttpRequestFactory $httpRequestFactory,
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
 		UserFactory $userFactory
@@ -47,6 +53,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
+		$this->httpRequestFactory = $httpRequestFactory;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->titleFactory = $titleFactory;
 		$this->userFactory = $userFactory;
@@ -88,28 +95,36 @@ class SpecialRemovePII extends FormSpecialPage {
 			'hide-if' => [ '!==', 'wpaction', 'removepii' ]
 		];
 
+		if ( $this->config->get( 'RemovePIIDPAEndpoint' ) ) {
+			$formDescriptor['dpaid'] = [
+				'type' => 'text',
+				'required' => true,
+				'label-message' => 'removepii-dpaid-label',
+			];
+		}
+
 		$formDescriptor['oldname'] = [
 			'type' => 'text',
 			'required' => true,
-			'label-message' => 'removepii-oldname-label'
+			'label-message' => 'removepii-oldname-label',
 		];
 
 		$formDescriptor['newname'] = [
 			'type' => 'text',
 			'required' => true,
-			'label-message' => 'removepii-newname-label'
+			'label-message' => 'removepii-newname-label',
 		];
 
 		$formDescriptor['action'] = [
 			'type' => 'select',
 			'options' => [
 				'Rename user' => 'renameuser',
-				'RemovePII' => 'removepii'
+				'RemovePII' => 'removepii',
 			],
 			'required' => true,
 			'default' => 'renameuser',
 			'label-message' => 'removepii-action-label',
-			'help-message' => 'removepii-action-help'
+			'help-message' => 'removepii-action-help',
 		];
 
 		return $formDescriptor;
@@ -119,7 +134,29 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param array $formData
 	 * @return Status
 	 */
-	public function validate( array $formData ) {
+	public function validateDPA( array $formData ) {
+		if ( !$this->config->get( 'RemovePIIDPAEndpoint' ) ) {
+			return Status::newGood();
+		}
+
+		$url = $this->config->get( 'RemovePIIDPAEndpoint' );
+		$url = str_replace( '{dpa}', $formData['dpaid'], $url );
+		$url = str_replace( '{username}', $formData['oldname'], $url );
+
+		$report = $this->httpRequestFactory->create( $url );
+		$status = $report->execute();
+		if ( !$status->isOK() ) {
+			return Status::newFatal( 'removepii-invalid-dpa' );
+		}
+
+		return Status::newGood();
+	}
+
+	/**
+	 * @param array $formData
+	 * @return Status
+	 */
+	public function validateCentralAuth( array $formData ) {
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
 			return Status::newFatal( 'removepii-centralauth-notinstalled' );
 		}
@@ -162,10 +199,15 @@ class SpecialRemovePII extends FormSpecialPage {
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
 
+		$validDPA = $this->validateDPA( $formData );
+		if ( !$validDPA->isOK() ) {
+			return $validDPA;
+		}
+
 		if ( $formData['action'] === 'renameuser' ) {
-			$valid = $this->validate( $formData );
-			if ( !$valid->isOK() ) {
-				return $valid;
+			$validCentralAuth = $this->validateCentralAuth( $formData );
+			if ( !$validCentralAuth->isOK() ) {
+				return $validCentralAuth;
 			}
 
 			$oldUser = $this->userFactory->newFromName( $formData['oldname'] );

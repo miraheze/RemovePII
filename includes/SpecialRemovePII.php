@@ -105,7 +105,8 @@ class SpecialRemovePII extends FormSpecialPage {
 		$formDescriptor['newname'] = [
 			'type' => 'text',
 			'required' => true,
-			'label-message' => 'removepii-newname-label',
+			'label-message' => $this->config->get( 'RemovePIIDPAEndpoint' ) ?
+				'removepii-dpa_id-label' : 'removepii-newname-label',
 			'validation-callback' => [ $this, 'isMatchingAssociatedDPARequest' ],
 			'filter-callback' => function ( $value ) {
 				if ( $this->config->get( 'RemovePIIAutoPrefix' ) ) {
@@ -116,10 +117,6 @@ class SpecialRemovePII extends FormSpecialPage {
 				return $value;
 			},
 		];
-
-		if ( $this->config->get( 'RemovePIIDPAEndpoint' ) ) {
-			$formDescriptor['newname']['label-message'] = 'removepii-dpa_id-label';
-		}
 
 		$formDescriptor['action'] = [
 			'type' => 'select',

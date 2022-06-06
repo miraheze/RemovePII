@@ -6,6 +6,7 @@ use CentralAuthUser;
 use Config;
 use ConfigFactory;
 use ExtensionRegistry;
+use FormatJson;
 use FormSpecialPage;
 use Html;
 use ManualLogEntry;
@@ -138,6 +139,11 @@ class SpecialRemovePII extends FormSpecialPage {
 		$report = $this->httpRequestFactory->create( $url );
 		$status = $report->execute();
 		if ( !$status->isOK() ) {
+			return Status::newFatal( 'removepii-invalid-dpa' );
+		}
+
+		$content = FormatJson::decode( $report->getContent(), true );
+		if ( !( $content['match'] ?? false ) ) {
 			return Status::newFatal( 'removepii-invalid-dpa' );
 		}
 

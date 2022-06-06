@@ -16,6 +16,7 @@
 	"removepii-hash-prefix-help": "Help message for the prefix select field on Special:GenerateRandomHash.",
 	"removepii-oldname-label": "Label for the old username field on Special:RemovePII.",
 	"removepii-newname-label": "Label for the new username field on Special:RemovePII.",
+	"removepii-dpa_id-label": "Label for the DPA ID field on Special:RemovePII.",
 	"removepii-action-label": "Label for the action select field on Special:RemovePII.",
 	"removepii-action-help": "Help message for the action select field on Special:RemovePII.",
 	"removepii-warning-irreversible": "Warning message to be shown when doing RemovePII action.",

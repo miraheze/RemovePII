@@ -108,6 +108,10 @@ class SpecialRemovePII extends FormSpecialPage {
 			'label-message' => 'removepii-newname-label',
 		];
 
+		if ( $this->config->get( 'RemovePIIDPAEndpoint' ) ) {
+			$formDescriptor['newname']['label-message'] = 'removepii-dpa_id-label';
+		}
+
 		$formDescriptor['action'] = [
 			'type' => 'select',
 			'options' => [
@@ -200,6 +204,10 @@ class SpecialRemovePII extends FormSpecialPage {
 		$validDPA = $this->validateDPA( $formData );
 		if ( !$validDPA->isOK() ) {
 			return $validDPA;
+		}
+
+		if ( $this->config->get( 'RemovePIIAutoPrefix' ) ) {
+			$formData['newname'] = $this->config->get( 'RemovePIIAutoPrefix' ) . $formData['newname'];
 		}
 
 		if ( $formData['action'] === 'renameuser' ) {

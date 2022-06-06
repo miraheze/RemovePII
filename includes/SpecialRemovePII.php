@@ -4,7 +4,6 @@ namespace Miraheze\RemovePII;
 
 use CentralAuthUser;
 use Config;
-use ConfigException;
 use ConfigFactory;
 use ExtensionRegistry;
 use FormatJson;
@@ -81,12 +80,6 @@ class SpecialRemovePII extends FormSpecialPage {
 			);
 		}
 
-		if ( !is_string( $this->config->get( 'RemovePIIAutoPrefix' ) ) ) {
-			throw new ConfigException(
-				'$wgRemovePIIAutoPrefix must be set to a string value. To disable it, set it to an empty string.'
-			);
-		}
-
 		parent::execute( $par );
 	}
 
@@ -113,9 +106,14 @@ class SpecialRemovePII extends FormSpecialPage {
 			'type' => 'text',
 			'required' => true,
 			'label-message' => 'removepii-newname-label',
-			'validation-callback' => [ $this, 'isValidDPA' ],
+			'validation-callback' => [ $this, 'isMatchingAssociatedDPARequest' ],
 			'filter-callback' => function ( $value ) {
-				return $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
+				if ( $this->config->get( 'RemovePIIAutoPrefix' ) ) {
+					$value = str_replace( $this->config->get( 'RemovePIIAutoPrefix' ), '', $value );
+					return $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
+				}
+
+				return $value;
 			},
 		];
 
@@ -143,7 +141,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param array $alldata
 	 * @return bool|string
 	 */
-	public function isValidDPA( string $value, array $alldata ) {
+	public function isMatchingAssociatedDPARequest( string $value, array $alldata ) {
 		if ( !$value ) {
 			return Status::newFatal( 'htmlform-required' )->getMessage();
 		}

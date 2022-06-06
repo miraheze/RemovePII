@@ -95,14 +95,6 @@ class SpecialRemovePII extends FormSpecialPage {
 			'hide-if' => [ '!==', 'wpaction', 'removepii' ]
 		];
 
-		if ( $this->config->get( 'RemovePIIDPAEndpoint' ) ) {
-			$formDescriptor['dpaid'] = [
-				'type' => 'text',
-				'required' => true,
-				'label-message' => 'removepii-dpaid-label',
-			];
-		}
-
 		$formDescriptor['oldname'] = [
 			'type' => 'text',
 			'required' => true,
@@ -140,7 +132,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		}
 
 		$url = $this->config->get( 'RemovePIIDPAEndpoint' );
-		$url = str_replace( '{dpa}', $formData['dpaid'], $url );
+		$url = str_replace( '{dpa_id}', $formData['newname'], $url );
 		$url = str_replace( '{username}', $formData['oldname'], $url );
 
 		$report = $this->httpRequestFactory->create( $url );

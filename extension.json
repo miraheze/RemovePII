@@ -76,7 +76,7 @@
 		},
 		"RemovePIIDPAEndpoint": {
 			"value": "",
-			"description": "Set to the full URL of an API to validate DPA IDs. {dpa} is replaced with the ID, and {username} is replaced with the old username. Leave as an empty string to disable validation."
+			"description": "Set to the full URL of an API to validate DPA IDs. {dpa_id} is replaced with the ID (equivalent to the new username), and {username} is replaced with the old username. Leave as an empty string to disable validation."
 		}
 	},
 	"manifest_version": 2

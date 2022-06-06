@@ -24,5 +24,6 @@
 	"removepii-centralauth-notinstalled": "The CentralAuth extension is not installed.",
 	"removepii-log-name": "RemovePII log",
 	"removepii-log-header": "This is a basic log of all RemovePII actions.",
+	"removepii-invalid-dpa": "Unable to validate associating DPA request. Either the server is experiencing difficulties and we are unable to connect to the endpoint, or the given old username does not match the requester's username given in the associated DPA request.",
 	"logentry-removepii-action": "$1 removed personal identifiable information from a user."
 }

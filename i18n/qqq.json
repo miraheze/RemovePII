@@ -24,5 +24,6 @@
 	"removepii-centralauth-notinstalled": "Error message to be displayed when attempting to submit Special:RemovePII when the CentralAuth extension is not installed.",
 	"removepii-log-name": "Name of RemovePII log",
 	"removepii-log-header": "Header for RemovePII log",
+	"removepii-invalid-dpa": "Error message given if DPA validation fails.",
 	"logentry-removepii-action": "Used as log message."
 }

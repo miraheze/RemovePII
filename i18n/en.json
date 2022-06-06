@@ -16,6 +16,7 @@
 	"removepii-hash-prefix-help": "Select from the dropdown, the appropriate option to use for the prefix for hash generation.",
 	"removepii-oldname-label": "Old username:",
 	"removepii-newname-label": "New username:",
+	"removepii-dpa_id-label": "DPA ID:",
 	"removepii-action-label": "Select the action you wish to preform.",
 	"removepii-action-help": "Renames should '''always''' be done before RemovePII. RemovePII will also lock the user's global account.",
 	"removepii-warning-irreversible": "'''Warning:''' you are about to perform the RemovePII action. This process is irreversible. Please make sure you have the information correct before proceeding further.",

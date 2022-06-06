@@ -4,6 +4,7 @@ namespace Miraheze\RemovePII;
 
 use CentralAuthUser;
 use Config;
+use ConfigException;
 use ConfigFactory;
 use ExtensionRegistry;
 use FormatJson;
@@ -80,6 +81,12 @@ class SpecialRemovePII extends FormSpecialPage {
 			);
 		}
 
+		if ( !is_string( $this->config->get( 'RemovePIIAutoPrefix' ) ) ) {
+			throw new ConfigException(
+				'$wgRemovePIIAutoPrefix must be set to a string value. To disable it, set it to an empty string.'
+			);
+		}
+
 		parent::execute( $par );
 	}
 
@@ -106,6 +113,10 @@ class SpecialRemovePII extends FormSpecialPage {
 			'type' => 'text',
 			'required' => true,
 			'label-message' => 'removepii-newname-label',
+			'validation-callback' => [ $this, 'isValidDPA' ],
+			'filter-callback' => function ( $value ) {
+				return $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
+			},
 		];
 
 		if ( $this->config->get( 'RemovePIIDPAEndpoint' ) ) {
@@ -128,30 +139,37 @@ class SpecialRemovePII extends FormSpecialPage {
 	}
 
 	/**
-	 * @param array $formData
-	 * @return Status
+	 * @param string $value
+	 * @param array $alldata
+	 * @return bool|string
 	 */
-	public function validateDPA( array $formData ) {
-		if ( !$this->config->get( 'RemovePIIDPAEndpoint' ) ) {
-			return Status::newGood();
+	public function isValidDPA( string $value, array $alldata ) {
+		if ( !$value ) {
+			return Status::newFatal( 'htmlform-required' )->getMessage();
 		}
 
+		if ( !$this->config->get( 'RemovePIIDPAEndpoint' ) ) {
+			return true;
+		}
+
+		$value = str_replace( $this->config->get( 'RemovePIIAutoPrefix' ), '', $value );
+
 		$url = $this->config->get( 'RemovePIIDPAEndpoint' );
-		$url = str_replace( '{dpa_id}', $formData['newname'], $url );
-		$url = str_replace( '{username}', $formData['oldname'], $url );
+		$url = str_replace( '{dpa_id}', $value, $url );
+		$url = str_replace( '{username}', $alldata['oldname'], $url );
 
 		$report = $this->httpRequestFactory->create( $url );
 		$status = $report->execute();
 		if ( !$status->isOK() ) {
-			return Status::newFatal( 'removepii-invalid-dpa' );
+			return Status::newFatal( 'removepii-invalid-dpa' )->getMessage();
 		}
 
 		$content = FormatJson::decode( $report->getContent(), true );
 		if ( !( $content['match'] ?? false ) ) {
-			return Status::newFatal( 'removepii-invalid-dpa' );
+			return Status::newFatal( 'removepii-invalid-dpa' )->getMessage();
 		}
 
-		return Status::newGood();
+		return true;
 	}
 
 	/**
@@ -200,15 +218,6 @@ class SpecialRemovePII extends FormSpecialPage {
 	 */
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
-
-		$validDPA = $this->validateDPA( $formData );
-		if ( !$validDPA->isOK() ) {
-			return $validDPA;
-		}
-
-		if ( $this->config->get( 'RemovePIIAutoPrefix' ) ) {
-			$formData['newname'] = $this->config->get( 'RemovePIIAutoPrefix' ) . $formData['newname'];
-		}
 
 		if ( $formData['action'] === 'renameuser' ) {
 			$validCentralAuth = $this->validateCentralAuth( $formData );

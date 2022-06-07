@@ -140,11 +140,11 @@ class SpecialRemovePII extends FormSpecialPage {
 	}
 
 	/**
-	 * @param string $value
+	 * @param ?string $value
 	 * @param array $alldata
 	 * @return bool|string
 	 */
-	public function isMatchingAssociatedDPARequest( string $value, array $alldata ) {
+	public function isMatchingAssociatedDPARequest( ?string $value, array $alldata ) {
 		if ( !$value ) {
 			return Status::newFatal( 'htmlform-required' )->getMessage();
 		}

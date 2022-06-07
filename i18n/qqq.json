@@ -16,6 +16,7 @@
 	"removepii-hash-prefix-help": "Help message for the prefix select field on Special:GenerateRandomHash.",
 	"removepii-oldname-label": "Label for the old username field on Special:RemovePII.",
 	"removepii-newname-label": "Label for the new username field on Special:RemovePII.",
+	"removepii-dpa_id-label": "Label for the DPA ID field on Special:RemovePII.",
 	"removepii-action-label": "Label for the action select field on Special:RemovePII.",
 	"removepii-action-help": "Help message for the action select field on Special:RemovePII.",
 	"removepii-warning-irreversible": "Warning message to be shown when doing RemovePII action.",
@@ -24,5 +25,6 @@
 	"removepii-centralauth-notinstalled": "Error message to be displayed when attempting to submit Special:RemovePII when the CentralAuth extension is not installed.",
 	"removepii-log-name": "Name of RemovePII log",
 	"removepii-log-header": "Header for RemovePII log",
+	"removepii-invalid-dpa": "Error message given if DPA validation fails.",
 	"logentry-removepii-action": "Used as log message."
 }

@@ -122,14 +122,6 @@ class SpecialRemovePII extends FormSpecialPage {
 			'label-message' => $this->config->get( 'RemovePIIDPAValidationEndpoint' ) ?
 				'removepii-dpa_id-label' : 'removepii-newname-label',
 			'validation-callback' => [ $this, 'isMatchingAssociatedDPARequest' ],
-			'filter-callback' => function ( $value ) {
-				if ( $value && $this->config->get( 'RemovePIIAutoPrefix' ) ) {
-					$value = str_replace( $this->config->get( 'RemovePIIAutoPrefix' ), '', $value );
-					return $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
-				}
-
-				return $value ?? '';
-			},
 		];
 
 		$formDescriptor['action'] = [
@@ -226,6 +218,11 @@ class SpecialRemovePII extends FormSpecialPage {
 	 */
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
+
+		if ( $this->config->get( 'RemovePIIAutoPrefix' ) ) {
+			$formData['newname'] = str_replace( $this->config->get( 'RemovePIIAutoPrefix' ), '', $value );
+			$formData['newname'] = $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
+		}
 
 		if ( $formData['action'] === 'renameuser' ) {
 			$validCentralAuth = $this->validateCentralAuth( $formData );

@@ -122,7 +122,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				'removepii-dpa_id-label' : 'removepii-newname-label',
 			'validation-callback' => [ $this, 'isMatchingAssociatedDPARequest' ],
 			'filter-callback' => function ( $value ) {
-				if ( $this->config->get( 'RemovePIIAutoPrefix' ) ) {
+				if ( $value && $this->config->get( 'RemovePIIAutoPrefix' ) ) {
 					$value = str_replace( $this->config->get( 'RemovePIIAutoPrefix' ), '', $value );
 					return $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
 				}

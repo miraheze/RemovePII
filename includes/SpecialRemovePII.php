@@ -220,8 +220,8 @@ class SpecialRemovePII extends FormSpecialPage {
 		$out = $this->getOutput();
 
 		if ( $this->config->get( 'RemovePIIAutoPrefix' ) ) {
-			$formData['newname'] = str_replace( $this->config->get( 'RemovePIIAutoPrefix' ), '', $value );
-			$formData['newname'] = $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
+			$formData['newname'] = str_replace( $this->config->get( 'RemovePIIAutoPrefix' ), '', $formData['newname'] );
+			$formData['newname'] = $this->config->get( 'RemovePIIAutoPrefix' ) . $formData['newname'];
 		}
 
 		if ( $formData['action'] === 'renameuser' ) {

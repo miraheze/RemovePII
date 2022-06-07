@@ -127,7 +127,7 @@ class SpecialRemovePII extends FormSpecialPage {
 					return $this->config->get( 'RemovePIIAutoPrefix' ) . $value;
 				}
 
-				return $value;
+				return $value ?? '';
 			},
 		];
 

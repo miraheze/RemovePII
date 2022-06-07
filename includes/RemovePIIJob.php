@@ -2,11 +2,11 @@
 
 namespace Miraheze\RemovePII;
 
-use CentralAuthUser;
 use Exception;
 use ExtensionRegistry;
 use GenericParameterJob;
 use Job;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
 use User;
 

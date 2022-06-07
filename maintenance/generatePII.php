@@ -9,9 +9,9 @@ if ( $IP === false ) {
 
 require_once "$IP/maintenance/Maintenance.php";
 
-use CentralAuthUser;
 use Exception;
 use Maintenance;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
 
 class GeneratePII extends Maintenance {

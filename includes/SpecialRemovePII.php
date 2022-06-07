@@ -2,17 +2,18 @@
 
 namespace Miraheze\RemovePII;
 
-use CentralAuthUser;
 use Config;
 use ConfigFactory;
 use ExtensionRegistry;
 use FormSpecialPage;
 use Html;
 use ManualLogEntry;
+use MediaWiki\Extension\CentralAuth\CentralAuthDatabaseManager;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\User\UserFactory;
 use Status;
@@ -20,8 +21,14 @@ use TitleFactory;
 use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {
+	/** @var CentralAuthDatabaseManager */
+	private $centralAuthDatabaseManager;
+
 	/** @var Config */
 	private $config;
+
+	/** @var GlobalRenameUserValidator */
+	private $globalRenameUserValidator;
 
 	/** @var JobQueueGroupFactory */
 	private $jobQueueGroupFactory;
@@ -33,12 +40,16 @@ class SpecialRemovePII extends FormSpecialPage {
 	private $userFactory;
 
 	/**
+	 * @param CentralAuthDatabaseManager $centralAuthDatabaseManager
+	 * @param GlobalRenameUserValidator $globalRenameUserValidator
 	 * @param ConfigFactory $configFactory
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
+		CentralAuthDatabaseManager $centralAuthDatabaseManager,
+		GlobalRenameUserValidator $globalRenameUserValidator,
 		ConfigFactory $configFactory,
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		TitleFactory $titleFactory,
@@ -46,7 +57,9 @@ class SpecialRemovePII extends FormSpecialPage {
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
+		$this->centralAuthDatabaseManager = $centralAuthDatabaseManager;
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
+		$this->globalRenameUserValidator = $globalRenameUserValidator;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->titleFactory = $titleFactory;
 		$this->userFactory = $userFactory;
@@ -134,10 +147,10 @@ class SpecialRemovePII extends FormSpecialPage {
 		}
 
 		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
-		$canOversight = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-oversight' );
+		$canSuppress = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-suppress' );
 
-		if ( ( $oldCentral->isOversighted() || $oldCentral->isHidden() ) &&
-			!$canOversight
+		if ( ( $oldCentral->isSuppressed() || $oldCentral->isHidden() ) &&
+			!$canSuppress
 		) {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}
@@ -151,8 +164,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		$validator = new GlobalRenameUserValidator();
-		return $validator->validate( $oldUser, $newUser );
+		return $this->globalRenameUserValidator->validate( $oldUser, $newUser );
 	}
 
 	/**
@@ -179,8 +191,8 @@ class SpecialRemovePII extends FormSpecialPage {
 				$newUser,
 				CentralAuthUser::getInstance( $newUser ),
 				new GlobalRenameUserStatus( $newUser->getName() ),
-				[ $this->jobQueueGroupFactory, 'makeJobQueueGroup' ],
-				new GlobalRenameUserDatabaseUpdates(),
+				$this->jobQueueGroupFactory,
+				new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
 				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);

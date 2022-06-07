@@ -15,6 +15,7 @@ use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
 use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
+use MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\User\UserFactory;
@@ -110,7 +111,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		];
 
 		$formDescriptor['oldname'] = [
-			'type' => 'text',
+			'class' => HTMLGlobalUserTextField::class,
 			'required' => true,
 			'label-message' => 'removepii-oldname-label',
 		];

@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nekky-chan",
+			"Umlaut"
+		]
+	},
+	"removepii-desc": "Erstellt die speziellen Seiten Special:GenerateRandomHash und Special:RemovePII, um das Entfernen von personenbezogenen Daten zu ermöglichen.",
+	"removepii-extensionname": "RemovePII",
+	"generaterandomhash": "Zufällige Hashwerte generieren",
+	"removepii": "RemovePII",
+	"action-generate-random-hash": "einen zufälligen Hashwert generieren",
+	"action-handle-pii": "Bearbeitung/Löschung von personenbezogenen Daten",
+	"right-generate-random-hash": "Zufällige Hashes für Benutzernamen generieren",
+	"right-handle-pii": "Bearbeiten/Löschen von personenbezogenen Daten",
+	"removepii-hash-length-help": "Gib die Anzahl der Zeichen an, die der generierte Hash enthalten soll. Min. 8, Max. 32",
+	"removepii-hash-prefix-help": "Wähle aus der Dropdown-Liste die entsprechende Option für das Präfix zur Hash-Generierung aus.",
+	"removepii-oldname-label": "Alter Benutzername:",
+	"removepii-newname-label": "Neuer Benutzername:",
+	"removepii-dpa_id-label": "DPA-ID:",
+	"removepii-action-label": "Wähle die Aktion aus, die du durchführen möchtest.",
+	"removepii-action-help": "Umbenennungen sollten '''immer''' vor RemovePII durchgeführt werden. Mit RemovePII wird auch das globale Konto des Benutzers gesperrt.",
+	"removepii-warning-irreversible": "'''Warnung:''' Du bist im Begriff, die Aktion RemovePII durchzuführen. Dieser Vorgang ist nicht umkehrbar. Bitte vergewissere dich, dass du die richtigen Informationen hast, bevor du fortfährst.",
+	"removepii-wiki-disabled": "RemovePII wurde in diesem Wiki deaktiviert. Es ist derzeit so konfiguriert, dass es nur in einem zentralen Wiki aktiviert ist. Du musst es von dort aus ausführen.",
+	"removepii-success": "Erfolgreich übermittelt.",
+	"removepii-centralauth-notinstalled": "Die CentralAuth-Erweiterung ist nicht installiert.",
+	"removepii-log-name": "RemovePII-Logbuch",
+	"removepii-log-header": "Dies ist ein grundlegendes Logbuch aller RemovePII-Aktionen.",
+	"removepii-invalid-dpa": "Zugehörige DPA-Anfrage kann nicht bestätigt werden. Entweder hat der Server Schwierigkeiten und wir können keine Verbindung zum Endpunkt herstellen, oder der angegebene alte Benutzername stimmt nicht mit dem Benutzernamen des Antragstellers überein, der in der zugehörigen DPA-Anfrage angegeben wurde.",
+	"logentry-removepii-action": "$1 persönliche Informationen eines Benutzers entfernt."
+}

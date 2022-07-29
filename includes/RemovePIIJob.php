@@ -87,6 +87,18 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					]
 				]
 			],
+			'user_board' => [
+				[
+					'where' => [
+						'ub_actor' => $userActorId
+					]
+				],
+				[
+					'where' => [
+						'ub_actor_from' => $userActorId
+					]
+				]
+			],
 			'user_profile' => [
 				[
 					'where' => [

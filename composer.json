@@ -1,7 +1,21 @@
 {
-	"name": "miraheze/removepii",
-	"description": "",
+	"name": "miraheze/remove-pii",
+	"type": "mediawiki-extension",
+	"description": "Creates the special pages, Special:GenerateRandomHash and Special:RemovePII to handle removing of personal identifiable information.",
+	"homepage": "https://www.mediawiki.org/wiki/Extension:RemovePII",
 	"license": "GPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Universal Omega"
+		}
+	],
+	"support": {
+		"issues": "https://phabricator.miraheze.org/tag/removepii/",
+		"wiki": "https://www.mediawiki.org/wiki/Extension:RemovePII"
+	},
+	"require": {
+		"composer/installers": ">=1.0.1"
+	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "39.0.0",
 		"mediawiki/mediawiki-phan-config": "0.11.1",
@@ -21,5 +35,12 @@
 		],
 		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -sp --cache"
+	},
+	"config": {
+		"prepend-autoloader": false,
+		"optimize-autoloader": true,
+		"allow-plugins": {
+			"composer/installers": true
+		}
 	}
 }

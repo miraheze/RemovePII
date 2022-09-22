@@ -9,6 +9,7 @@ use Job;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
 use User;
+use UserProfilePage;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 	/** @var string */
@@ -447,7 +448,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			NS_USER_TALK
 		];
 
-		if ( class_exists( 'UserProfilePage' ) ) {
+		if ( class_exists( UserProfilePage::class ) ) {
 			array_push( $namespaces,
 				NS_USER_WIKI,
 				NS_USER_WIKI_TALK,

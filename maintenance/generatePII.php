@@ -58,7 +58,7 @@ class GeneratePII extends Maintenance {
 			return false;
 		}
 
-		$dbr = $lbFactory->getMainLB()->getConnection( DB_REPLICA );
+		$dbr = $lbFactory->getMainLB()->getMaintenanceConnectionRef( DB_REPLICA );
 
 		$userActorId = $user->getActorId( $dbr );
 

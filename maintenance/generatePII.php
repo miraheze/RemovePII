@@ -18,11 +18,12 @@ class GeneratePII extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 
+		$this->addDescription( 'Generates personal identifiable information for a user and saves it in CSV format.' );
+
 		$this->addOption( 'user', 'User to get PII for.', true, true );
 		$this->addOption( 'directory', 'Directory to place outputted JSON file of PII in.', true, true );
 		$this->addOption( 'generate', 'Only generate a database list of attached wikis for the user?' );
 
-		$this->addDescription( 'Generates personal identifiable information for a user and saves it in CSV format.' );
 		$this->requireExtension( 'RemovePII' );
 	}
 

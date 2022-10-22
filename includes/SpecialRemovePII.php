@@ -157,7 +157,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 		$url = $this->config->get( 'RemovePIIDPAValidationEndpoint' );
 		$url = str_replace( '{dpa_id}', $value, $url );
-		$url = str_replace( '{username}', $alldata['oldname'], $url );
+		$url = str_replace( '{username}', rawurlencode( $alldata['oldname'] ), $url );
 
 		$report = $this->httpRequestFactory->create( $url );
 		$status = $report->execute();

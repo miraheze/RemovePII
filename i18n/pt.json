@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hamilton Abreu"
+		]
+	},
+	"removepii-desc": "Cria as páginas especiais, Special:GenerateRandomHash e Special:RemovePII para tratar da remoção de informações de identificação pessoal.",
+	"removepii-extensionname": "RemoverIIP",
+	"generaterandomhash": "Gerar Resumo Criptográfico Aleatório",
+	"removepii": "RemoverIIP",
+	"action-generate-random-hash": "gerar um resumo criptográfico aleatório",
+	"action-handle-pii": "tratar/remover informações de identificação pessoal",
+	"right-generate-random-hash": "Gerar resumos criptográficos de nome de utilizador aleatórios",
+	"right-handle-pii": "Tratar/remover informações de identificação pessoal",
+	"removepii-hash-length-help": "Introduzir o número de caracteres que o resumo criptográfico gerado deve conter. Min. 8, máx. 32",
+	"removepii-hash-prefix-help": "Selecionar no menu descendente a opção apropriada a usar para o prefixo para geração do resumo criptográfico.",
+	"removepii-oldname-label": "Anterior nome de utilizador:",
+	"removepii-newname-label": "Novo nome de utilizador:",
+	"removepii-dpa_id-label": "Identificador DPA:",
+	"removepii-action-label": "Selecionar a operação que deseja executar.",
+	"removepii-action-help": "As alterações de nomes devem ser feitas '''sempre''' antes de RemoverIIP. RemoverIIP irá também bloquear a conta global do utilizador.",
+	"removepii-warning-irreversible": "'''Aviso:''' está prestes a executar a operação RemoverIIP. Este processo é irreversível. Certifique-se de que tem as informações corretas antes de prosseguir, por favor.",
+	"removepii-wiki-disabled": "RemoverIIP foi desativado nesta wiki. Está atualmente configurado para só ser ativado numa wiki central. Tem de iniciá-lo a partir de lá.",
+	"removepii-success": "Enviada.",
+	"removepii-centralauth-notinstalled": "A extensão CentralAuth não está instalada.",
+	"removepii-log-name": "Registo da extensão RemoverIIP",
+	"removepii-log-header": "Este é um registo básico de todas as operações da extensão RemoverIIP.",
+	"removepii-invalid-dpa": "Não foi possível validar o pedido DPA associado. Ou o servidor está com dificuldades e não conseguimos uma ligação ao ponto final ou o nome de utilizador antigo fornecido não corresponde ao nome de utilizador fornecido do solicitante no pedido DPA associado.",
+	"logentry-removepii-action": "$1 removeu informações de identificação pessoal de um utilizador."
+}

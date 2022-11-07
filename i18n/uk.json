@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"DDPAT",
-			"Ice bulldog"
+			"Ice bulldog",
+			"Пан Хаунд"
 		]
 	},
 	"removepii-desc": "Створює спеціальні сторінки, Special:GenerateRandomHash та Special:RemovePII для обробки видалення особистої інформації.",
@@ -17,6 +18,7 @@
 	"removepii-hash-prefix-help": "Виберіть у спадному меню відповідний параметр, який потрібно використовувати для префікса для генерування хешу.",
 	"removepii-oldname-label": "Старе ім'я користувача:",
 	"removepii-newname-label": "Нове ім'я користувача:",
+	"removepii-dpa_id-label": "ID DPA:",
 	"removepii-action-label": "Виберіть дію, яку потрібно виконати.",
 	"removepii-action-help": "Перейменування '''завжди''' слід робити перед RemovePII. RemovePII також заблокує глобальний обліковий запис користувача.",
 	"removepii-warning-irreversible": "'''Попередження:''' ви збираєтеся виконати дію RemovePII. Цей процес є незворотним. Перш ніж продовжити, переконайтеся, що інформація правильна.",
@@ -25,5 +27,6 @@
 	"removepii-centralauth-notinstalled": "Розширення CentralAuth не встановлено.",
 	"removepii-log-name": "Журнал RemovePII",
 	"removepii-log-header": "Це базовий журнал усіх дій RemovePII.",
+	"removepii-invalid-dpa": "Неможливо перевірити пов’язаний запит DPA. Або на сервері виникають проблеми, і ми не можемо підключитися до кінцевої точки, або надане старе ім’я користувача не збігається з іменем користувача запитувача, указаним у пов’язаному запиті DPA.",
 	"logentry-removepii-action": "$1 видалив особисту інформацію, що ідентифікує користувача."
 }

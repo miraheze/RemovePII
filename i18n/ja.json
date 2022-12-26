@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Buehl",
 			"RYOUMA1117",
 			"しぃ"
 		]
@@ -17,6 +18,7 @@
 	"removepii-hash-prefix-help": "ドロップダウンから、ハッシュ生成のプレフィックスに使用する適切なオプションを選択します。",
 	"removepii-oldname-label": "古い利用者名：",
 	"removepii-newname-label": "新しい利用者名:",
+	"removepii-dpa_id-label": "DPA ID:",
 	"removepii-action-label": "実行するアクションを選択します。",
 	"removepii-action-help": "名前の変更は、RemovePIIの前に「常に」行う必要があります。RemovePIIは、ユーザーのグローバルアカウントもロックします。",
 	"removepii-warning-irreversible": "'''警告''':RemovePIIアクションを実行しようとしています。このプロセスは元に戻せません。先に進む前に情報が正しいことを確認してください。",

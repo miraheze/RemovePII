@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"removepii-desc": "Ustvari posebni strani Special:GenerateRandomHash in Special:RemovePII za odstranjevanje osebnih podatkov.",
+	"removepii-extensionname": "RemovePII",
+	"generaterandomhash": "Ustvari naključno zgoščeno vrednost",
+	"removepii": "RemovePII",
+	"action-generate-random-hash": "ustvari naključno zgoščeno vrednost",
+	"action-handle-pii": "obdelava/odstranitev osebnih podatkov",
+	"right-generate-random-hash": "Ustvarjanje naključnih zgoščenih vrednosti uporabniških imen",
+	"right-handle-pii": "Obdelava/odstranitev osebnih podatkov",
+	"removepii-hash-length-help": "Vnesite želeno število znakov generirane zgoščene vrednosti. Najm. 8, najv. 32.",
+	"removepii-hash-prefix-help": "V spustnem meniju izberite ustrezno možnost za uporabo kot predpona za ustvarjanje zgoščenih vrednosti.",
+	"removepii-oldname-label": "Staro uporabniško ime:",
+	"removepii-newname-label": "Novo uporabniško ime:",
+	"removepii-dpa_id-label": "Identifikator DPA:",
+	"removepii-action-label": "Izberite dejanje, ki ga želite izvesti.",
+	"removepii-action-help": "Preimenovanja je treba '''vedno''' opraviti pred RemovePII. RemovePII tudi zaklene uporabnikov globalni račun.",
+	"removepii-warning-irreversible": "'''Opozorilo:''' Opravili boste dejanje RemovePII. Ta postopek je nepovraten. Pred nadaljevanjem zagotovite, da imate pravilne informacije.",
+	"removepii-wiki-disabled": "V tem vikiju je bila možnost RemovePII onemogočena. Trenutno je za uporabo konfigurirana samo v centralnem vikiju. Zagnati jo morate tam.",
+	"removepii-success": "Uspešno predloženo.",
+	"removepii-centralauth-notinstalled": "Razširitev CentralAuth ni nameščena.",
+	"removepii-log-name": "Dnevnik RemovePII",
+	"removepii-log-header": "To je osnovni dnevnik vseh dejanj RemovePII.",
+	"removepii-invalid-dpa": "Povezanega zahtevka DPA ni bilo mogoče potrditi. Bodisi ima strežnik težave in se ne moremo povezati s končno točko ali pa se navedeno staro uporabniško ime ne ujema z uporabniškim imenom zahtevatelja, navedenim v povezanem zahtevku DPA.",
+	"logentry-removepii-action": "$1 je odstranil_a osebne podatke uporabnika."
+}

@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"removepii-desc": "Crea le paginas special Special:GenerateRandomHash e Special:RemovePII pro gerer le elimination de datos personal identificabile.",
+	"removepii-extensionname": "Eliminar datos personal",
+	"generaterandomhash": "Generar hash aleatori",
+	"removepii": "Eliminar datos personal",
+	"action-generate-random-hash": "generar un hash aleatori",
+	"action-handle-pii": "gerer/eliminar datos personal identificabile",
+	"right-generate-random-hash": "Generar hashes de nomine de usator aleatori",
+	"right-handle-pii": "Gerer/eliminar datos personal identificabile",
+	"removepii-hash-length-help": "Insere le numero de characteres que le hash generate debe continer. Min. 8, max. 32",
+	"removepii-hash-prefix-help": "Selige del lista disrolante le option appropriate a usar pro le prefixo pro le generation de hash.",
+	"removepii-oldname-label": "Ancian nomine de usator:",
+	"removepii-newname-label": "Nove nomine de usator:",
+	"removepii-dpa_id-label": "Identificator DPA:",
+	"removepii-action-label": "Selige le action que tu vole exequer.",
+	"removepii-action-help": "Un renomination debe '''sempre''' esser realisate ante le elimination de datos personal, perque iste operation serra tamben le conto global del usator.",
+	"removepii-warning-irreversible": "'''Attention:''' tu es sur le puncto de eliminar datos personal. Iste processo es irreversibile. Assecura te de haber le information correcte ante de continuar.",
+	"removepii-wiki-disabled": "Le elimination de datos personal identificabile es indisponibile sur iste wiki. Le procedura es configurate a esser disponibile solo sur un wiki central. Tu debe initiar lo desde la.",
+	"removepii-success": "Correctemente submittite.",
+	"removepii-centralauth-notinstalled": "Le extension CentralAuth non es installate.",
+	"removepii-log-name": "Registro de elimination de datos personal",
+	"removepii-log-header": "Isto es un registro de base de tote le actiones concernente le elimination de datos personal identificabile.",
+	"removepii-invalid-dpa": "Impossibile validar le requesta PDA associate. O le servitor ha difficultates e non pote connecter se al puncto final, o le ancian nomine de usator fornite non coincide con le nomine de usator del requestator fornite in le requesta DPA associate.",
+	"logentry-removepii-action": "$1 ha eliminate le datos personal identificabile de un usator."
+}

@@ -2,14 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Avengium",
-			"Jakeukalane"
+			"Jakeukalane",
+			"McDutchie"
 		]
 	},
 	"removepii-desc": "Crea las páginas especiales, Special: GenerateRandomHash y Special: RemovePII para manejar la eliminación de información de identificación personal.",
 	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "Generar hash aleatorio",
 	"removepii": "RemovePII",
-	"action-generate-random-hash": "Generar un hash aleatorio",
+	"action-generate-random-hash": "generar un hash aleatorio",
 	"action-handle-pii": "manejar/eliminar información de identificación personal",
 	"right-generate-random-hash": "Generar hashes de nombre de usuario aleatorios",
 	"right-handle-pii": "Manejar/eliminar información de identificación personal",

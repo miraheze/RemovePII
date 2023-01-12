@@ -19,8 +19,8 @@ use MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\User\UserFactory;
+use SpecialPage;
 use Status;
-use TitleFactory;
 use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {
@@ -39,9 +39,6 @@ class SpecialRemovePII extends FormSpecialPage {
 	/** @var JobQueueGroupFactory */
 	private $jobQueueGroupFactory;
 
-	/** @var TitleFactory */
-	private $titleFactory;
-
 	/** @var UserFactory */
 	private $userFactory;
 
@@ -51,7 +48,6 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param ConfigFactory $configFactory
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
-	 * @param TitleFactory $titleFactory
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
@@ -60,7 +56,6 @@ class SpecialRemovePII extends FormSpecialPage {
 		ConfigFactory $configFactory,
 		HttpRequestFactory $httpRequestFactory,
 		JobQueueGroupFactory $jobQueueGroupFactory,
-		TitleFactory $titleFactory,
 		UserFactory $userFactory
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
@@ -70,7 +65,6 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->globalRenameUserValidator = $globalRenameUserValidator;
 		$this->httpRequestFactory = $httpRequestFactory;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
-		$this->titleFactory = $titleFactory;
 		$this->userFactory = $userFactory;
 	}
 
@@ -233,6 +227,10 @@ class SpecialRemovePII extends FormSpecialPage {
 			$oldUser = $this->userFactory->newFromName( $formData['oldname'] );
 			$newUser = $this->userFactory->newFromName( $formData['newname'], UserFactory::RIGOR_CREATABLE );
 
+			if ( !$oldUser || !$newUser ) {
+				return Status::newFatal( 'unknown-error' );
+			}
+
 			$session = $this->getContext()->exportSession();
 			$globalRenameUser = new GlobalRenameUser(
 				$this->getUser(),
@@ -309,7 +307,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			$logEntry = new ManualLogEntry( 'removepii', 'action' );
 			$logEntry->setPerformer( $this->getUser() );
-			$logEntry->setTarget( $this->titleFactory->newFromText( 'RemovePII', NS_SPECIAL ) );
+			$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RemovePII' ) );
 			$logID = $logEntry->insert();
 			$logEntry->publish( $logID );
 
@@ -323,7 +321,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		$this->getOutput()->addHTML( Html::successBox( $this->msg( 'removepii-success' )->escaped() ) );
 
 		$this->getOutput()->addReturnTo(
-			$this->titleFactory->newFromText( 'RemovePII', NS_SPECIAL ),
+			SpecialPage::getTitleValueFor( 'RemovePII' ),
 			[],
 			$this->msg( 'removepii' )->text()
 		);

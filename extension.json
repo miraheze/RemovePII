@@ -58,7 +58,6 @@
 				"ConfigFactory",
 				"HttpRequestFactory",
 				"JobQueueGroupFactory",
-				"TitleFactory",
 				"UserFactory"
 			]
 		}

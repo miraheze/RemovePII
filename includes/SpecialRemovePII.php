@@ -227,6 +227,10 @@ class SpecialRemovePII extends FormSpecialPage {
 			$oldUser = $this->userFactory->newFromName( $formData['oldname'] );
 			$newUser = $this->userFactory->newFromName( $formData['newname'], UserFactory::RIGOR_CREATABLE );
 
+			if ( !$oldUser || !$newUser ) {
+				return Status::newFatal( 'unknown-error' );
+			}
+
 			$session = $this->getContext()->exportSession();
 			$globalRenameUser = new GlobalRenameUser(
 				$this->getUser(),

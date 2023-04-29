@@ -214,7 +214,6 @@ class SpecialVanishUser extends FormSpecialPage {
 		$logEntry->publish( $logID );
 
 		return true;
-
 	}
 
 	public function onSuccess() {

@@ -6,4 +6,5 @@ $specialPageAliases = [];
 $specialPageAliases['en'] = [
 	'GenerateRandomHash' => [ 'GenerateRandomHash' ],
 	'RemovePII' => [ 'RemovePII' ],
+	'VanishUser' => [ 'VanishUser' ],
 ];

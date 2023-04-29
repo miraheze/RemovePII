@@ -113,7 +113,7 @@ class SpecialVanishUser extends FormSpecialPage {
 		$formDescriptor['reason'] = [
 			'type' => 'text',
 			'required' => true,
-			'label-message' => 'reason',
+			'label-message' => 'centralauth-admin-reason',
 		];
 
 		$formDescriptor['confirm'] = [

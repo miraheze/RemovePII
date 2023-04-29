@@ -56,7 +56,7 @@ class SpecialVanishUser extends FormSpecialPage {
 		$this->centralAuthDatabaseManager = $centralAuthDatabaseManager;
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
 		$this->globalRenameUserValidator = $globalRenameUserValidator;
-        $this->jobQueueGroupFactory = $jobQueueGroupFactory;
+		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->userFactory = $userFactory;
 	}
 
@@ -65,7 +65,7 @@ class SpecialVanishUser extends FormSpecialPage {
 	 * @return string
 	 */
 	public function execute( $par ) {
-        $this->requireLogIn();
+		$this->requireLogIn();
 		$this->getOutput()->disallowUserJs();
 		$this->checkPermissions();
 
@@ -105,7 +105,7 @@ class SpecialVanishUser extends FormSpecialPage {
 
 		$formDescriptor['newname'] = [
 			'type' => 'text',
-            'default' => 'Vanished user ' . substr( sha1( random_bytes( 10 ) ), 0, 32 ),
+			'default' => 'Vanished user ' . substr( sha1( random_bytes( 10 ) ), 0, 32 ),
 			'required' => true,
 			'label-message' => 'removepii-newname-label',
 		];
@@ -192,7 +192,7 @@ class SpecialVanishUser extends FormSpecialPage {
 			$newUser,
 			CentralAuthUser::getInstance( $newUser ),
 			new GlobalRenameUserStatus( $newUser->getName() ),
-            $this->jobQueueGroupFactory,
+			$this->jobQueueGroupFactory,
 			new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
 			new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
 			$session

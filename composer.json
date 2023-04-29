@@ -1,7 +1,7 @@
 {
 	"name": "miraheze/remove-pii",
 	"type": "mediawiki-extension",
-	"description": "Creates the special pages, Special:GenerateRandomHash and Special:RemovePII to handle removing of personal identifiable information.",
+	"description": "Creates the special pages, Special:GenerateRandomHashand Special:RemovePII to handle removing of personal identifiable information.",
 	"homepage": "https://www.mediawiki.org/wiki/Extension:RemovePII",
 	"license": "GPL-3.0-or-later",
 	"authors": [

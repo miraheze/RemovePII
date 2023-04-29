@@ -28,8 +28,8 @@
 	"removepii-invalid-dpa": "Unable to validate associating DPA request. Either the server is experiencing difficulties and we are unable to connect to the endpoint, or the given old username does not match the requester's username given in the associated DPA request.",
 	"vanishuser": "Vanish a user",
 	"vanishuser-action-label": "Do you '''really''' want to vanish this user?",
-	"vanishuser-action-help": "Please make sure all details are filled out correctly and make sure to log this on Stewards Wiki.",
-	"vanishuser-warning": "'''Warning''': You are about to globally vanish a user. This action "
+	"vanishuser-action-help": "Please make sure all details are filled out correctly and make sure to log this.",
+	"vanishuser-warning": "'''Warning''': You are about to globally vanish a user. Please review all details carefully before proceeding",
 	"vanishuser-log-name": "Vanish user log",
 	"vanishuser-log-header": "This is a basic log of all user vanishes.",
 	"logentry-removepii-action": "$1 removed personal identifiable information from a user.",

@@ -3,6 +3,7 @@
 		"authors": [
 			"Buehl",
 			"RYOUMA1117",
+			"Shirayuki",
 			"しぃ"
 		]
 	},
@@ -12,20 +13,20 @@
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "ランダムハッシュを生成する",
 	"action-handle-pii": "個人を特定できる情報の取り扱い/削除",
-	"right-generate-random-hash": "ランダムなユーザー名ハッシュを生成する",
+	"right-generate-random-hash": "ランダムな利用者名ハッシュを生成する",
 	"right-handle-pii": "個人を特定できる情報の取り扱い/削除",
 	"removepii-hash-length-help": "生成されたハッシュに含める必要のある文字数を入力します。最小8文字、最大、32文字",
 	"removepii-hash-prefix-help": "ドロップダウンから、ハッシュ生成のプレフィックスに使用する適切なオプションを選択します。",
 	"removepii-oldname-label": "古い利用者名：",
 	"removepii-newname-label": "新しい利用者名:",
 	"removepii-dpa_id-label": "DPA ID:",
-	"removepii-action-label": "実行するアクションを選択します。",
-	"removepii-action-help": "名前の変更は、RemovePIIの前に「常に」行う必要があります。RemovePIIは、ユーザーのグローバルアカウントもロックします。",
-	"removepii-warning-irreversible": "'''警告''':RemovePIIアクションを実行しようとしています。このプロセスは元に戻せません。先に進む前に情報が正しいことを確認してください。",
+	"removepii-action-label": "実行する操作を選択します。",
+	"removepii-action-help": "名前の変更は、RemovePII の前に'''常に'''行う必要があります。RemovePII は、利用者のグローバルアカウントもロックします。",
+	"removepii-warning-irreversible": "'''警告:''' RemovePII 操作を実行しようとしています。このプロセスは元に戻せません。先に進む前に情報が正しいことを確認してください。",
 	"removepii-wiki-disabled": "このWikiではRemovePIIが無効になっています。現在、中央のWikiでのみ有効になるように構成されています。そこから開始する必要があります。",
 	"removepii-success": "送信が完了しました。",
 	"removepii-centralauth-notinstalled": "CentralAuth拡張機能がインストールされていません。",
 	"removepii-log-name": "RemovePIIのログ",
-	"removepii-log-header": "これは、すべてのRemovePIIアクションの基本ログです。",
-	"logentry-removepii-action": "$1 ユーザーから個人を特定できる情報を削除しました。"
+	"removepii-log-header": "これは、すべての RemovePII 操作の基本記録です。",
+	"logentry-removepii-action": "$1 は利用者から個人を特定できる情報を除去しました。"
 }

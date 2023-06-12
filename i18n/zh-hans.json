@@ -6,7 +6,6 @@
 		]
 	},
 	"removepii-desc": "创建特殊页面 Special:GenerateRandomHash 和 Special:RemovePII 来处理个人身份信息的删除。",
-	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "生成随机哈希值",
 	"removepii": "RemovePII",
 	"removepii-oldname-label": "旧用户名：",

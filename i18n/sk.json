@@ -5,7 +5,6 @@
 		]
 	},
 	"removepii-desc": "Vytvorí špeciálne stránky Special:GenerateRandomHash a Special:RemovePII pre zvládnutie odstránenie osobných identifikačných informácií.",
-	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "Vygenerovať Náhodný Hash",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "vygenerovať náhodný hash",

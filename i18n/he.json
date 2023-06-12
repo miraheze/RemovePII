@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80",
+			"YaronSh"
+		]
+	},
+	"removepii-desc": "יוצר את הדפים המיוחדים Special:GenerateRandomHash ו־Special:RemovePII כדי לטפל בהסרה של מידע אישי מזהה.",
+	"generaterandomhash": "יצירת גיבוב אקראי",
+	"removepii": "הסרת מידע אישי מזהה",
+	"action-generate-random-hash": "ליצור גיבוב אקראי",
+	"action-handle-pii": "לטפל במידע אישי מזהה או להסיר אותו",
+	"right-generate-random-hash": "יצירת גיבובים אקראיים של שם משתמש",
+	"right-handle-pii": "טיפול במידע אישי מזהה או הסרתו",
+	"removepii-hash-length-help": "נא להזין את מספר התווים שהגיבוב שנוצר צריך להכיל. לפחות 8,לא יותר מ־32",
+	"removepii-hash-prefix-help": "נא לבחור מהתפריט הנפתח את האפשרות המתאימה לשימוש עבור התחילית ליצירת גיבוב.",
+	"removepii-oldname-label": "שם משתמש ישן:",
+	"removepii-newname-label": "שם משתמש חדש:",
+	"removepii-dpa_id-label": "מזהה DPA:",
+	"removepii-action-label": "נא לבחור את הפעולה שברצונך לבצע.",
+	"removepii-action-help": "יש לבצע שינוי שמות '''תמיד''' לפני RemovePII. הרצת RemovePII גם תנעל את החשבון הגלובלי של המשתמש.",
+	"removepii-warning-irreversible": "'''אזהרה:''' {{GENDER:|אתה עומד|את עומדת}} לבצע את פעולת RemovePII. התהליך הזה בלתי־הפיך. נא לוודא שיש לך את המידע הנכון לפני המשך.",
+	"removepii-wiki-disabled": "פעולת RemovePII הושבתה בוויקי הזה. כרגע היא מוגדרת להיות מופעלת רק בוויקי מרכזי. יש ליזום אותה משם.",
+	"removepii-success": "נשלח בהצלחה.",
+	"removepii-centralauth-notinstalled": "ההרחבה CentralAuth אינה מותקנת.",
+	"removepii-log-name": "יומן הסרת מידע אישי מזהה",
+	"removepii-log-header": "זהו יומן בסיסי של כל הפעולות של הסרת מידע אישי מזהה",
+	"removepii-invalid-dpa": "לא ניתן לאמת בקשת DPA משייכת. או שהשרת נתקל בקשיים ואיננו יכולים להתחבר לנקודת הקצה, או ששם המשתמש הישן שניתן אינו תואם לשם המשתמש של המבקש שניתן בבקשת ה־DPA המשויכת.",
+	"logentry-removepii-action": "$1 {{GENDER:$1|הסיר|הסירה}} מידע אישי מזהה ממשתמש."
+}

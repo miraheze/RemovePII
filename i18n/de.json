@@ -6,7 +6,6 @@
 		]
 	},
 	"removepii-desc": "Erstellt die speziellen Seiten Special:GenerateRandomHash und Special:RemovePII, um das Entfernen von personenbezogenen Daten zu ermöglichen.",
-	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "Zufällige Hashwerte generieren",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "einen zufälligen Hashwert generieren",

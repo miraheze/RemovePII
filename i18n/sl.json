@@ -5,7 +5,6 @@
 		]
 	},
 	"removepii-desc": "Ustvari posebni strani Special:GenerateRandomHash in Special:RemovePII za odstranjevanje osebnih podatkov.",
-	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "Ustvari naključno zgoščeno vrednost",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "ustvari naključno zgoščeno vrednost",

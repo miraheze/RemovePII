@@ -5,7 +5,6 @@
 		]
 	},
 	"removepii-desc": "建立特殊頁面，Special:GenerateRandomHash 與 Special:RemovePII 用來處理移除個人識別資訊。",
-	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "產生隨機雜湊碼",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "產生隨機雜湊碼",

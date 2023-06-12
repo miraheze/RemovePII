@@ -8,7 +8,6 @@
 		]
 	},
 	"removepii-desc": "個人を特定できる情報の削除を処理するための特別なページ、Special:GenerateRandomHashおよびSpecial:RemovePIIを作成します。",
-	"removepii-extensionname": "RemovePII",
 	"generaterandomhash": "ランダムハッシュを生成する",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "ランダムハッシュを生成する",

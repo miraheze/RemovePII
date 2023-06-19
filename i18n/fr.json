@@ -7,6 +7,7 @@
 		]
 	},
 	"removepii-desc": "Crée les pages spéciales, Special:GenerateRandomHash et Special:RemovePII pour gérer la suppression des informations personnelles identifiables.",
+	"removepii-extensionname": "SupprimerIPI",
 	"generaterandomhash": "Générer un hachage aléatoire",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "générer un hachage aléatoire",

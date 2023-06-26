@@ -2,14 +2,19 @@
 	"@metadata": {
 		"authors": [
 			"Hydra",
-			"StarrySky"
+			"StarrySky",
+			"U.T."
 		]
 	},
 	"removepii-desc": "创建特殊页面 Special:GenerateRandomHash 和 Special:RemovePII 来处理个人身份信息的删除。",
 	"generaterandomhash": "生成随机哈希值",
 	"removepii": "RemovePII",
+	"action-generate-random-hash": "生成随机哈希值",
+	"right-generate-random-hash": "生成随机用户名哈希值",
 	"removepii-oldname-label": "旧用户名：",
 	"removepii-newname-label": "新用户名：",
+	"removepii-action-label": "选择您想要执行的操作。",
 	"removepii-success": "成功提交。",
+	"removepii-centralauth-notinstalled": "CentralAuth 扩展未安装。",
 	"removepii-log-name": "RemovePII日志"
 }

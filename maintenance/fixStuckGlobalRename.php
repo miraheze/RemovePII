@@ -16,7 +16,7 @@ require_once "$IP/maintenance/Maintenance.php";
  * Script to run global renames that are stuck in the status table with "queued" or "in progress"
  * but failed for whatever reason
  */
-class FixStuckGlobalRename extends Maintenance {
+class FixStuckGlobalRenameMiraheze extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 		$this->requireExtension( 'CentralAuth' );
@@ -107,5 +107,5 @@ class FixStuckGlobalRename extends Maintenance {
 	}
 }
 
-$maintClass = FixStuckGlobalRename::class;
+$maintClass = FixStuckGlobalRenameMiraheze::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

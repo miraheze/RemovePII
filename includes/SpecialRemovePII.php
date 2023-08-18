@@ -245,6 +245,10 @@ class SpecialRemovePII extends FormSpecialPage {
 
 			return true;
 		} elseif ( $formData['action'] === 'removepii' ) {
+			if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
+				return Status::newFatal( 'removepii-centralauth-notinstalled' );
+			}
+
 			$oldName = str_replace( '_', ' ', $formData['oldname'] );
 			$newName = str_replace( '_', ' ', $formData['newname'] );
 

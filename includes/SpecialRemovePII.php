@@ -87,7 +87,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		];
 
 		$formDescriptor['oldname'] = [
-			'class' => MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField::class,
+			'class' => \MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField::class,
 			'required' => true,
 			'label-message' => 'removepii-oldname-label',
 		];
@@ -167,7 +167,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}
 
-		$oldCentral = MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $formData['oldname'] );
+		$oldCentral = \MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $formData['oldname'] );
 		$canSuppress = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-suppress' );
 
 		if ( ( $oldCentral->isSuppressed() || $oldCentral->isHidden() ) &&
@@ -224,13 +224,13 @@ class SpecialRemovePII extends FormSpecialPage {
 			$globalRenameUser = new GlobalRenameUser(
 				$this->getUser(),
 				$oldUser,
-				MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $oldUser ),
+				\MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
-				MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $newUser ),
+				\MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $newUser ),
 				new MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus( $newUser->getName() ),
 				$this->jobQueueGroupFactory,
-				new MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates( $caDbManager ),
-				new MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserLogger( $this->getUser() ),
+				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates( $caDbManager ),
+				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);
 
@@ -257,9 +257,9 @@ class SpecialRemovePII extends FormSpecialPage {
 				'newname' => $newName,
 			];
 
-			$oldCentral = MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $oldName );
+			$oldCentral = \MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $oldName );
 
-			$newCentral = MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $newName );
+			$newCentral = \MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $newName );
 
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(

@@ -227,7 +227,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				\MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
 				\MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $newUser ),
-				new MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus( $newUser->getName() ),
+				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus( $newUser->getName() ),
 				$this->jobQueueGroupFactory,
 				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates( $caDbManager ),
 				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserLogger( $this->getUser() ),

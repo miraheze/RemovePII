@@ -9,29 +9,17 @@ use FormatJson;
 use FormSpecialPage;
 use Html;
 use ManualLogEntry;
-use MediaWiki\Extension\CentralAuth\CentralAuthDatabaseManager;
-use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
-use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
-use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
-use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
-use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
-use MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserFactory;
 use SpecialPage;
 use Status;
 use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {
-	/** @var CentralAuthDatabaseManager */
-	private $centralAuthDatabaseManager;
-
 	/** @var Config */
 	private $config;
-
-	/** @var GlobalRenameUserValidator */
-	private $globalRenameUserValidator;
 
 	/** @var HttpRequestFactory */
 	private $httpRequestFactory;
@@ -43,16 +31,12 @@ class SpecialRemovePII extends FormSpecialPage {
 	private $userFactory;
 
 	/**
-	 * @param CentralAuthDatabaseManager $centralAuthDatabaseManager
-	 * @param GlobalRenameUserValidator $globalRenameUserValidator
 	 * @param ConfigFactory $configFactory
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
-		CentralAuthDatabaseManager $centralAuthDatabaseManager,
-		GlobalRenameUserValidator $globalRenameUserValidator,
 		ConfigFactory $configFactory,
 		HttpRequestFactory $httpRequestFactory,
 		JobQueueGroupFactory $jobQueueGroupFactory,
@@ -60,9 +44,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
-		$this->centralAuthDatabaseManager = $centralAuthDatabaseManager;
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
-		$this->globalRenameUserValidator = $globalRenameUserValidator;
 		$this->httpRequestFactory = $httpRequestFactory;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->userFactory = $userFactory;
@@ -105,7 +87,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		];
 
 		$formDescriptor['oldname'] = [
-			'class' => HTMLGlobalUserTextField::class,
+			'class' => MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField::class,
 			'required' => true,
 			'label-message' => 'removepii-oldname-label',
 		];
@@ -203,7 +185,10 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		return $this->globalRenameUserValidator->validate( $oldUser, $newUser );
+		$globalRenameUserValidator = MediaWikiServices::getInstance()->getService(
+			'CentralAuth.GlobalRenameUserValidator'
+		);
+		return $globalRenameUserValidator->validate( $oldUser, $newUser );
 	}
 
 	/**
@@ -231,17 +216,21 @@ class SpecialRemovePII extends FormSpecialPage {
 				return Status::newFatal( 'unknown-error' );
 			}
 
+			$caDbManager = MediaWikiServices::getInstance()->getService(
+				'CentralAuth.CentralAuthDatabaseManager'
+			);
+
 			$session = $this->getContext()->exportSession();
 			$globalRenameUser = new GlobalRenameUser(
 				$this->getUser(),
 				$oldUser,
-				CentralAuthUser::getInstance( $oldUser ),
+				MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
-				CentralAuthUser::getInstance( $newUser ),
-				new GlobalRenameUserStatus( $newUser->getName() ),
+				MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $newUser ),
+				new MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus( $newUser->getName() ),
 				$this->jobQueueGroupFactory,
-				new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
-				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
+				new MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates( $caDbManager ),
+				new MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserLogger( $this->getUser() ),
 				$session
 			);
 
@@ -264,9 +253,9 @@ class SpecialRemovePII extends FormSpecialPage {
 				'newname' => $newName,
 			];
 
-			$oldCentral = CentralAuthUser::getInstanceByName( $oldName );
+			$oldCentral = MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $oldName );
 
-			$newCentral = CentralAuthUser::getInstanceByName( $newName );
+			$newCentral = MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $newName );
 
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(

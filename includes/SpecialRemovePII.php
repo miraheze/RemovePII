@@ -17,6 +17,7 @@ use SpecialPage;
 use Status;
 use WikiMap;
 
+
 class SpecialRemovePII extends FormSpecialPage {
 	/** @var Config */
 	private $config;

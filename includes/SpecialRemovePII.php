@@ -221,7 +221,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			);
 
 			$session = $this->getContext()->exportSession();
-			$globalRenameUser = new GlobalRenameUser(
+			$globalRenameUser = new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser(
 				$this->getUser(),
 				$oldUser,
 				\MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $oldUser ),

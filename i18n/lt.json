@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nokeoo"
+		]
+	},
+	"removepii-desc": "Sukuria specialus puslapius, Special:GenerateRandomHash ir Special:RemovePII, asmeninės informacijos šalinimo palaikymui",
+	"removepii-oldname-label": "Senas naudotojo vardas:",
+	"removepii-newname-label": "Naujas naudotojo vardas:",
+	"removepii-dpa_id-label": "DPA ID:",
+	"removepii-action-label": "Pasirinkite veiksmą, kurį norite atlikti.",
+	"removepii-success": "Sėkmingai pateikta.",
+	"removepii-centralauth-notinstalled": "„CentralAuth“ plėtinys neįdiegtas.",
+	"logentry-removepii-action": "$1 pašalino naudotojo asmeninę informaciją."
+}

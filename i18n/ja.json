@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Buehl",
+			"M1660661",
 			"RYOUMA1117",
 			"Shirayuki",
 			"しぃ"
@@ -27,5 +28,6 @@
 	"removepii-centralauth-notinstalled": "CentralAuth拡張機能がインストールされていません。",
 	"removepii-log-name": "RemovePIIのログ",
 	"removepii-log-header": "これは、すべての RemovePII 操作の基本記録です。",
+	"removepii-invalid-dpa": "関連付けられている DPA リクエストを検証できません。サーバーに問題が発生してエンドポイントに接続できないか、指定された古いユーザー名が、関連する DPA リクエストで指定された要求者のユーザー名と一致しません。",
 	"logentry-removepii-action": "$1 は利用者から個人を特定できる情報を除去しました。"
 }

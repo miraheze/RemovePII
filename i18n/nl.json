@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie",
+			"Nieuwsgierige Gebruiker"
+		]
+	},
+	"removepii-desc": "Maakt de speciale pagina’s Special:GenerateRandomHash en Special:RemovePII aan om het verwijderen van naar personen te herleiden informatie af te handelen.",
+	"generaterandomhash": "Willekeurige hash genereren",
+	"removepii": "Persoonsinformatie verwijderen",
+	"action-generate-random-hash": "een willekeurige hash te genereren",
+	"action-handle-pii": "persoonsinformatie te behandelen of te verwijderen",
+	"right-generate-random-hash": "Willekeurige gebruikersnaam-hashes genereren",
+	"right-handle-pii": "Persoonsinformatie behandelen en verwijderen",
+	"removepii-hash-length-help": "Voer het aantal tekens in dat de gegenereerde hash moet bevatten. Minimum 8, maximum 32.",
+	"removepii-hash-prefix-help": "Selecteer in de vervolgkeuzelijst de juiste optie die u wilt gebruiken voor het voorvoegsel voor het genereren van hash.",
+	"removepii-oldname-label": "Oude gebruikersnaam:",
+	"removepii-newname-label": "Nieuwe gebruikersnaam:",
+	"removepii-dpa_id-label": "DPA-ID:",
+	"removepii-action-label": "Selecteer de handeling die u wilt verrichten.",
+	"removepii-action-help": "Hernoemingen moeten '''altijd''' voor RemovePII worden gedaan. RemovePII vergrendelt ook het globale account van gebruiker.",
+	"removepii-warning-irreversible": "'''Waarschuwing:''' u staat op het punt persoonsinformatie te verwijderen. Dit proces is onomkeerbaar. Zorg ervoor dat u de juiste informatie heeft voordat u verder gaat.",
+	"removepii-wiki-disabled": "De functie voor het verwijderen van persoonsinformatie is uitgeschakeld op deze wiki en is momenteel alleen beschikbaar op een centrale wiki. Daar moet u de procedure beginnen.",
+	"removepii-success": "Uw aanvraag is ingediend.",
+	"removepii-centralauth-notinstalled": "De CentralAuth-uitbreiding is niet geïnstalleerd.",
+	"removepii-log-name": "Logboek verwijdering persoonsinformatie",
+	"removepii-log-header": "Dit is een basislogboek met alle handelingen die betrekking hebben tot het verwijderen van tot de persoon te herleiden informatie.",
+	"removepii-invalid-dpa": "Kan het bijbehorende DPA-verzoek niet valideren. Ofwel ondervindt de server problemen en kunnen we geen verbinding maken met het eindpunt, ofwel komt de opgegeven oude gebruikersnaam niet overeen met de gebruikersnaam van de aanvrager die is opgegeven in het bijbehorende DPA-verzoek.",
+	"logentry-removepii-action": "$1 heeft persoonsinformatie van een gebruiker verwijderd."
+}

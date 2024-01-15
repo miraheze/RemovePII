@@ -25,6 +25,6 @@
 	"removepii-centralauth-notinstalled": "A extensão CentralAuth não está instalada.",
 	"removepii-log-name": "Registo da extensão RemoverIIP",
 	"removepii-log-header": "Este é um registo básico de todas as operações da extensão RemoverIIP.",
-	"removepii-invalid-dpa": "Não foi possível validar o pedido DPA associado. Ou o servidor está com dificuldades e não conseguimos uma ligação ao ponto final ou o nome de utilizador antigo fornecido não corresponde ao nome de utilizador fornecido do solicitante no pedido DPA associado.",
+	"removepii-invalid-dpa": "Não foi possível validar o pedido DPA associado. Ou o servidor está com dificuldades e não conseguimos uma ligação ao ponto de terminação, ou o nome de utilizador antigo fornecido não corresponde ao nome de utilizador do solicitante fornecido no pedido DPA associado.",
 	"logentry-removepii-action": "$1 removeu informações de identificação pessoal de um utilizador."
 }

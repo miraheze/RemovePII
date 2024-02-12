@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Pisceskaze"
+		]
+	},
+	"removepii-desc": "Tạo các trang đặc biệt, Đặc biệt:GenerateRandomHash và Đặc biệt:RemovePII để xử lý việc xóa thông tin nhận dạng cá nhân.",
+	"generaterandomhash": "Tạo hàm băm ngẫu nhiên",
+	"removepii": "Xóa PII",
+	"action-generate-random-hash": "tạo một hàm băm ngẫu nhiên",
+	"action-handle-pii": "xử lý/xóa thông tin nhận dạng cá nhân",
+	"right-generate-random-hash": "Tạo băm tên người dùng ngẫu nhiên",
+	"right-handle-pii": "Xử lý/xóa thông tin nhận dạng cá nhân",
+	"removepii-hash-length-help": "Nhập số ký tự mà hàm băm được tạo sẽ chứa. Tối thiểu 8, tối đa 32",
+	"removepii-hash-prefix-help": "Chọn từ danh sách thả xuống, tùy chọn thích hợp để sử dụng cho tiền tố để tạo hàm băm.",
+	"removepii-oldname-label": "Tên người dùng cũ:",
+	"removepii-newname-label": "Tên người dùng mới:",
+	"removepii-dpa_id-label": "ID DPA:",
+	"removepii-action-label": "Chọn hành động bạn muốn thực hiện.",
+	"removepii-action-help": "Việc đổi tên phải ''luôn luôn''' được thực hiện trước khi thực thi RemovePII. RemovePII cũng sẽ khóa tài khoản toàn cục của người dùng.",
+	"removepii-warning-irreversible": "'''Cảnh báo:''' bạn sắp thực hiện hành động RemovePII. Quá trình này là không thể đảo ngược. Hãy chắc chắn rằng bạn có thông tin chính xác trước khi tiếp tục.",
+	"removepii-wiki-disabled": "RemovePII đã bị vô hiệu hóa trên wiki này. Nó hiện được cấu hình để chỉ được kích hoạt trên wiki trung tâm. Bạn phải bắt đầu nó từ đó.",
+	"removepii-success": "Đã gửi thành công.",
+	"removepii-centralauth-notinstalled": "Phần mở rộng CentralAuth chưa được cài đặt.",
+	"removepii-log-name": "Nhật ký xóa PII",
+	"removepii-log-header": "Đây là nhật ký cơ bản của tất cả các hành động RemovePII."
+}

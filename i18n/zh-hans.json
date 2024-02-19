@@ -3,7 +3,8 @@
 		"authors": [
 			"Hydra",
 			"StarrySky",
-			"U.T."
+			"U.T.",
+			"XtexChooser"
 		]
 	},
 	"removepii-desc": "创建特殊页面 Special:GenerateRandomHash 和 Special:RemovePII 来处理个人身份信息的删除。",
@@ -13,6 +14,7 @@
 	"right-generate-random-hash": "生成随机用户名哈希值",
 	"removepii-oldname-label": "旧用户名：",
 	"removepii-newname-label": "新用户名：",
+	"removepii-dpa_id-label": "DPA ID：",
 	"removepii-action-label": "选择您想要执行的操作。",
 	"removepii-success": "成功提交。",
 	"removepii-centralauth-notinstalled": "CentralAuth 扩展未安装。",

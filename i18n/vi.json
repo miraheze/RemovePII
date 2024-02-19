@@ -23,5 +23,7 @@
 	"removepii-success": "Đã gửi thành công.",
 	"removepii-centralauth-notinstalled": "Phần mở rộng CentralAuth chưa được cài đặt.",
 	"removepii-log-name": "Nhật ký xóa PII",
-	"removepii-log-header": "Đây là nhật ký cơ bản của tất cả các hành động RemovePII."
+	"removepii-log-header": "Đây là nhật ký cơ bản của tất cả các hành động RemovePII.",
+	"removepii-invalid-dpa": "Không thể xác thực liên kết DPA. Máy chủ đang gặp sự cố và chúng tôi không thể kết nối với điểm cuối hoặc tên người dùng cũ đã cung cấp không khớp với tên người dùng của người yêu cầu được cung cấp trong yêu cầu DPA liên quan.",
+	"logentry-removepii-action": "$1 đã xóa thông tin nhận dạng cá nhân khỏi một thành viên."
 }

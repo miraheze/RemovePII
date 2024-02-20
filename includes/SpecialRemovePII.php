@@ -222,7 +222,10 @@ class SpecialRemovePII extends FormSpecialPage {
 				'CentralAuth.CentralAuthDatabaseManager'
 			);
 
-			$session = $this->getContext()->exportSession();
+			$caAntiSpoofManager = MediaWikiServices::getInstance()->getService(
+				'CentralAuth.CentralAuthAntiSpoofManager'
+			);
+
 			$globalRenameUser = new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser(
 				$this->getUser(),
 				$oldUser,
@@ -232,8 +235,8 @@ class SpecialRemovePII extends FormSpecialPage {
 				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus( $newUser->getName() ),
 				$this->jobQueueGroupFactory,
 				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates( $caDbManager ),
-				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserLogger( $this->getUser() ),
-				$session
+				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
+				$caAntiSpoofManager
 			);
 
 			$globalRenameUser->rename(

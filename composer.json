@@ -10,7 +10,7 @@
 		}
 	],
 	"support": {
-		"issues": "https://phabricator.miraheze.org/tag/removepii/",
+		"issues": "https://issue-tracker.miraheze.org/tag/removepii/",
 		"wiki": "https://www.mediawiki.org/wiki/Extension:RemovePII"
 	},
 	"require": {

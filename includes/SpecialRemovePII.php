@@ -9,6 +9,14 @@ use FormatJson;
 use FormSpecialPage;
 use Html;
 use ManualLogEntry;
+use MediaWiki\Extension\CentralAuth\CentralAuthDatabaseManager;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus;
+use MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserValidator;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthAntiSpoofManager;
+use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
+use MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\MediaWikiServices;
@@ -18,8 +26,18 @@ use Status;
 use WikiMap;
 
 class SpecialRemovePII extends FormSpecialPage {
+
+	/** @var CentralAuthAntiSpoofManager|null */
+	private $centralAuthAntiSpoofManager;
+
+	/** @var CentralAuthDatabaseManager|null */
+	private $centralAuthDatabaseManager;
+
 	/** @var Config */
 	private $config;
+
+	/** @var GlobalRenameUserValidator|null */
+	private $globalRenameUserValidator;
 
 	/** @var HttpRequestFactory */
 	private $httpRequestFactory;
@@ -35,15 +53,23 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param UserFactory $userFactory
+  	 * @param ?CentralAuthAntiSpoofManager $centralAuthAntiSpoofManager
+  	 * @param ?CentralAuthDatabaseManager $centralAuthDatabaseManager
+	 * @param ?GlobalRenameUserValidator $globalRenameUserValidator
 	 */
 	public function __construct(
 		ConfigFactory $configFactory,
 		HttpRequestFactory $httpRequestFactory,
 		JobQueueGroupFactory $jobQueueGroupFactory,
-		UserFactory $userFactory
+		UserFactory $userFactory,
+		?CentralAuthAntiSpoofManager $centralAuthAntiSpoofManager,
+		?CentralAuthDatabaseManager $centralAuthDatabaseManager,
+		?GlobalRenameUserValidator $globalRenameUserValidator
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
+		$this->centralAuthAntiSpoofManager = $centralAuthAntiSpoofManager;
+		$this->centralAuthDatabaseManager = $centralAuthDatabaseManager;
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
 		$this->httpRequestFactory = $httpRequestFactory;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
@@ -87,7 +113,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		];
 
 		$formDescriptor['oldname'] = [
-			'class' => \MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField::class,
+			'class' => HTMLGlobalUserTextField::class,
 			'required' => true,
 			'label-message' => 'removepii-oldname-label',
 		];
@@ -154,14 +180,8 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return Status
 	 */
 	public function validateCentralAuth( array $formData ) {
-		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) || !$this->globalRenameUserValidator ) {
 			return Status::newFatal( 'removepii-centralauth-notinstalled' );
-		}
-
-		if ( version_compare( MW_VERSION, '1.40', '<' ) &&
-			!ExtensionRegistry::getInstance()->isLoaded( 'Renameuser' )
-		) {
-			return Status::newFatal( 'centralauth-rename-notinstalled' );
 		}
 
 		$oldUser = $this->userFactory->newFromName( $formData['oldname'] );
@@ -169,7 +189,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-doesnotexist' );
 		}
 
-		$oldCentral = \MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $formData['oldname'] );
+		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
 		$canSuppress = $this->getUser() && $this->getUser()->isAllowed( 'centralauth-suppress' );
 
 		if ( ( $oldCentral->isSuppressed() || $oldCentral->isHidden() ) &&
@@ -187,10 +207,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return Status::newFatal( 'centralauth-rename-badusername' );
 		}
 
-		$globalRenameUserValidator = MediaWikiServices::getInstance()->getService(
-			'CentralAuth.GlobalRenameUserValidator'
-		);
-		return $globalRenameUserValidator->validate( $oldUser, $newUser );
+		return $this->globalRenameUserValidator->validate( $oldUser, $newUser );
 	}
 
 	/**
@@ -218,25 +235,17 @@ class SpecialRemovePII extends FormSpecialPage {
 				return Status::newFatal( 'unknown-error' );
 			}
 
-			$caDbManager = MediaWikiServices::getInstance()->getService(
-				'CentralAuth.CentralAuthDatabaseManager'
-			);
-
-			$caAntiSpoofManager = MediaWikiServices::getInstance()->getService(
-				'CentralAuth.CentralAuthAntiSpoofManager'
-			);
-
-			$globalRenameUser = new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUser(
+			$globalRenameUser = new GlobalRenameUser(
 				$this->getUser(),
 				$oldUser,
-				\MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $oldUser ),
+				CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
-				\MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstance( $newUser ),
-				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserStatus( $newUser->getName() ),
+				CentralAuthUser::getInstance( $newUser ),
+				new GlobalRenameUserStatus( $newUser->getName() ),
 				$this->jobQueueGroupFactory,
-				new \MediaWiki\Extension\CentralAuth\GlobalRename\GlobalRenameUserDatabaseUpdates( $caDbManager ),
+				new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
 				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),
-				$caAntiSpoofManager
+				$this->centralAuthAntiSpoofManager
 			);
 
 			$globalRenameUser->rename(
@@ -262,9 +271,9 @@ class SpecialRemovePII extends FormSpecialPage {
 				'newname' => $newName,
 			];
 
-			$oldCentral = \MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $oldName );
+			$oldCentral = CentralAuthUser::getInstanceByName( $oldName );
 
-			$newCentral = \MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getInstanceByName( $newName );
+			$newCentral = CentralAuthUser::getInstanceByName( $newName );
 
 			if ( $oldCentral->renameInProgress() ) {
 				$out->addHTML(

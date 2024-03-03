@@ -19,7 +19,6 @@ use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserFactory;
 use SpecialPage;
 use Status;

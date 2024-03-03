@@ -179,7 +179,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return Status
 	 */
 	public function validateCentralAuth( array $formData ) {
-		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) || !$this->globalRenameUserValidator ) {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
 			return Status::newFatal( 'removepii-centralauth-notinstalled' );
 		}
 

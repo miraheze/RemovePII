@@ -52,8 +52,8 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param UserFactory $userFactory
-  	 * @param ?CentralAuthAntiSpoofManager $centralAuthAntiSpoofManager
-  	 * @param ?CentralAuthDatabaseManager $centralAuthDatabaseManager
+	 * @param ?CentralAuthAntiSpoofManager $centralAuthAntiSpoofManager
+	 * @param ?CentralAuthDatabaseManager $centralAuthDatabaseManager
 	 * @param ?GlobalRenameUserValidator $globalRenameUserValidator
 	 */
 	public function __construct(

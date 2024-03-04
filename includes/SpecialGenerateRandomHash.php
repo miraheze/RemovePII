@@ -2,12 +2,13 @@
 
 namespace Miraheze\RemovePII;
 
-use Config;
-use ConfigFactory;
-use FormSpecialPage;
-use Html;
+use MediaWiki\Config\Config;
+use MediaWiki\Config\ConfigFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\FormSpecialPage;
 
 class SpecialGenerateRandomHash extends FormSpecialPage {
+
 	/** @var Config */
 	private $config;
 

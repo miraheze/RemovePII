@@ -67,9 +67,11 @@ class SpecialRemovePII extends FormSpecialPage {
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );
 
+		$this->config = $configFactory->makeConfig( 'RemovePII' );
+
 		$this->centralAuthAntiSpoofManager = $centralAuthAntiSpoofManager;
 		$this->centralAuthDatabaseManager = $centralAuthDatabaseManager;
-		$this->config = $configFactory->makeConfig( 'RemovePII' );
+		$this->globalRenameUserValidator = $globalRenameUserValidator;
 		$this->httpRequestFactory = $httpRequestFactory;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->userFactory = $userFactory;

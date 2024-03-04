@@ -8,10 +8,11 @@ use GenericParameterJob;
 use Job;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
-use User;
+use MediaWiki\User\User;
 use UserProfilePage;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
+
 	/** @var string */
 	private $oldName;
 

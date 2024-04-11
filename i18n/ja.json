@@ -5,6 +5,7 @@
 			"M1660661",
 			"RYOUMA1117",
 			"Shirayuki",
+			"Waki285",
 			"しぃ"
 		]
 	},
@@ -26,7 +27,7 @@
 	"removepii-wiki-disabled": "このWikiではRemovePIIが無効になっています。現在、中央のWikiでのみ有効になるように構成されています。そこから開始する必要があります。",
 	"removepii-success": "送信が完了しました。",
 	"removepii-centralauth-notinstalled": "CentralAuth拡張機能がインストールされていません。",
-	"removepii-log-name": "RemovePIIのログ",
+	"removepii-log-name": "RemovePII記録",
 	"removepii-log-header": "これは、すべての RemovePII 操作の基本記録です。",
 	"removepii-invalid-dpa": "関連付けられている DPA リクエストを検証できません。サーバーに問題が発生してエンドポイントに接続できないか、指定された古いユーザー名が、関連する DPA リクエストで指定された要求者のユーザー名と一致しません。",
 	"logentry-removepii-action": "$1 は利用者から個人を特定できる情報を除去しました。"

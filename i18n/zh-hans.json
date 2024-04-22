@@ -4,14 +4,17 @@
 			"Hydra",
 			"StarrySky",
 			"U.T.",
-			"XtexChooser"
+			"XtexChooser",
+			"沈澄心"
 		]
 	},
 	"removepii-desc": "创建特殊页面 Special:GenerateRandomHash 和 Special:RemovePII 来处理个人身份信息的删除。",
 	"generaterandomhash": "生成随机哈希值",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "生成随机哈希值",
+	"action-handle-pii": "处理/删除个人身份信息",
 	"right-generate-random-hash": "生成随机用户名哈希值",
+	"right-handle-pii": "处理/删除个人身份信息",
 	"removepii-oldname-label": "旧用户名：",
 	"removepii-newname-label": "新用户名：",
 	"removepii-dpa_id-label": "DPA ID：",

@@ -37,7 +37,7 @@
 		"removepii"
 	],
 	"ConfigRegistry": {
-		"RemovePII": "GlobalVarConfig::newInstance"
+		"RemovePII": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"AvailableRights": [
 		"generate-random-hash",

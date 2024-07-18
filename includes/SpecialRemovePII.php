@@ -18,6 +18,7 @@ use MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField;
 use MediaWiki\Html\Html;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
+use MediaWiki\Message\Message;
 use MediaWiki\SpecialPage\FormSpecialPage;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Status\Status;
@@ -145,11 +146,11 @@ class SpecialRemovePII extends FormSpecialPage {
 	/**
 	 * @param ?string $value
 	 * @param array $alldata
-	 * @return bool|string
+	 * @return string|bool|Message
 	 */
 	public function isMatchingAssociatedDPARequest( ?string $value, array $alldata ) {
 		if ( !$value ) {
-			return Status::newFatal( 'htmlform-required' )->getMessage();
+			return $this->msg( 'htmlform-required' );
 		}
 
 		if ( !$this->config->get( 'RemovePIIDPAValidationEndpoint' ) ) {
@@ -165,12 +166,12 @@ class SpecialRemovePII extends FormSpecialPage {
 		$report = $this->httpRequestFactory->create( $url );
 		$status = $report->execute();
 		if ( !$status->isOK() ) {
-			return Status::newFatal( 'removepii-invalid-dpa' )->getMessage();
+			return $this->msg( 'removepii-invalid-dpa' );
 		}
 
 		$content = FormatJson::decode( $report->getContent(), true );
 		if ( !( $content['match'] ?? false ) ) {
-			return Status::newFatal( 'removepii-invalid-dpa' )->getMessage();
+			return $this->msg( 'removepii-invalid-dpa' );
 		}
 
 		return true;
@@ -242,7 +243,7 @@ class SpecialRemovePII extends FormSpecialPage {
 				CentralAuthUser::getInstance( $oldUser ),
 				$newUser,
 				CentralAuthUser::getInstance( $newUser ),
-				new GlobalRenameUserStatus( $newUser->getName() ),
+				new GlobalRenameUserStatus( $this->centralAuthDatabaseManager, $newUser->getName() ),
 				$this->jobQueueGroupFactory,
 				new GlobalRenameUserDatabaseUpdates( $this->centralAuthDatabaseManager ),
 				new RemovePIIGlobalRenameUserLogger( $this->getUser() ),

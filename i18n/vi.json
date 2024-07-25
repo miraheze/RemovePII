@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pisceskaze"
+			"Pisceskaze",
+			"SongNgu.xyz"
 		]
 	},
 	"removepii-desc": "Tạo các trang đặc biệt, Đặc biệt:GenerateRandomHash và Đặc biệt:RemovePII để xử lý việc xóa thông tin nhận dạng cá nhân.",

@@ -56,11 +56,11 @@
 				"ConfigFactory",
 				"HttpRequestFactory",
 				"JobQueueGroupFactory",
-				"UserFactory"
+				"UserFactory",
+				"CentralAuth.CentralAuthDatabaseManager"
 			],
 			"optional_services": [
 				"CentralAuth.CentralAuthAntiSpoofManager",
-				"CentralAuth.CentralAuthDatabaseManager",
 				"CentralAuth.GlobalRenameUserValidator"
 			]
 		}

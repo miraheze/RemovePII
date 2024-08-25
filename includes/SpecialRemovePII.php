@@ -30,7 +30,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	/** @var CentralAuthAntiSpoofManager|null */
 	private $centralAuthAntiSpoofManager;
 
-	/** @var CentralAuthDatabaseManager|null */
+	/** @var CentralAuthDatabaseManager */
 	private $centralAuthDatabaseManager;
 
 	/** @var Config */
@@ -54,7 +54,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param UserFactory $userFactory
 	 * @param ?CentralAuthAntiSpoofManager $centralAuthAntiSpoofManager
-	 * @param ?CentralAuthDatabaseManager $centralAuthDatabaseManager
+	 * @param CentralAuthDatabaseManager $centralAuthDatabaseManager
 	 * @param ?GlobalRenameUserValidator $globalRenameUserValidator
 	 */
 	public function __construct(
@@ -63,7 +63,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		JobQueueGroupFactory $jobQueueGroupFactory,
 		UserFactory $userFactory,
 		?CentralAuthAntiSpoofManager $centralAuthAntiSpoofManager,
-		?CentralAuthDatabaseManager $centralAuthDatabaseManager,
+		CentralAuthDatabaseManager $centralAuthDatabaseManager,
 		?GlobalRenameUserValidator $globalRenameUserValidator
 	) {
 		parent::__construct( 'RemovePII', 'handle-pii' );

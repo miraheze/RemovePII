@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Avengium",
+			"EmicraftNoob",
 			"Jakeukalane",
 			"McDutchie"
 		]
@@ -17,6 +18,7 @@
 	"removepii-hash-prefix-help": "Seleccione en el menú desplegable la opción adecuada que se utilizará para el prefijo para la generación de hash.",
 	"removepii-oldname-label": "Nombre de usuario antiguo:",
 	"removepii-newname-label": "Nombre de usuario nuevo:",
+	"removepii-dpa_id-label": "ID DPA:",
 	"removepii-action-label": "Seleccione la acción que deseas realizar.",
 	"removepii-action-help": "Los cambios de nombre deben hacerse '''siempre''' antes de RemovePII. RemovePII también bloqueará la cuenta global del usuario.",
 	"removepii-warning-irreversible": "'''Advertencia:''' estás a punto de realizar la acción RemovePII. Este proceso es irreversible. Asegúrate de tener la información correcta antes de continuar.",
@@ -25,5 +27,6 @@
 	"removepii-centralauth-notinstalled": "La extensión CentralAuth no está instalada.",
 	"removepii-log-name": "Registro de RemovePII",
 	"removepii-log-header": "Este es un registro básico de todas las acciones de RemovePII.",
+	"removepii-invalid-dpa": "No se puede validar la solicitud de asociación de DPA. El servidor tiene dificultades y no podemos conectarnos al punto final, o el nombre de usuario anterior proporcionado no coincide con el nombre de usuario del solicitante proporcionado en la solicitud de DPA asociada.",
 	"logentry-removepii-action": "$1 eliminó la información de identificación personal de un usuario."
 }

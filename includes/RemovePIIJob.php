@@ -72,14 +72,14 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'cu_changes' => [
 				[
 					'where' => [
-						'cuc_actor' => $userId
+						'cuc_actor' => $userActorId
 					]
 				]
 			],
 			'cu_log' => [
 				[
 					'where' => [
-						'cul_target_id' => $userActorId,
+						'cul_target_id' => $userId,
 						'cul_type' => [ 'useredits', 'userips' ]
 					]
 				],

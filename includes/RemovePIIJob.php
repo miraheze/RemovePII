@@ -39,7 +39,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$newCentral->invalidateCache();
 
 		// Set a random password to the account and log them out
-		$randomPassword = substr(str_shuffle(bin2hex(random_bytes(16))), 0, random_int(12, 32));
+		$randomPassword = substr( str_shuffle( bin2hex( random_bytes( 16 ) ) ), 0, random_int( 12, 32 ) );
 
 		$newCentral->setPassword( $randomPassword, true )
 

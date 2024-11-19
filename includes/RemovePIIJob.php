@@ -83,7 +83,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// TODO: Migrate to config and add extension hook support for this
 
 		$tableDeletions = [
-			// Extensions and core tables
+			// Core
 			'block' => [
 				[
 					'where' => [
@@ -98,6 +98,15 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					]
 				]
 			],
+			'user_groups' => [
+				[
+					'where' => [
+						'ug_user' => $userId
+					]
+				]
+			],
+
+			// Extensions
 			'cu_changes' => [
 				[
 					'where' => [
@@ -127,13 +136,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				[
 					'where' => [
 						'ub_actor_from' => $userActorId
-					]
-				]
-			],
-			'user_groups' => [
-				[
-					'where' => [
-						'ug_user' => $userId
 					]
 				]
 			],

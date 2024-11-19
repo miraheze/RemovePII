@@ -44,6 +44,15 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$newCentral->setPassword( $randomPassword, true );
 
+		// If they're a global rights holder (sounds familiar), remove their groups
+		$groups = $newCentral->getGlobalGroups();
+
+		if ( $groups !== null ) {
+			foreach ( $groups as $group ) {
+				$newCentral->removeFromGlobalGroups( $group );
+			}
+		}
+
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
@@ -74,7 +83,21 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// TODO: Migrate to config and add extension hook support for this
 
 		$tableDeletions = [
-			// Extensions
+			// Extensions and core tables
+			'block' => [
+				[
+					'where' => [
+						'bl_by_actor' => $userActorId
+					]
+				]
+			],
+			'block_target' => [
+				[
+					'where' => [
+						'bt_id' => $userId
+					]
+				]
+			],
 			'cu_changes' => [
 				[
 					'where' => [

@@ -192,6 +192,17 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					]
 				],
 			],
+			'cw_requests' => [
+				[
+					'fields' => [
+						'cw_status' => 'declined'
+					],
+					'where' => [
+						'cw_status' => [ 'inreview', 'onhold', 'needsmoredetails' ],
+						'cw_user' => $userId
+					]
+				],
+			],
 			'echo_event' => [
 				[
 					'fields' => [

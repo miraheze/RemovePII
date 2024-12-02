@@ -3,6 +3,7 @@
 		"authors": [
 			"Hydra",
 			"StarrySky",
+			"TFX202X",
 			"U.T.",
 			"XtexChooser",
 			"沈澄心"
@@ -19,7 +20,11 @@
 	"removepii-newname-label": "新用户名：",
 	"removepii-dpa_id-label": "DPA ID：",
 	"removepii-action-label": "选择您想要执行的操作。",
+	"removepii-wiki-disabled": "RemovePII已在此wiki上禁用。当前配置为仅在中央wiki上启用。您必须从那里启动它。",
 	"removepii-success": "成功提交。",
 	"removepii-centralauth-notinstalled": "CentralAuth 扩展未安装。",
-	"removepii-log-name": "RemovePII日志"
+	"removepii-log-name": "RemovePII日志",
+	"removepii-log-header": "这是所有RemovePII操作的基本日志。",
+	"removepii-invalid-dpa": "无法验证关联的DPA请求。服务器遇到问题，我们无法连接到端点，或者给定的旧用户名与关联的DPA请求中给出的请求者的用户名不匹配。",
+	"logentry-removepii-action": "$1删除了用户的个人身份信息。"
 }

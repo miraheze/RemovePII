@@ -147,11 +147,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 				],
 			],
 
-
-
-
-
-
 		];
 
 		$tableUpdates = [

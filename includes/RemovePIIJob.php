@@ -65,6 +65,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		$userActorId = $newName->getActorId( $dbw );
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$logTitle = $titleFactory->newFromText( 'CentralAuth', NS_SPECIAL )->getSubpage( $userNewName );
+
 		// TODO: Migrate to config and add extension hook support for this
 
 		$tableDeletions = [
@@ -108,6 +112,46 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					]
 				]
 			],
+
+			// Core
+			'logging' => [
+				[
+					'where' => [
+						'log_action' => 'rename',
+						'log_title' => $logTitle->getDBkey(),
+						'log_type' => 'gblrename'
+					]
+				],
+				[
+					'where' => [
+						'log_action' => 'renameuser',
+						'log_title' => $oldName->getTitleKey(),
+						'log_type' => 'renameuser'
+					]
+				],
+			],
+			'recentchanges' => [
+				[
+					'where' => [
+						'rc_log_action' => 'rename',
+						'rc_title' => $logTitle->getDBkey(),
+						'rc_log_type' => 'gblrename'
+					]
+				],
+				[
+					'where' => [
+						'rc_log_action' => 'renameuser',
+						'rc_title' => $oldName->getTitleKey(),
+						'rc_log_type' => 'renameuser'
+					]
+				],
+			],
+
+
+
+
+
+
 		];
 
 		$tableUpdates = [
@@ -353,10 +397,16 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
-						$dbw->delete(
-							$key,
-							$fields['where'],
-							__METHOD__
+						$method = __METHOD__;
+						$dbw->doAtomicSection( $method,
+							static function () use ( $dbw, $key, $fields, $method ) {
+								$dbw->delete(
+									$key,
+									$fields['where'],
+									$method
+								);
+							},
+							IDatabase::ATOMIC_CANCELABLE
 						);
 
 						$lbFactory->waitForReplication();
@@ -373,11 +423,17 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
 				foreach ( $value as $name => $fields ) {
 					try {
-						$dbw->update(
-							$key,
-							$fields['fields'],
-							$fields['where'],
-							__METHOD__
+						$method = __METHOD__;
+						$dbw->doAtomicSection( $method,
+							static function () use ( $dbw, $key, $fields, $method ) {
+								$dbw->update(
+									$key,
+									$fields['fields'],
+									$fields['where'],
+									$method
+								);
+							},
+							IDatabase::ATOMIC_CANCELABLE
 						);
 
 						$lbFactory->waitForReplication();
@@ -393,41 +449,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		$logTitle = $titleFactory->newFromText( 'CentralAuth', NS_SPECIAL )->getSubpage( $userNewName );
-		$dbw->delete(
-			'logging', [
-				'log_action' => 'rename',
-				'log_title' => $logTitle->getDBkey(),
-				'log_type' => 'gblrename'
-			],
-			__METHOD__
-		);
-
-		$dbw->delete(
-			'logging', [
-				'log_action' => 'renameuser',
-				'log_title' => $oldName->getTitleKey(),
-				'log_type' => 'renameuser'
-			],
-			__METHOD__
-		);
-
-		$dbw->delete(
-			'recentchanges', [
-				'rc_log_action' => 'rename',
-				'rc_title' => $logTitle->getDBkey(),
-				'rc_log_type' => 'gblrename'
-			],
-			__METHOD__
-		);
-
-		$dbw->delete(
-			'recentchanges', [
-				'rc_log_action' => 'renameuser',
-				'rc_title' => $oldName->getTitleKey(),
-				'rc_log_type' => 'renameuser'
-			],
-			__METHOD__
-		);
 
 		$user = User::newSystemUser( 'MediaWiki default', [ 'steal' => true ] );
 

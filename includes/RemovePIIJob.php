@@ -10,6 +10,7 @@ use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use UserProfilePage;
+use Wikimedia\Rdbms\IDatabase;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 

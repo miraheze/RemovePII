@@ -9,6 +9,7 @@ use Job;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
+use MWCryptRand;
 use UserProfilePage;
 use Wikimedia\Rdbms\IDatabase;
 
@@ -38,6 +39,20 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		// Invalidate cache before we begin
 		$newCentral->invalidateCache();
+
+		// Set a random password to the account and log them out
+		$randomPassword = MWCryptRand::generateHex( 32 );
+
+		$newCentral->setPassword( $randomPassword, true );
+
+		// If they're a global rights holder (sounds familiar), remove their groups
+		$groups = $newCentral->getGlobalGroups();
+
+		if ( $groups !== null ) {
+			foreach ( $groups as $group ) {
+				$newCentral->removeFromGlobalGroups( $group );
+			}
+		}
 
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
@@ -73,6 +88,29 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// TODO: Migrate to config and add extension hook support for this
 
 		$tableDeletions = [
+			// Core
+			'block' => [
+				[
+					'where' => [
+						'bl_by_actor' => $userActorId
+					]
+				]
+			],
+			'block_target' => [
+				[
+					'where' => [
+						'bt_id' => $userId
+					]
+				]
+			],
+			'user_groups' => [
+				[
+					'where' => [
+						'ug_user' => $userId
+					]
+				]
+			],
+
 			// Extensions
 			'cu_changes' => [
 				[
@@ -191,6 +229,17 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					],
 					'where' => [
 						'Comment_actor' => $userActorId
+					]
+				],
+			],
+			'cw_requests' => [
+				[
+					'fields' => [
+						'cw_status' => 'declined'
+					],
+					'where' => [
+						'cw_status' => [ 'inreview', 'onhold', 'needsmoredetails' ],
+						'cw_user' => $userId
 					]
 				],
 			],

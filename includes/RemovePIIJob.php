@@ -517,9 +517,9 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$status = $deletePage->setSuppress( true )->forceImmediate( true )->deleteUnsafe( '' );
 
 			if ( !$status->isOK() ) {
-				$statusMessage = version_compare( MW_VERSION, '1.43', '>=' ) ?
-					$status->getMessages( 'error' ) :
-					$status->getErrorsByType( 'error' );
+				$statusMessage = version_compare( MW_VERSION, '1.43', '<' ) ?
+					$status->getErrorsByType( 'error' ) :
+					$status->getMessages( 'error' );
 				$errorMessage = json_encode( $statusMessage );
 				$this->setLastError( "Failed to delete user {$userOldName} page. Error: {$errorMessage}" );
 			}

@@ -491,10 +491,12 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		$rows = $dbw->select(
-			'page', [
+			'page',
+			[
 				'page_namespace',
 				'page_title'
-			], [
+			],
+			[
 				'page_namespace IN (' . implode( ',', $namespaces ) . ')',
 				'(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
 				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
@@ -515,7 +517,10 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			$status = $deletePage->setSuppress( true )->forceImmediate( true )->deleteUnsafe( '' );
 
 			if ( !$status->isOK() ) {
-				$errorMessage = json_encode( $status->getErrorsByType( 'error' ) );
+				$statusMessage = version_compare( MW_VERSION, '1.43', '>=' ) ?
+					$status->getMessages( 'error' ) :
+					$status->getErrorsByType( 'error' );
+				$errorMessage = json_encode( $statusMessage );
 				$this->setLastError( "Failed to delete user {$userOldName} page. Error: {$errorMessage}" );
 			}
 		}

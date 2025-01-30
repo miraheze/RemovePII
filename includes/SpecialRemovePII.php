@@ -163,7 +163,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		$url = str_replace( '{dpa_id}', $value, $url );
 		$url = str_replace( '{username}', rawurlencode( $alldata['oldname'] ), $url );
 
-		$report = $this->httpRequestFactory->create( $url );
+		$report = $this->httpRequestFactory->create( $url, [], __METHOD__ );
 		$status = $report->execute();
 		if ( !$status->isOK() ) {
 			return $this->msg( 'removepii-invalid-dpa' );

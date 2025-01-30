@@ -518,7 +518,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 			if ( !$status->isOK() ) {
 				$statusMessage = version_compare( MW_VERSION, '1.43', '>=' ) ?
-					// @phan-suppress-next-line PhanUndeclaredMethod
 					$status->getMessages( 'error' ) :
 					$status->getErrorsByType( 'error' );
 				$errorMessage = json_encode( $statusMessage );

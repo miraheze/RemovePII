@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"TreeIsLife",
 			"Yardom78"
 		]
 	},
@@ -15,6 +16,7 @@
 	"removepii-hash-prefix-help": "Vyberte zo zoznamu vhodnú možnosť pre použitie predpony pre vygenerovanie hashu.",
 	"removepii-oldname-label": "Staré používateľské meno:",
 	"removepii-newname-label": "Nové používateľské meno:",
+	"removepii-dpa_id-label": "DPA ID:",
 	"removepii-action-label": "Vyberte akciu, ktorú chcete vykonať.",
 	"removepii-action-help": "Premenovanie by malo byť vždy urobené pred RemovePII. RemovePII uzamkne globálny účet používateľa.",
 	"removepii-warning-irreversible": "\"Upozornenie:\" chystáte sa vykonať akciu RemovePII. Tento proces sa nedá vrátiť. Uistite sa, že všetky informácie sú správne.",
@@ -23,5 +25,6 @@
 	"removepii-centralauth-notinstalled": "Rozšírenie CentralAuth nie je nainštalované.",
 	"removepii-log-name": "Denník RemovePII",
 	"removepii-log-header": "Toto je základný denník všetkých akcií RemovePII.",
+	"removepii-invalid-dpa": "Nepodarilo sa overiť DPA žiadosť. Buď má server problémy a nemôžeme sa pripojiť ku koncovému bodu, alebo sa zadané staré používateľské meno nezhoduje s používateľským menom žiadateľa uvedeným v pridruženej DPA žiadosti.",
 	"logentry-removepii-action": "$1 odstránilo osobné identifikačné informácie používateľa."
 }

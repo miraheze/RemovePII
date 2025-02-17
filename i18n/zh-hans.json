@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Hydra",
+			"Kichin",
 			"StarrySky",
 			"TFX202X",
 			"U.T.",
@@ -16,10 +17,14 @@
 	"action-handle-pii": "处理/删除个人身份信息",
 	"right-generate-random-hash": "生成随机用户名哈希值",
 	"right-handle-pii": "处理/删除个人身份信息",
+	"removepii-hash-length-help": "输入生成的哈希应包含的字符数。最小 8个，最大 32个",
+	"removepii-hash-prefix-help": "从下拉列表中选择用于哈希生成的前缀的适当选项。",
 	"removepii-oldname-label": "旧用户名：",
 	"removepii-newname-label": "新用户名：",
 	"removepii-dpa_id-label": "DPA ID：",
 	"removepii-action-label": "选择您想要执行的操作。",
+	"removepii-action-help": "重命名应'''始终'''在 RemovePII 之前完成。RemovePII 还将锁定用户的全局帐户。",
+	"removepii-warning-irreversible": "'''警告：'''您即将执行 RemovePII 操作。此过程不可逆。在继续操作之前，请确保您的信息正确无误。",
 	"removepii-wiki-disabled": "RemovePII已在此wiki上禁用。当前配置为仅在中央wiki上启用。您必须从那里启动它。",
 	"removepii-success": "成功提交。",
 	"removepii-centralauth-notinstalled": "CentralAuth 扩展未安装。",

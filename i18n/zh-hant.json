@@ -1,13 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kly"
+			"Kly",
+			"铁桶"
 		]
 	},
 	"removepii-desc": "建立特殊頁面，Special:GenerateRandomHash 與 Special:RemovePII 用來處理移除個人識別資訊。",
-	"generaterandomhash": "產生隨機雜湊碼",
+	"generaterandomhash": "產生隨機雜湊值",
 	"removepii": "RemovePII",
-	"action-generate-random-hash": "產生隨機雜湊碼",
+	"action-generate-random-hash": "產生隨機雜湊值",
 	"action-handle-pii": "處理/移除個人識別資訊",
 	"right-generate-random-hash": "產生隨機使用者雜湊碼",
 	"right-handle-pii": "處理/移除個人識別資訊",

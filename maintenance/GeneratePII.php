@@ -2,16 +2,9 @@
 
 namespace Miraheze\RemovePII\Maintenance;
 
-$IP = getenv( 'MW_INSTALL_PATH' );
-if ( $IP === false ) {
-	$IP = __DIR__ . '/../../..';
-}
-
-require_once "$IP/maintenance/Maintenance.php";
-
 use Exception;
-use Maintenance;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
+use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;
 
 class GeneratePII extends Maintenance {
@@ -343,5 +336,6 @@ class GeneratePII extends Maintenance {
 	}
 }
 
-$maintClass = GeneratePII::class;
-require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreStart
+return GeneratePII::class;
+// @codeCoverageIgnoreEnd

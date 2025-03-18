@@ -2,8 +2,6 @@
 
 namespace Miraheze\RemovePII;
 
-use ExtensionRegistry;
-use FormatJson;
 use ManualLogEntry;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\ConfigFactory;
@@ -18,7 +16,9 @@ use MediaWiki\Extension\CentralAuth\Widget\HTMLGlobalUserTextField;
 use MediaWiki\Html\Html;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
+use MediaWiki\Json\FormatJson;
 use MediaWiki\Message\Message;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\SpecialPage\FormSpecialPage;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Status\Status;

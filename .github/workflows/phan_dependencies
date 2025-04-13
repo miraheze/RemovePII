@@ -5,5 +5,5 @@ SocialProfile:
   branch: master
   repo: auto
 SimpleBlogPage:
-  branch: master
+  branch: main
   repo: https://github.com/Universal-Omega/SimpleBlogPage

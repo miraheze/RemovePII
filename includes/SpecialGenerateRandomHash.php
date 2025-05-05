@@ -74,7 +74,7 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 	 * @return string
 	 */
 	protected function getGroupName() {
-		return 'wikimanage';
+		return 'wiki';
 	}
 
 	/**

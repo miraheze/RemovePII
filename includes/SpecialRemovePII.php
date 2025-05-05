@@ -354,7 +354,7 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return string
 	 */
 	protected function getGroupName() {
-		return 'wikimanage';
+		return 'login';
 	}
 
 	/**

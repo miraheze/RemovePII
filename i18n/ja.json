@@ -17,7 +17,7 @@
 	"right-generate-random-hash": "ランダムな利用者名ハッシュを生成する",
 	"right-handle-pii": "個人を特定できる情報の取り扱い/削除",
 	"removepii-hash-length-help": "生成されたハッシュに含める必要のある文字数を入力します。最小8文字、最大、32文字",
-	"removepii-hash-prefix-help": "ドロップダウンから、ハッシュ生成のプレフィックスに使用する適切なオプションを選択します。",
+	"removepii-hash-prefix-help": "ドロップダウンから、ハッシュ生成に使用する接頭辞として適切なオプションを選択します。",
 	"removepii-oldname-label": "古い利用者名：",
 	"removepii-newname-label": "新しい利用者名:",
 	"removepii-dpa_id-label": "DPA ID:",

@@ -2,57 +2,47 @@
 
 namespace Miraheze\RemovePII\Maintenance;
 
-use Exception;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
+use Wikimedia\Rdbms\DBQueryError;
 
 class GeneratePII extends Maintenance {
+
 	public function __construct() {
 		parent::__construct();
 
 		$this->addDescription( 'Generates personal identifiable information for a user and saves it in CSV format.' );
 
 		$this->addOption( 'user', 'User to get PII for.', true, true );
-		$this->addOption( 'directory', 'Directory to place outputted JSON file of PII in.', true, true );
+		$this->addOption( 'directory', 'Directory to place outputted CSV file of PII in.', true, true );
 		$this->addOption( 'generate', 'Only generate a database list of attached wikis for the user?' );
 
 		$this->requireExtension( 'RemovePII' );
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function execute() {
+	public function execute(): void {
 		if ( $this->hasOption( 'generate' ) ) {
-			return $this->generateAttachedDatabaseList();
+			$this->generateAttachedDatabaseList();
+			return;
 		}
 
-		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RemovePII' );
-		$dbName = $config->get( 'DBname' );
+		$userFactory = $this->getServiceContainer()->getUserFactory();
 
 		$username = $this->getOption( 'user' );
 		$user = $userFactory->newFromName( $username );
 
 		if ( !$user ) {
-			$this->output( "User {$username} is not a valid name" );
-
-			return false;
+			$this->fatalError( "User $username is not a valid name." );
 		}
 
 		$userId = $user->getId();
-
 		if ( !$userId ) {
-			$this->output( "User {$username} ID equal to 0" );
-
-			return false;
+			$this->fatalError( "User $username ID is equal to 0." );
 		}
 
-		$dbr = $lbFactory->getMainLB()->getMaintenanceConnectionRef( DB_REPLICA );
-
+		$connectionProvider = $this->getServiceContainer()->getConnectionProvider();
+		$dbr = $connectionProvider->getReplicaDatabase();
 		$userActorId = $user->getActorId( $dbr );
 
 		$tableSelections = [
@@ -60,91 +50,91 @@ class GeneratePII extends Maintenance {
 			'recentchanges' => [
 				[
 					'fields' => [
-						'rc_ip'
+						'rc_ip',
 					],
 					'where' => [
-						'rc_actor' => $userActorId
-					]
-				]
+						'rc_actor' => $userActorId,
+					],
+				],
 			],
 
 			// Extensions
 			'ajaxpoll_vote' => [
 				[
 					'fields' => [
-						'poll_ip'
+						'poll_ip',
 					],
 					'where' => [
-						'poll_actor' => $userActorId
-					]
-				]
+						'poll_actor' => $userActorId,
+					],
+				],
 			],
 			'Comments' => [
 				[
 					'fields' => [
-						'Comment_IP'
+						'Comment_IP',
 					],
 					'where' => [
-						'Comment_actor' => $userActorId
-					]
+						'Comment_actor' => $userActorId,
+					],
 				],
 			],
 			'echo_event' => [
 				[
 					'fields' => [
-						'event_agent_ip'
+						'event_agent_ip',
 					],
 					'where' => [
-						'event_agent_id' => $userId
-					]
-				]
+						'event_agent_id' => $userId,
+					],
+				],
 			],
 			'flow_tree_revision' => [
 				[
 					'fields' => [
-						'tree_orig_user_ip'
+						'tree_orig_user_ip',
 					],
 					'where' => [
-						'tree_orig_user_id' => $userId
-					]
-				]
+						'tree_orig_user_id' => $userId,
+					],
+				],
 			],
 			'flow_revision' => [
 				[
 					'fields' => [
-						'rev_user_ip'
+						'rev_user_ip',
 					],
 					'where' => [
-						'rev_user_id' => $userId
-					]
+						'rev_user_id' => $userId,
+					],
 				],
 				[
 					'fields' => [
-						'rev_mod_user_ip'
+						'rev_mod_user_ip',
 					],
 					'where' => [
-						'rev_mod_user_id' => $userId
-					]
+						'rev_mod_user_id' => $userId,
+					],
 				],
 				[
 					'fields' => [
-						'rev_edit_user_ip'
+						'rev_edit_user_ip',
 					],
 					'where' => [
-						'rev_edit_user_id' => $userId
-					]
-				]
+						'rev_edit_user_id' => $userId,
+					],
+				],
 			],
 			'moderation' => [
 				[
 					'fields' => [
 						'mod_header_xff',
 						'mod_header_ua',
-						'mod_ip'
+						'mod_ip',
 					],
 					'where' => [
-						'mod_user' => $userId
-					]
+						'mod_user' => $userId,
+					],
 				],
 				[
 					'fields' => [
@@ -153,9 +143,9 @@ class GeneratePII extends Maintenance {
 						'mod_ip',
 					],
 					'where' => [
-						'mod_user_text' => $username
-					]
-				]
+						'mod_user_text' => $username,
+					],
+				],
 			],
 			'Vote' => [
 				[
@@ -163,9 +153,9 @@ class GeneratePII extends Maintenance {
 						'vote_ip',
 					],
 					'where' => [
-						'vote_actor' => $userActorId
-					]
-				]
+						'vote_actor' => $userActorId,
+					],
+				],
 			],
 			'wikiforum_category' => [
 				[
@@ -173,16 +163,16 @@ class GeneratePII extends Maintenance {
 						'wfc_added_user_ip',
 					],
 					'where' => [
-						'wfc_added_actor' => $userActorId
-					]
+						'wfc_added_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
 						'wfc_edited_user_ip',
 					],
 					'where' => [
-						'wfc_edited_actor' => $userActorId
-					]
+						'wfc_edited_actor' => $userActorId,
+					],
 				],
 			],
 			'wikiforum_forums' => [
@@ -191,148 +181,137 @@ class GeneratePII extends Maintenance {
 						'wff_last_post_user_ip',
 					],
 					'where' => [
-						'wff_last_post_actor' => $userActorId
-					]
+						'wff_last_post_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
 						'wff_added_user_ip',
 					],
 					'where' => [
-						'wff_added_actor' => $userActorId
-					]
+						'wff_added_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wff_edited_user_ip'
+						'wff_edited_user_ip',
 					],
 					'where' => [
-						'wff_edited_actor' => $userActorId
-					]
+						'wff_edited_actor' => $userActorId,
+					],
 				],
 			],
 			'wikiforum_replies' => [
 				[
 					'fields' => [
-						'wfr_user_ip'
+						'wfr_user_ip',
 					],
 					'where' => [
-						'wfr_actor' => $userActorId
-					]
+						'wfr_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wfr_edit_user_ip'
+						'wfr_edit_user_ip',
 					],
 					'where' => [
-						'wfr_edit_actor' => $userActorId
-					]
+						'wfr_edit_actor' => $userActorId,
+					],
 				],
 			],
 			'wikiforum_threads' => [
 				[
 					'fields' => [
-						'wft_user_ip'
+						'wft_user_ip',
 					],
 					'where' => [
-						'wft_actor' => $userActorId
-					]
+						'wft_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wft_edit_user_ip'
+						'wft_edit_user_ip',
 					],
 					'where' => [
-						'wft_edit_actor' => $userActorId
-					]
+						'wft_edit_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wft_closed_user_ip'
+						'wft_closed_user_ip',
 					],
 					'where' => [
-						'wft_closed_actor' => $userActorId
-					]
+						'wft_closed_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wft_last_post_user_ip'
+						'wft_last_post_user_ip',
 					],
 					'where' => [
-						'wft_last_post_actor' => $userActorId
-					]
-				]
+						'wft_last_post_actor' => $userActorId,
+					],
+				],
 			],
 		];
+
+		$dbname = $this->getConfig()->get( MainConfigNames::DBname );
 
 		$output = [];
 		foreach ( $tableSelections as $key => $value ) {
 			if ( $dbr->tableExists( $key, __METHOD__ ) ) {
-				foreach ( $value as $name => $fields ) {
+				foreach ( $value as $fields ) {
 					try {
-						$res = $dbr->select(
-							$key,
-							$fields['fields'],
-							$fields['where'],
-							__METHOD__
-						);
+						$res = $dbr->newSelectQueryBuilder()
+							->select( $fields['fields'] )
+							->from( $key )
+							->where( $fields['where'] )
+							->caller( __METHOD__ )
+							->fetchResultSet();
 
 						foreach ( $res as $row ) {
 							foreach ( $fields['fields'] as $field ) {
-								$output[] = $row->$field ? "{$field}: " . $row->$field . " ({$dbName})" : null;
+								$output[] = $row->$field ? "$field: " . $row->$field . " ($dbname)" : null;
 							}
 						}
-
-						$lbFactory->waitForReplication();
-					} catch ( Exception $e ) {
-						$this->output( get_class( $e ) . ': ' . $e->getMessage() );
-
+					} catch ( DBQueryError $e ) {
+						$this->output( get_class( $e ) . ': ' . $e->getMessage() . "\n" );
 						continue;
 					}
 				}
 			}
 		}
 
-		$genderCache = MediaWikiServices::getInstance()->getGenderCache();
+		$genderCache = $this->getServiceContainer()->getGenderCache();
 
 		$output['email'] = $user->getEmail();
 		$output['realname'] = $user->getRealName();
 		$output['gender'] = $genderCache->getGenderOf( $username );
 
-		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'c+' );
+		$file = fopen( $this->getOption( 'directory' ) . "/$username.csv", 'c+' );
 		$output += fgetcsv( $file, 0, "\r" ) ?: [];
 		fclose( $file );
 
 		$output = array_filter( $output );
-
-		$file = fopen( $this->getOption( 'directory' ) . "/{$username}.csv", 'w' );
-
+		$file = fopen( $this->getOption( 'directory' ) . "/$username.csv", 'w' );
 		foreach ( $output as $key => $field ) {
 			if ( is_string( $key ) ) {
-				$output[$key] = "{$key}: {$field} ({$dbName})";
+				$output[$key] = "$key: $field ($dbname)";
 			}
 		}
 
 		fputcsv( $file, $output, "\r" );
-
 		fclose( $file );
-
-		return true;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function generateAttachedDatabaseList() {
+	private function generateAttachedDatabaseList(): void {
 		$user = $this->getOption( 'user' );
 		$centralUser = CentralAuthUser::getInstanceByName( $user );
 
 		file_put_contents(
-			$this->getOption( 'directory' ) . "/{$user}.json",
+			$this->getOption( 'directory' ) . "/$user.json",
 			json_encode( [ 'combi' => array_fill_keys( $centralUser->listAttached(), [] ) ]
 		), LOCK_EX );
-
-		return true;
 	}
 }
 

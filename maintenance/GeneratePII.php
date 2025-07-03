@@ -260,7 +260,7 @@ class GeneratePII extends Maintenance {
 		$output = [];
 		foreach ( $tableSelections as $key => $value ) {
 			if ( $dbr->tableExists( $key, __METHOD__ ) ) {
-				foreach ( $value as $name => $fields ) {
+				foreach ( $value as $fields ) {
 					try {
 						$res = $dbr->newSelectQueryBuilder()
 							->select( $fields['fields'] )

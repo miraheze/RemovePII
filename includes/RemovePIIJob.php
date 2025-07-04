@@ -2,7 +2,6 @@
 
 namespace Miraheze\RemovePII;
 
-use Exception;
 use GenericParameterJob;
 use Job;
 use MediaWiki\Extension\CentralAuth\User\CentralAuthUser;
@@ -11,19 +10,14 @@ use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\User\User;
 use MWCryptRand;
 use UserProfilePage;
+use Wikimedia\Rdbms\DBQueryError;
 use Wikimedia\Rdbms\IDatabase;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 
-	/** @var string */
-	private $oldName;
+	private readonly string $oldName;
+	private readonly string $newName;
 
-	/** @var string */
-	private $newName;
-
-	/**
-	 * @param array $params
-	 */
 	public function __construct( array $params ) {
 		parent::__construct( 'RemovePIIJob', $params );
 
@@ -31,10 +25,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$this->newName = $params['newname'];
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function run() {
+	/** @inheritDoc */
+	public function run(): bool {
 		$newCentral = CentralAuthUser::getInstanceByName( $this->newName );
 
 		// Invalidate cache before we begin
@@ -42,7 +34,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		// Set a random password to the account and log them out
 		$randomPassword = MWCryptRand::generateHex( 32 );
-
 		$newCentral->setPassword( $randomPassword, true );
 
 		// If they're a global rights holder (sounds familiar), remove their groups
@@ -64,25 +55,21 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$userNewName = $newName->getName();
 
 		if ( !$newName ) {
-			$this->setLastError( "User {$userNewName} is not a valid name" );
-
+			$this->setLastError( "User $userNewName is not a valid name." );
 			return false;
 		}
 
 		$userId = $newName->getId();
 
 		if ( !$userId ) {
-			$this->setLastError( "User {$userNewName} ID equal to 0" );
-
+			$this->setLastError( "User $userNewName ID equal to 0." );
 			return false;
 		}
 
 		$dbw = $lbFactory->getMainLB()->getMaintenanceConnectionRef( DB_PRIMARY );
-
 		$userActorId = $newName->getActorId( $dbw );
 
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-
 		$logTitle = $titleFactory->newFromText( 'CentralAuth', NS_SPECIAL )->getSubpage( $userNewName );
 
 		// TODO: Migrate to config and add extension hook support for this
@@ -92,64 +79,64 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'block' => [
 				[
 					'where' => [
-						'bl_by_actor' => $userActorId
-					]
-				]
+						'bl_by_actor' => $userActorId,
+					],
+				],
 			],
 			'block_target' => [
 				[
 					'where' => [
-						'bt_id' => $userId
-					]
-				]
+						'bt_id' => $userId,
+					],
+				],
 			],
 			'user_groups' => [
 				[
 					'where' => [
-						'ug_user' => $userId
-					]
-				]
+						'ug_user' => $userId,
+					],
+				],
 			],
 
 			// Extensions
 			'cu_changes' => [
 				[
 					'where' => [
-						'cuc_actor' => $userActorId
-					]
-				]
+						'cuc_actor' => $userActorId,
+					],
+				],
 			],
 			'cu_log' => [
 				[
 					'where' => [
 						'cul_target_id' => $userId,
-						'cul_type' => [ 'useredits', 'userips' ]
-					]
+						'cul_type' => [ 'useredits', 'userips' ],
+					],
 				],
 				[
 					'where' => [
-						'cul_actor' => $userActorId
-					]
-				]
+						'cul_actor' => $userActorId,
+					],
+				],
 			],
 			'user_board' => [
 				[
 					'where' => [
-						'ub_actor' => $userActorId
-					]
+						'ub_actor' => $userActorId,
+					],
 				],
 				[
 					'where' => [
-						'ub_actor_from' => $userActorId
-					]
-				]
+						'ub_actor_from' => $userActorId,
+					],
+				],
 			],
 			'user_profile' => [
 				[
 					'where' => [
-						'up_actor' => $userActorId
-					]
-				]
+						'up_actor' => $userActorId,
+					],
+				],
 			],
 
 			// Core
@@ -158,15 +145,15 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					'where' => [
 						'log_action' => 'rename',
 						'log_title' => $logTitle->getDBkey(),
-						'log_type' => 'gblrename'
-					]
+						'log_type' => 'gblrename',
+					],
 				],
 				[
 					'where' => [
 						'log_action' => 'renameuser',
 						'log_title' => $oldName->getTitleKey(),
-						'log_type' => 'renameuser'
-					]
+						'log_type' => 'renameuser',
+					],
 				],
 			],
 			'recentchanges' => [
@@ -174,15 +161,15 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					'where' => [
 						'rc_log_action' => 'rename',
 						'rc_title' => $logTitle->getDBkey(),
-						'rc_log_type' => 'gblrename'
-					]
+						'rc_log_type' => 'gblrename',
+					],
 				],
 				[
 					'where' => [
 						'rc_log_action' => 'renameuser',
 						'rc_title' => $oldName->getTitleKey(),
-						'rc_log_type' => 'renameuser'
-					]
+						'rc_log_type' => 'renameuser',
+					],
 				],
 			],
 
@@ -193,142 +180,142 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'recentchanges' => [
 				[
 					'fields' => [
-						'rc_ip' => '0.0.0.0'
+						'rc_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'rc_actor' => $userActorId
-					]
-				]
+						'rc_actor' => $userActorId,
+					],
+				],
 			],
 
 			// Extensions
 			'abuse_filter_log' => [
 				[
 					'fields' => [
-						'afl_user_text' => $userNewName
+						'afl_user_text' => $userNewName,
 					],
 					'where' => [
-						'afl_user_text' => $userOldName
-					]
-				]
+						'afl_user_text' => $userOldName,
+					],
+				],
 			],
 			'ajaxpoll_vote' => [
 				[
 					'fields' => [
-						'poll_ip' => '0.0.0.0'
+						'poll_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'poll_actor' => $userActorId
-					]
-				]
+						'poll_actor' => $userActorId,
+					],
+				],
 			],
 			'Comments' => [
 				[
 					'fields' => [
-						'Comment_IP' => '0.0.0.0'
+						'Comment_IP' => '0.0.0.0',
 					],
 					'where' => [
-						'Comment_actor' => $userActorId
-					]
+						'Comment_actor' => $userActorId,
+					],
 				],
 			],
 			'cw_requests' => [
 				[
 					'fields' => [
-						'cw_status' => 'declined'
+						'cw_status' => 'declined',
 					],
 					'where' => [
 						'cw_status' => [ 'inreview', 'onhold', 'needsmoredetails' ],
-						'cw_user' => $userId
-					]
+						'cw_user' => $userId,
+					],
 				],
 			],
 			'echo_event' => [
 				[
 					'fields' => [
-						'event_agent_ip' => null
+						'event_agent_ip' => null,
 					],
 					'where' => [
-						'event_agent_id' => $userId
-					]
-				]
+						'event_agent_id' => $userId,
+					],
+				],
 			],
 			'flow_tree_revision' => [
 				[
 					'fields' => [
-						'tree_orig_user_ip' => null
+						'tree_orig_user_ip' => null,
 					],
 					'where' => [
-						'tree_orig_user_id' => $userId
-					]
-				]
+						'tree_orig_user_id' => $userId,
+					],
+				],
 			],
 			'flow_revision' => [
 				[
 					'fields' => [
-						'rev_user_ip' => null
+						'rev_user_ip' => null,
 					],
 					'where' => [
-						'rev_user_id' => $userId
-					]
+						'rev_user_id' => $userId,
+					],
 				],
 				[
 					'fields' => [
-						'rev_mod_user_ip' => null
+						'rev_mod_user_ip' => null,
 					],
 					'where' => [
-						'rev_mod_user_id' => $userId
-					]
+						'rev_mod_user_id' => $userId,
+					],
 				],
 				[
 					'fields' => [
-						'rev_edit_user_ip' => null
+						'rev_edit_user_ip' => null,
 					],
 					'where' => [
-						'rev_edit_user_id' => $userId
-					]
-				]
+						'rev_edit_user_id' => $userId,
+					],
+				],
 			],
 			'moderation' => [
 				[
 					'fields' => [
 						'mod_header_xff' => '',
 						'mod_header_ua' => '',
-						'mod_ip' => '0.0.0.0'
+						'mod_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'mod_user' => $userId
-					]
+						'mod_user' => $userId,
+					],
 				],
 				[
 					'fields' => [
 						'mod_header_xff' => '',
 						'mod_header_ua' => '',
 						'mod_ip' => '0.0.0.0',
-						'mod_user_text' => $userNewName
+						'mod_user_text' => $userNewName,
 					],
 					'where' => [
-						'mod_user_text' => $userOldName
-					]
-				]
+						'mod_user_text' => $userOldName,
+					],
+				],
 			],
 			'report_reports' => [
 				[
 					'fields' => [
-						'report_user_text' => $userNewName
+						'report_user_text' => $userNewName,
 					],
 					'where' => [
-						'report_user_text' => $userOldName
-					]
+						'report_user_text' => $userOldName,
+					],
 				],
 				[
 					'fields' => [
-						'report_handled_by_text' => $userNewName
+						'report_handled_by_text' => $userNewName,
 					],
 					'where' => [
-						'report_handled_by_text' => $userOldName
-					]
-				]
+						'report_handled_by_text' => $userOldName,
+					],
+				],
 			],
 			'Vote' => [
 				[
@@ -336,9 +323,9 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 						'vote_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'vote_actor' => $userActorId
-					]
-				]
+						'vote_actor' => $userActorId,
+					],
+				],
 			],
 			'wikiforum_category' => [
 				[
@@ -346,16 +333,16 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 						'wfc_added_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wfc_added_actor' => $userActorId
-					]
+						'wfc_added_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
 						'wfc_edited_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wfc_edited_actor' => $userActorId
-					]
+						'wfc_edited_actor' => $userActorId,
+					],
 				],
 			],
 			'wikiforum_forums' => [
@@ -364,24 +351,24 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 						'wff_last_post_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wff_last_post_actor' => $userActorId
-					]
+						'wff_last_post_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
 						'wff_added_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wff_added_actor' => $userActorId
-					]
+						'wff_added_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wff_edited_user_ip' => '0.0.0.0'
+						'wff_edited_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wff_edited_actor' => $userActorId
-					]
+						'wff_edited_actor' => $userActorId,
+					],
 				],
 			],
 			'wikiforum_replies' => [
@@ -390,74 +377,73 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 						'wfr_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wfr_actor' => $userActorId
-					]
+						'wfr_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
 						'wfr_edit_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wfr_edit_actor' => $userActorId
-					]
+						'wfr_edit_actor' => $userActorId,
+					],
 				],
 			],
 			'wikiforum_threads' => [
 				[
 					'fields' => [
-						'wft_user_ip' => '0.0.0.0'
+						'wft_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wft_actor' => $userActorId
-					]
+						'wft_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wft_edit_user_ip' => '0.0.0.0'
+						'wft_edit_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wft_edit_actor' => $userActorId
-					]
+						'wft_edit_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wft_closed_user_ip' => '0.0.0.0'
+						'wft_closed_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wft_closed_actor' => $userActorId
-					]
+						'wft_closed_actor' => $userActorId,
+					],
 				],
 				[
 					'fields' => [
-						'wft_last_post_user_ip' => '0.0.0.0'
+						'wft_last_post_user_ip' => '0.0.0.0',
 					],
 					'where' => [
-						'wft_last_post_actor' => $userActorId
-					]
-				]
+						'wft_last_post_actor' => $userActorId,
+					],
+				],
 			],
 		];
 
 		foreach ( $tableDeletions as $key => $value ) {
 			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
-				foreach ( $value as $name => $fields ) {
+				foreach ( $value as $fields ) {
 					try {
 						$method = __METHOD__;
 						$dbw->doAtomicSection( $method,
 							static function () use ( $dbw, $key, $fields, $method ) {
-								$dbw->delete(
-									$key,
-									$fields['where'],
-									$method
-								);
+								$dbw->newDeleteQueryBuilder()
+									->deleteFrom( $key )
+									->where( $fields['where'] )
+									->caller( $method )
+									->execute();
 							},
 							IDatabase::ATOMIC_CANCELABLE
 						);
 
 						$lbFactory->waitForReplication();
-					} catch ( Exception $e ) {
+					} catch ( DBQueryError $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
-
 						continue;
 					}
 				}
@@ -466,40 +452,33 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		foreach ( $tableUpdates as $key => $value ) {
 			if ( $dbw->tableExists( $key, __METHOD__ ) ) {
-				foreach ( $value as $name => $fields ) {
+				foreach ( $value as $fields ) {
 					try {
 						$method = __METHOD__;
 						$dbw->doAtomicSection( $method,
 							static function () use ( $dbw, $key, $fields, $method ) {
-								$dbw->update(
-									$key,
-									$fields['fields'],
-									$fields['where'],
-									$method
-								);
+								$dbw->newUpdateQueryBuilder()
+									->update( $key )
+									->set( $fields['fields'] )
+									->where( $fields['where'] )
+									->caller( $method )
+									->execute();
 							},
 							IDatabase::ATOMIC_CANCELABLE
 						);
 
 						$lbFactory->waitForReplication();
-					} catch ( Exception $e ) {
+					} catch ( DBQueryError $e ) {
 						$this->setLastError( get_class( $e ) . ': ' . $e->getMessage() );
-
 						continue;
 					}
 				}
 			}
 		}
 
-		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-
-		$logTitle = $titleFactory->newFromText( 'CentralAuth', NS_SPECIAL )->getSubpage( $userNewName );
-
 		$user = User::newSystemUser( 'MediaWiki default', [ 'steal' => true ] );
-
 		if ( !$user ) {
-			$this->setLastError( 'Invalid username' );
-
+			$this->setLastError( 'Invalid username.' );
 			return false;
 		}
 
@@ -507,12 +486,11 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 
 		// Hide deletions from RecentChanges
 		$userGroupManager->addUserToGroup( $user, 'bot', null, true );
-
 		$userPageTitle = $oldName->getUserPage();
 
 		$namespaces = [
 			NS_USER,
-			NS_USER_TALK
+			NS_USER_TALK,
 		];
 
 		if ( class_exists( UserProfilePage::class ) ) {
@@ -539,65 +517,64 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			);
 		}
 
-		$rows = $dbw->select(
-			'page',
-			[
+		$rows = $dbw->newSelectQueryBuilder()
+			->table( 'page' )
+			->fields( [
 				'page_namespace',
-				'page_title'
-			],
-			[
+				'page_title',
+			] )
+			->where( [
 				'page_namespace IN (' . implode( ',', $namespaces ) . ')',
 				'(page_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
-				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
-			],
-			__METHOD__
-		);
+				' OR page_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')',
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
+		$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
+		$deletePageFactory = MediaWikiServices::getInstance()->getDeletePageFactory();
 		foreach ( $rows as $row ) {
 			$title = $titleFactory->newFromRow( $row );
-
-			$wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
-			$deletePageFactory = MediaWikiServices::getInstance()->getDeletePageFactory();
 			$deletePage = $deletePageFactory->newDeletePage(
 				$wikiPageFactory->newFromTitle( $title ),
 				$user
 			);
 
 			$status = $deletePage->setSuppress( true )->forceImmediate( true )->deleteUnsafe( '' );
-
 			if ( !$status->isOK() ) {
-				$statusMessage = version_compare( MW_VERSION, '1.43', '>=' ) ?
-					$status->getMessages( 'error' ) :
-					$status->getErrorsByType( 'error' );
+				$statusMessage = $status->getMessages( 'error' );
 				$errorMessage = json_encode( $statusMessage );
-				$this->setLastError( "Failed to delete user {$userOldName} page. Error: {$errorMessage}" );
+				$this->setLastError( "Failed to delete user $userOldName page. Error: $errorMessage" );
 			}
 		}
 
-		$dbw->delete(
-			'archive', [
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'archive' )
+			->where( [
 				'ar_namespace IN (' . implode( ',', $namespaces ) . ')',
 				'(ar_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
-				' OR ar_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
-			],
-			__METHOD__
-		);
+				' OR ar_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')',
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$dbw->delete(
-			'logging', [
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'logging' )
+			->where( [
 				'(log_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
-				' OR log_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
-			],
-			__METHOD__
-		);
+				' OR log_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')',
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
-		$dbw->delete(
-			'recentchanges', [
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'recentchanges' )
+			->where( [
 				'(rc_title ' . $dbw->buildLike( $userPageTitle->getDBkey() . '/', $dbw->anyString() ) .
-				' OR rc_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')'
-			],
-			__METHOD__
-		);
+				' OR rc_title = ' . $dbw->addQuotes( $userPageTitle->getDBkey() ) . ')',
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		// Lock global account
 		$newCentral->adminLock();
@@ -617,7 +594,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		}
 
 		$userLatest->saveSettings();
-
 		return true;
 	}
 }

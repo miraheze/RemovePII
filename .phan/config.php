@@ -21,8 +21,6 @@ $cfg['exclude_analysis_directory_list'] = array_merge(
 $cfg['suppress_issue_types'] = [
 	'PhanAccessMethodInternal',
 	'SecurityCheck-LikelyFalsePositive',
-	// Issue with backwords compatible code (TODO: To be removed)
-	'PhanUndeclaredMethod',
 	'PhanDeprecatedFunction',
 ];
 

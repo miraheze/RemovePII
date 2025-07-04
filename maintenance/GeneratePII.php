@@ -41,10 +41,7 @@ class GeneratePII extends Maintenance {
 			$this->fatalError( "User $username ID is equal to 0." );
 		}
 
-		$connectionProvider = $this->getServiceContainer()->getConnectionProvider();
-		$dbr = $connectionProvider->getReplicaDatabase();
-		$userActorId = $user->getActorId( $dbr );
-
+		$userActorId = $user->getActorId();
 		$tableSelections = [
 			// Core
 			'recentchanges' => [
@@ -256,6 +253,7 @@ class GeneratePII extends Maintenance {
 		];
 
 		$dbname = $this->getConfig()->get( MainConfigNames::DBname );
+		$dbr = $this->getDB( DB_REPLICA );
 
 		$output = [];
 		foreach ( $tableSelections as $key => $value ) {

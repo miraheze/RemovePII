@@ -62,7 +62,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$userId = $newName->getId();
 
 		if ( !$userId ) {
-			$this->setLastError( "User $userNewName ID equal to 0." );
+			$this->setLastError( "User $userNewName ID is equal to 0." );
 			return false;
 		}
 

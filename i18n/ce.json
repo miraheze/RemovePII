@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"Умар"
+		]
+	},
+	"generaterandomhash": "Генераци йе ларамаза хэш",
+	"removepii": "RemovePII",
+	"action-generate-random-hash": "генераци йе ларамаза хэш",
+	"action-handle-pii": "адам довзийта йиш йолу информаци кечйе/дӀайаккха",
+	"removepii-oldname-label": "Декъашхочун шира цӀе:",
+	"removepii-newname-label": "Декъашхочун керла цӀе:",
+	"removepii-dpa_id-label": "DPA ID:",
+	"removepii-success": "Кхиамца дӀахьажийна.",
+	"removepii-centralauth-notinstalled": "CentralAuth шордар дӀахӀоттийна дац.",
+	"removepii-log-name": "RemovePII журнал",
+	"removepii-log-header": "ХӀара коьрта журнал ду массо а RemovePII ардамийн."
+}

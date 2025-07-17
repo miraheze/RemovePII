@@ -3,6 +3,7 @@
 		"authors": [
 			"Hydra",
 			"Kichin",
+			"SaoMikoto",
 			"StarrySky",
 			"TFX202X",
 			"U.T.",
@@ -18,7 +19,7 @@
 	"action-handle-pii": "处理/删除个人可识别信息",
 	"right-generate-random-hash": "生成随机用户名哈希值",
 	"right-handle-pii": "处理/删除个人可识别信息",
-	"removepii-hash-length-help": "输入生成的哈希应包含的字符数。最小 8个，最大 32个",
+	"removepii-hash-length-help": "输入生成的哈希应包含的字符数。最小8个，最大32个",
 	"removepii-hash-prefix-help": "从下拉列表中选择用于哈希生成的前缀的适当选项。",
 	"removepii-oldname-label": "旧用户名：",
 	"removepii-newname-label": "新用户名：",

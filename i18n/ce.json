@@ -4,15 +4,26 @@
 			"Умар"
 		]
 	},
+	"removepii-desc": "Кхоллало леррина агӀонаш, Special:GenerateRandomHash а, Special:RemovePII а, долара идентификаци йеш йолу информаци дӀайаккха.",
 	"generaterandomhash": "Генераци йе ларамаза хэш",
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "генераци йе ларамаза хэш",
 	"action-handle-pii": "адам довзийта йиш йолу информаци кечйе/дӀайаккха",
+	"right-generate-random-hash": "Ларамаза цӀеран хэшашна генераци йан",
+	"right-handle-pii": "Адам довзийта йиш йолу информаци кечйе/дӀайаккха",
+	"removepii-hash-length-help": "Кхуллуш йолу хэшан хьаьркийн дукхалла йазде. Мин. 8, макс. 32",
+	"removepii-hash-prefix-help": "Хэш-генераци йан дешхьалхе лело дӀатоьхначу могӀаман тӀера нийса вариант схьахаржа.",
 	"removepii-oldname-label": "Декъашхочун шира цӀе:",
 	"removepii-newname-label": "Декъашхочун керла цӀе:",
 	"removepii-dpa_id-label": "DPA ID:",
+	"removepii-action-label": "Хьайна бан лууш болу ардамаш схьахаржа.",
+	"removepii-action-help": "ЦӀераш хийцар '''гуттара а''' дан деза RemovePII хьалха. RemovePII-с иштта блоутуху декъашхочун глобалан аккаунтана.",
+	"removepii-warning-irreversible": "'''Тергам:''' Хьо кхочушбан гӀерта RemovePII ардам. И процесс йухайерза йиш йоцуш йу. Дехар до, кхидӀа а дӀадахьале, информаци нийса хиларх тешна хила.",
+	"removepii-wiki-disabled": "RemovePII дӀайаьккхина хӀокху вики тӀехь. Карарчу хенахь иза йуккъера вики тӀехь бен болх бан йиш йоцуш хӀоттийна йу. Цигахь лато йеза ахь иза.",
 	"removepii-success": "Кхиамца дӀахьажийна.",
 	"removepii-centralauth-notinstalled": "CentralAuth шордар дӀахӀоттийна дац.",
 	"removepii-log-name": "RemovePII журнал",
-	"removepii-log-header": "ХӀара коьрта журнал ду массо а RemovePII ардамийн."
+	"removepii-log-header": "ХӀара коьрта журнал ду массо а RemovePII ардамийн.",
+	"removepii-invalid-dpa": "DPA доьзна дехар тӀечӀагӀдан аьтто ца баьлла. Йа серверехь халонаш хуьлу, вай чаккхенан тӀадамца зӀе латто аьтто бац, йа йелла шира декъашхочун цӀе нийса ца йогӀу цуьнца йоьзна йолчу DPA дехарехь йеллачу декъашхочун цӀарца.",
+	"logentry-removepii-action": "$1 дӀайоккху декъашхочун долара идентификацин информаци."
 }

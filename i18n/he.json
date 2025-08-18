@@ -2,10 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
+			"Neriah",
 			"YaronSh"
 		]
 	},
 	"removepii-desc": "יוצר את הדפים המיוחדים Special:GenerateRandomHash ו־Special:RemovePII כדי לטפל בהסרה של מידע אישי מזהה.",
+	"removepii-extensionname": "הסרת מידע אישי מזהה",
 	"generaterandomhash": "יצירת גיבוב אקראי",
 	"removepii": "הסרת מידע אישי מזהה",
 	"action-generate-random-hash": "ליצור גיבוב אקראי",

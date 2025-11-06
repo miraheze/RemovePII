@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"removepii-desc": "Crea as páxinas especiais «Special:GenerateRandomHash» e «Special:RemovePII» para xestionar a eliminación de información persoal identificable.",
+	"removepii-extensionname": "Eliminar información persoal identificable",
+	"generaterandomhash": "Xerar un hash aleatorio",
+	"removepii": "Eliminar información persoal identificable",
+	"action-generate-random-hash": "xerar un hash aleatorio",
+	"action-handle-pii": "xestionar/eliminar información persoal identificable",
+	"right-generate-random-hash": "Xerar hashes de nome de usuario aleatorios",
+	"right-handle-pii": "Xestionar/Eliminar información persoal identificable",
+	"removepii-hash-length-help": "Insire o número de caracteres que debe conter o hash xerado. Mínimo: 8. Máximo: 32.",
+	"removepii-hash-prefix-help": "Selecciona no menú despregable a opción axeitada de prefixo para a xeración do hash.",
+	"removepii-oldname-label": "Nome de usuario antigo:",
+	"removepii-newname-label": "Nome de usuario novo:",
+	"removepii-dpa_id-label": "Identificador DPA:",
+	"removepii-action-label": "Selecciona a acción que queres realizar.",
+	"removepii-action-help": "Os cambios de nome deberían facerse '''sempre''' antes de eliminar a información persoal identificable. Esta operación tamén bloqueará a conta global do usuario.",
+	"removepii-warning-irreversible": "'''Aviso:''' estás a piques de eliminar a información persoal identificable. Este proceso é irreversible. Asegúrate de que a información é correcta antes de continuares.",
+	"removepii-wiki-disabled": "Desactivouse a opción de eliminar a información persoal identificable neste wiki. Nestes intres, está configurada para que a operación só estea activada nun wiki central. Debes iniciala desde alí.",
+	"removepii-success": "Enviado correctamente.",
+	"removepii-centralauth-notinstalled": "A extensión de inicio de sesión central (CentralAuth) non está instalada.",
+	"removepii-log-name": "Rexistro de eliminacións de información persoal identificable",
+	"removepii-log-header": "Este é un rexistro básico de todas as accións de eliminación de información persoal identificable.",
+	"removepii-invalid-dpa": "Non se pode validar a solicitude DPA asociada. Ou ben o servidor está a ter dificultades e non podemos conectar co extremo ou ben o nome de usuario antigo que se proporcionou non coincide co nome de usuario do solicitante que se achegou na solicitude DPA asociada.",
+	"logentry-removepii-action": "$1 eliminou información persoal identificable dun usuario."
+}

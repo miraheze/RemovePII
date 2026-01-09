@@ -209,16 +209,6 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 					],
 				],
 			],
-			'Comments' => [
-				[
-					'fields' => [
-						'Comment_IP' => '0.0.0.0',
-					],
-					'where' => [
-						'Comment_actor' => $userActorId,
-					],
-				],
-			],
 			'cw_requests' => [
 				[
 					'fields' => [

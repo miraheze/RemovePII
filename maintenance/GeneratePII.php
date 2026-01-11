@@ -66,16 +66,6 @@ class GeneratePII extends Maintenance {
 					],
 				],
 			],
-			'Comments' => [
-				[
-					'fields' => [
-						'Comment_IP',
-					],
-					'where' => [
-						'Comment_actor' => $userActorId,
-					],
-				],
-			],
 			'echo_event' => [
 				[
 					'fields' => [

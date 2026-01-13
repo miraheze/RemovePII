@@ -86,7 +86,7 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 			'block_target' => [
 				[
 					'where' => [
-						'bt_id' => $userId,
+						'bt_user' => $userId,
 					],
 				],
 			],

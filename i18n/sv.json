@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Sabelöga"
+			"Sabelöga",
+			"Stefan2255"
 		]
 	},
 	"removepii-desc": "Skapar specialsidorna, Special:GenerateRandomHash och Special:RemovePII för att kunna ta bort identifierbar personlig information.",
@@ -15,6 +16,7 @@
 	"removepii-hash-prefix-help": "Välj ett lämpligt alternativ från rullgardinsmenyn som ska användas av prefixet för att generera hash.",
 	"removepii-oldname-label": "Gammalt användarnamn:",
 	"removepii-newname-label": "Nytt användarnamn:",
+	"removepii-dpa_id-label": "DPA-ID:",
 	"removepii-action-label": "Välj åtgärden du vill utföra.",
 	"removepii-action-help": "Du bör '''alltid''' byta namn innan RemovePII. RemovePII kommer också låsa användarens globala konto.",
 	"removepii-warning-irreversible": "'''Varning''': du håller på att utföra RemovePII-åtgärden. Denna process kan inte göras ogjord. Se till att du har rätt information innan du fortsätter.",
@@ -23,5 +25,6 @@
 	"removepii-centralauth-notinstalled": "Tillägget CentralAuth har inte installerats.",
 	"removepii-log-name": "RemovePII-logg",
 	"removepii-log-header": "Detta är en grundlogg för alla RemovePII-åtgärder.",
+	"removepii-invalid-dpa": "Det gick inte att validera den associerade DPA-begäran. Antingen har servern problem och vi kan inte ansluta till slutpunkten, eller så matchar det angivna gamla användarnamnet inte begärarens användarnamn som angetts i den associerade DPA-begäran.",
 	"logentry-removepii-action": "$1 tog bort identifierbar personlig information från en användare."
 }

@@ -569,6 +569,8 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		// Lock global account
 		$newCentral->adminLock();
 
+		$newCentral->adminSetHidden( CentralAuthUser::HIDDEN_LEVEL_SUPPRESSED );
+
 		// Invalidate cache now
 		$newCentral->invalidateCache();
 

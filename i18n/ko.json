@@ -10,7 +10,7 @@
 	"removepii": "RemovePII",
 	"action-generate-random-hash": "무작위 해시 생성",
 	"action-handle-pii": "개인 식별 정보 처리/제거",
-	"right-generate-random-hash": "무작위 사용자 이름 해시를 생성합니다",
+	"right-generate-random-hash": "무작위 사용자 이름 해시 생성",
 	"right-handle-pii": "개인 식별 정보 처리/제거",
 	"removepii-hash-length-help": "생성된 해시 값이 포함해야 하는 문자 수를 입력하세요. 최소 8자, 최대 32자",
 	"removepii-hash-prefix-help": "드롭다운에서 해시 생성에 접두사로 사용할 적절한 옵션을 선택하십시오.",

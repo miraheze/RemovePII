@@ -1,0 +1,23 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bartomelow",
+			"Eduardoaddad"
+		]
+	},
+	"removepii": "RemoverIIP",
+	"action-generate-random-hash": "gerar um resumo criptográfico aleatório",
+	"action-handle-pii": "tratar/remover informações de identificação pessoal",
+	"right-generate-random-hash": "Gerar resumos criptográficos de nome de usuário aleatórios",
+	"right-handle-pii": "Tratar/remover informações de identificação pessoal",
+	"removepii-hash-prefix-help": "Selecione no dropdown a opção apropriada a ser usada como prefixo para a geração do hash.",
+	"removepii-oldname-label": "Nome de usuário antigo:",
+	"removepii-newname-label": "Novo nome de usuário:",
+	"removepii-dpa_id-label": "Identificador DPA:",
+	"removepii-action-label": "Selecione a ação que deseja realizar.",
+	"removepii-action-help": "As renomeações devem ser sempre feitas antes do RemovePII. O RemovePII também trava a conta global do usuário.",
+	"removepii-log-name": "Registro da extensão RemoverIIP",
+	"removepii-log-header": "Este é um registro básico de todas as operações da extensão RemoverIIP.",
+	"removepii-invalid-dpa": "Não foi possível validar a solicitação de DPA associado. Ou o servidor está com dificuldades e não conseguimos uma ligação ao ponto de terminação, ou o nome de usuário antigo fornecido não corresponde ao nome de usuário do solicitante fornecido no pedido DPA associado.",
+	"logentry-removepii-action": "$1 removeu informações de identificação pessoal de um usuário."
+}

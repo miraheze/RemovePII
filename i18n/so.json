@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"AhmedG612"
+		]
+	},
+	"removepii-desc": "Waxay abuurtaa bogagga gaarka ah ee Special:GenerateRandomHash iyo Special:RemovePII si loo maareeyo ka saarista macluumaadka shakhsiga lagu aqoonsan karo.",
+	"generaterandomhash": "Abuur Hash aan kala sooc lahayn",
+	"removepii": "Ka saar PII",
+	"action-generate-random-hash": "Abuur Hash aan kala sooc lahayn",
+	"action-handle-pii": "Maaree/ka saar macluumaadka shakhsiga lagu aqoonsan karo",
+	"right-generate-random-hash": "Abuur Hash-yada magacyada isticmaalayaasha oo aan kala sooc lahayn",
+	"right-handle-pii": "Maaree/ka saar macluumaadka shakhsiga lagu aqoonsan karo",
+	"removepii-hash-length-help": "Geli tirada xaraf ee xashiiska la soo saaray uu ka koobnaan doono. Ugu yaraan: 8, Ugu badnaan: 32",
+	"removepii-hash-prefix-help": "Ka dooro liiska hoos u dhaca ikhtiyaarka ku habboon ee loo isticmaali doono horgalaha soo saarista xashiiska.",
+	"removepii-oldname-label": "Magaca isticmaalaha ee hore:",
+	"removepii-newname-label": "Magaca isticmaalaha cusub:",
+	"removepii-dpa_id-label": "Aqoonsiga DPA:",
+	"removepii-action-label": "Dooro ficilka aad rabto inaad fuliso.",
+	"removepii-action-help": "Magac-beddelidda waa in '''mar walba''' la sameeyaa ka hor RemovePII. RemovePII sidoo kale waxay qufuli doontaa koontada caalamiga ah ee isticmaalaha.",
+	"removepii-warning-irreversible": "'''Digniin:''' waxaad ku dhowdahay inaad fuliso ficilka RemovePII. Habkani lama soo celin karo. Fadlan hubi in macluumaadku sax yahay ka hor intaadan sii wadin.",
+	"removepii-wiki-disabled": "RemovePII waa laga joojiyay wiki-kan. Hadda waxaa loo habeeyay in lagu awoodsiiyo oo keliya wiki dhexe. Waa inaad halkaas ka bilowdaa.",
+	"removepii-success": "Si guul leh ayaa loo gudbiyay.",
+	"removepii-centralauth-notinstalled": "Kordhinta CentralAuth lama rakibin.",
+	"removepii-log-name": "Diiwaanka Ka Saarista PII",
+	"removepii-log-header": "Kani waa diiwaan aasaasi ah oo ku saabsan dhammaan ficillada RemovePII.",
+	"removepii-invalid-dpa": "Lama xaqiijin karo ku-xidhidda codsiga DPA. Ama server-ku wuxuu la kulmayaa dhibaatooyin oo ma awoodno inaan ku xidhno barta dhammaadka, ama magaca isticmaalaha ee hore loo bixiyay kuma eka magaca isticmaalaha codsadaha ee ku qoran codsiga DPA ee la xidhiidha.",
+	"logentry-removepii-action": "$1 wuxuu ka saaray macluumaadka shakhsiga lagu aqoonsan karo isticmaalaha."
+}

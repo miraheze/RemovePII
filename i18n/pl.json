@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"PanWor",
 			"Rail"
 		]
 	},
@@ -24,5 +25,5 @@
 	"removepii-centralauth-notinstalled": "Rozszerzenie CentralAuth nie jest zainstalowane.",
 	"removepii-log-name": "Rejestr usuwania poufnych informacji",
 	"removepii-log-header": "To jest rejestr akcji związanych z usuwaniem poufnych informacji użytkowników.",
-	"logentry-removepii-action": "$1 usunął poufne informacje użytkownika."
+	"logentry-removepii-action": "$1 usunął(-ęła) poufne informacje użytkownika."
 }

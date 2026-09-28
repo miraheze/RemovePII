@@ -66,11 +66,7 @@ class SpecialRemovePII extends FormSpecialPage {
 		?CentralAuthDatabaseManager $centralAuthDatabaseManager,
 		?GlobalRenameUserValidator $globalRenameUserValidator
 	) {
-		if ( version_compare( MW_VERSION, '1.46', '>=' ) ) {
-			parent::__construct( 'RemovePII' );
-		} else {
-			parent::__construct( 'RemovePII', 'handle-pii' );
-		}
+		parent::__construct( 'RemovePII' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
 

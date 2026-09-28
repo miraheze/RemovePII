@@ -21,9 +21,9 @@ use MediaWiki\Message\Message;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\SpecialPage\FormSpecialPage;
 use MediaWiki\SpecialPage\SpecialPage;
-use MediaWiki\Status\Status;
 use MediaWiki\User\UserFactory;
 use MediaWiki\WikiMap\WikiMap;
+use StatusValue;
 
 class SpecialRemovePII extends FormSpecialPage {
 
@@ -183,16 +183,17 @@ class SpecialRemovePII extends FormSpecialPage {
 
 	/**
 	 * @param array $formData
-	 * @return Status
+	 * @return StatusValue
 	 */
 	public function validateCentralAuth( array $formData ) {
+		$status = StatusValue::newGood()
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
-			return Status::newFatal( 'removepii-centralauth-notinstalled' );
+			return $status->fatal( 'removepii-centralauth-notinstalled' );
 		}
 
 		$oldUser = $this->userFactory->newFromName( $formData['oldname'] );
 		if ( !$oldUser ) {
-			return Status::newFatal( 'centralauth-rename-doesnotexist' );
+			return $status->fatal( 'centralauth-rename-doesnotexist' );
 		}
 
 		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
@@ -201,16 +202,16 @@ class SpecialRemovePII extends FormSpecialPage {
 		if ( ( $oldCentral->isSuppressed() || $oldCentral->isHidden() ) &&
 			!$canSuppress
 		) {
-			return Status::newFatal( 'centralauth-rename-doesnotexist' );
+			return $status->fatal( 'centralauth-rename-doesnotexist' );
 		}
 
 		if ( $oldUser->getName() === $this->getUser()->getName() ) {
-			return Status::newFatal( 'centralauth-rename-cannotself' );
+			return $status->fatal( 'centralauth-rename-cannotself' );
 		}
 
 		$newUser = $this->userFactory->newFromName( $formData['newname'] );
 		if ( !$newUser ) {
-			return Status::newFatal( 'centralauth-rename-badusername' );
+			return $status->fatal( 'centralauth-rename-badusername' );
 		}
 
 		return $this->globalRenameUserValidator->validate( $oldUser, $newUser );
@@ -218,7 +219,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 	/**
 	 * @param array $formData
-	 * @return bool|Status
+	 * @return bool|StatusValue
 	 */
 	public function onSubmit( array $formData ) {
 		$out = $this->getOutput();
@@ -238,7 +239,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			$newUser = $this->userFactory->newFromName( $formData['newname'], UserFactory::RIGOR_CREATABLE );
 
 			if ( !$oldUser || !$newUser ) {
-				return Status::newFatal( 'unknown-error' );
+				return StatusValue::newFatal( 'unknown-error' );
 			}
 
 			$globalRenameUser = new GlobalRenameUser(
@@ -266,7 +267,7 @@ class SpecialRemovePII extends FormSpecialPage {
 			return true;
 		} elseif ( $formData['action'] === 'removepii' ) {
 			if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
-				return Status::newFatal( 'removepii-centralauth-notinstalled' );
+				return StatusValue::newFatal( 'removepii-centralauth-notinstalled' );
 			}
 
 			$oldName = str_replace( '_', ' ', $formData['oldname'] );

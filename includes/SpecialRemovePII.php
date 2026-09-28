@@ -186,14 +186,13 @@ class SpecialRemovePII extends FormSpecialPage {
 	 * @return StatusValue
 	 */
 	public function validateCentralAuth( array $formData ) {
-		$status = StatusValue::newGood()
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'CentralAuth' ) ) {
-			return $status->fatal( 'removepii-centralauth-notinstalled' );
+			return StatusValue::newFatal( 'removepii-centralauth-notinstalled' );
 		}
 
 		$oldUser = $this->userFactory->newFromName( $formData['oldname'] );
 		if ( !$oldUser ) {
-			return $status->fatal( 'centralauth-rename-doesnotexist' );
+			return StatusValue::newFatal( 'centralauth-rename-doesnotexist' );
 		}
 
 		$oldCentral = CentralAuthUser::getInstanceByName( $formData['oldname'] );
@@ -202,16 +201,16 @@ class SpecialRemovePII extends FormSpecialPage {
 		if ( ( $oldCentral->isSuppressed() || $oldCentral->isHidden() ) &&
 			!$canSuppress
 		) {
-			return $status->fatal( 'centralauth-rename-doesnotexist' );
+			return StatusValue::newFatal( 'centralauth-rename-doesnotexist' );
 		}
 
 		if ( $oldUser->getName() === $this->getUser()->getName() ) {
-			return $status->fatal( 'centralauth-rename-cannotself' );
+			return StatusValue::newFatal( 'centralauth-rename-cannotself' );
 		}
 
 		$newUser = $this->userFactory->newFromName( $formData['newname'] );
 		if ( !$newUser ) {
-			return $status->fatal( 'centralauth-rename-badusername' );
+			return StatusValue::newFatal( 'centralauth-rename-badusername' );
 		}
 
 		return $this->globalRenameUserValidator->validate( $oldUser, $newUser );

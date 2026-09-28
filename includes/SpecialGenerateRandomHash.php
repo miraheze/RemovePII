@@ -16,11 +16,7 @@ class SpecialGenerateRandomHash extends FormSpecialPage {
 	 * @param ConfigFactory $configFactory
 	 */
 	public function __construct( ConfigFactory $configFactory ) {
-		if ( version_compare( MW_VERSION, '1.46', '>=' ) ) {
-			parent::__construct( 'GenerateRandomHash' );
-		} else {
-			parent::__construct( 'GenerateRandomHash', 'generate-random-hash' );
-		}
+		parent::__construct( 'GenerateRandomHash' );
 
 		$this->config = $configFactory->makeConfig( 'RemovePII' );
 	}

@@ -109,8 +109,7 @@ class SpecialRemovePII extends FormSpecialPage {
 
 		$formDescriptor['warning'] = [
 			'type' => 'info',
-			'help' => Html::warningBox( $this->msg( 'removepii-warning-irreversible' )->parse() ),
-			'raw-help' => true,
+			'help-raw' => Html::warningBox( $this->msg( 'removepii-warning-irreversible' )->parse() ),
 			'hide-if' => [ '!==', 'wpaction', 'removepii' ]
 		];
 

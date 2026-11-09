@@ -12,6 +12,7 @@ use MWCryptRand;
 use UserProfilePage;
 use Wikimedia\Rdbms\DBQueryError;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 class RemovePIIJob extends Job implements GenericParameterJob {
 
@@ -573,17 +574,17 @@ class RemovePIIJob extends Job implements GenericParameterJob {
 		$newCentral->invalidateCache();
 
 		// Remove user email and real name
-		$userLatest = $newName->getInstanceForUpdate();
+		$userLatest = $newName->getInstanceFromPrimary( IDBAccessObject::READ_EXCLUSIVE );
 
-		if ( $userLatest->getEmail() ) {
+		if ( $userLatest?->getEmail() ) {
 			$userLatest->invalidateEmail();
 		}
 
-		if ( $userLatest->getRealName() ) {
+		if ( $userLatest?->getRealName() ) {
 			$userLatest->setRealName( '' );
 		}
 
-		$userLatest->saveSettings();
+		$userLatest?->saveSettings();
 		return true;
 	}
 }
